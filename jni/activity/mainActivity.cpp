@@ -4,6 +4,11 @@
 #include "mainActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mIconViewWifiPtr;
+static ZKTextView* mIconViewAirColdPtr;
+static ZKTextView* mIconViewHumdColdPtr;
+static ZKTextView* mIconViewHumdDryPtr;
+static ZKTextView* mIconViewSecurityPtr;
 static ZKWindow* mWindow25Ptr;
 static ZKButton* mButtonSelect4Ptr;
 static ZKButton* mButtonSelect5Ptr;
@@ -62,11 +67,6 @@ static ZKTextView* mTextView49Ptr;
 static ZKTextView* mTextView48Ptr;
 static ZKTextView* mTextView47Ptr;
 static ZKTextView* mTextView40Ptr;
-static ZKTextView* mTextView46Ptr;
-static ZKTextView* mTextView45Ptr;
-static ZKTextView* mTextView44Ptr;
-static ZKTextView* mTextView43Ptr;
-static ZKTextView* mTextView42Ptr;
 static ZKWindow* mWindow14Ptr;
 static ZKTextView* mTextViewWifiPtr;
 static ZKButton* mButton1Ptr;
@@ -308,6 +308,11 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mIconViewWifiPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewWifi);
+    mIconViewAirColdPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewAirCold);
+    mIconViewHumdColdPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewHumdCold);
+    mIconViewHumdDryPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewHumdDry);
+    mIconViewSecurityPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewSecurity);
     mWindow25Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window25);
     mButtonSelect4Ptr = (ZKButton*)findControlByID(ID_MAIN_ButtonSelect4);
     mButtonSelect5Ptr = (ZKButton*)findControlByID(ID_MAIN_ButtonSelect5);
@@ -366,11 +371,6 @@ void mainActivity::onCreate() {
     mTextView48Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView48);
     mTextView47Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView47);
     mTextView40Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView40);
-    mTextView46Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView46);
-    mTextView45Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView45);
-    mTextView44Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView44);
-    mTextView43Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView43);
-    mTextView42Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView42);
     mWindow14Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window14);
     mTextViewWifiPtr = (ZKTextView*)findControlByID(ID_MAIN_TextViewWifi);
     mButton1Ptr = (ZKButton*)findControlByID(ID_MAIN_Button1);
