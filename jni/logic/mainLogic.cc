@@ -484,12 +484,12 @@ static void *MovePicPos(void *param)
 			if(i > 4)
 				i = 0;
 			LayoutPosition lp = mWindowSelectModePtr[i]->getPosition();
-			LOGD("MovePicPos  type: %d , i = %d, lp.mLeft = %d, lp.mTop = %d \n", type, i, lp.mLeft, lp.mTop);
+//			LOGD("MovePicPos  type: %d , i = %d, lp.mLeft = %d, lp.mTop = %d \n", type, i, lp.mLeft, lp.mTop);
 			if(type)
 			{
 				if(lp.mLeft > 0 && lp.mLeft <= 242 && lp.mTop > 0 && lp.mTop <= 151)
 				{
-//					LOGD("5 to 1 \n");
+					LOGD("5 to 1 \n");
 					lp.mLeft -= speedLeft;
 					lp.mTop -= speedTop;
 					if(lp.mTop <= 0 || lp.mLeft <= 0)
@@ -497,7 +497,7 @@ static void *MovePicPos(void *param)
 				}
 				else if(lp.mLeft <= 450 && lp.mLeft > 242 && lp.mTop == 151 )
 				{
-//					LOGD("4 to 5 \n");
+					LOGD("4 to 5 \n");
 					lp.mLeft -= speedLeft;
 					lp.mTop = 151;
 					if(lp.mLeft <= 242)
@@ -505,7 +505,7 @@ static void *MovePicPos(void *param)
 				}
 				else if(lp.mLeft == 450 && lp.mTop >= 0 && lp.mTop < 151 )
 				{
-//					LOGD("3 to 4 \n");
+					LOGD("3 to 4 \n");
 					lp.mLeft = 450;
 					lp.mTop += speedTop;
 					if(lp.mTop >= 151)
@@ -514,7 +514,7 @@ static void *MovePicPos(void *param)
 				}
 				else if(lp.mLeft < 450 && lp.mLeft >= 242 && lp.mTop == 0 )
 				{
-//					LOGD("2 to 3 \n");
+					LOGD("2 to 3 \n");
 					lp.mLeft += speedLeft;
 					lp.mTop = 0;
 					if(lp.mLeft >= 450)
@@ -522,14 +522,14 @@ static void *MovePicPos(void *param)
 				}
 				else if(lp.mLeft < 242 && lp.mLeft >= 0 && lp.mTop == 0 )
 				{
-//					LOGD("1 to 2 \n");
+					LOGD("1 to 2 \n");
 					lp.mLeft += speedLeft;
 					lp.mTop = 0;
 					if(lp.mLeft >= 242)
 						PosStatus = true;
 //					LOGD("lp.mLeft = %d \n", lp.mLeft);
 				}
-//				LOGD("lp.mLeft = %d, lp.mTop = %d , i = %d \n", lp.mLeft, lp.mTop, i);
+				LOGD("lp.mLeft = %d, lp.mTop = %d , i = %d \n", lp.mLeft, lp.mTop, i);
 				mWindowSelectModePtr[i]->setPosition(lp);
 			}
 			else
@@ -577,7 +577,7 @@ static void *MovePicPos(void *param)
 					if(lp.mTop >= 151 || lp.mLeft >= 242)
 						PosStatus = true;
 				}
-//				LOGD("lp.mLeft = %d, lp.mTop = %d , i = %d \n", lp.mLeft, lp.mTop, i);
+				LOGD("lp.mLeft = %d, lp.mTop = %d , i = %d \n", lp.mLeft, lp.mTop, i);
 				mWindowSelectModePtr[i]->setPosition(lp);
 			}
 
@@ -596,32 +596,32 @@ static void *MovePicPos(void *param)
 					{
 						if(lp1.mLeft < 242 && lp1.mTop != 0 && lp1.mTop < 151)
 						{
-//							LOGD("5 to 1 \n");
+							LOGD("5 to 1 \n");
 							lp1.mLeft = 0;
 							lp1.mTop = 0;
 
 						}
 						else if(lp1.mLeft < 450 && lp1.mTop == 151 )
 						{
-//							LOGD("4 to 5 \n");
+							LOGD("4 to 5 \n");
 							lp1.mLeft = 242;
 							lp1.mTop = 151;
 						}
 						else if(lp1.mLeft == 450 &&  lp1.mTop > 0 )
 						{
-//							LOGD("3 to 4 \n");
+							LOGD("3 to 4 \n");
 							lp1.mLeft = 450;
 							lp1.mTop = 151;
 						}
 						else if(lp1.mLeft > 242 && lp1.mTop == 0 )
 						{
-//							LOGD("2 to 3 \n");
+							LOGD("2 to 3 \n");
 							lp1.mLeft = 450;
 							lp1.mTop = 0;
 						}
 						else if(lp1.mLeft < 242 && lp1.mLeft >= 0 && lp1.mTop == 0 )
 						{
-//							LOGD("1 to 2 \n");
+							LOGD("1 to 2 \n");
 							lp1.mLeft = 242;
 							lp1.mTop = 0;
 						}
@@ -661,6 +661,7 @@ static void *MovePicPos(void *param)
 					}
 					mWindowSelectModePtr[j]->setPosition(lp1);
 				}
+				LOGD("ButtonModeSelectStatus break !!!!! \n");
 				break;
 			}
 			count++;
@@ -670,7 +671,7 @@ static void *MovePicPos(void *param)
 			speedLeft *= 0.98;
 			usleep(30 * 1000);
 		}
-		LOGD("ButtonModeSelectStatus break !!!!! \n");
+
 
 	}
 	return NULL;
@@ -686,7 +687,7 @@ void ModePicSelectFunc(bool type, int count, int focus)
 		{
 			if(g_MovePicPosThread)
 			{
-				pthread_cancel(g_MovePicPosThread);
+//				pthread_cancel(g_MovePicPosThread);
 				pthread_join(g_MovePicPosThread, NULL);
 				g_MovePicPosThread = 0;
 				LOGD("g_MovePicPosThread pthread_join  !!! \n");
@@ -702,7 +703,7 @@ void ModePicSelectFunc(bool type, int count, int focus)
 				if(type)
 				{
 //						if(lp.mLeft >= 242 && lp.mLeft < 450 && lp.mTop > 0)
-						if(lp.mLeft == 242 && lp.mTop == 0)
+						if(lp.mLeft == 242 && lp.mTop == 151)
 						{
 //							LOGD("5  to  1 !!! \n");
 							LayoutPosition lp1 = mTextModeSelectPic[k]->getPosition();
@@ -829,7 +830,7 @@ void ModePicSelectFunc(bool type, int count, int focus)
 				else
 				{
 //						if(lp.mLeft >= 242 && lp.mLeft < 450 && lp.mTop <= 0)
-						if(lp.mLeft == 242 && lp.mTop == 151)
+						if(lp.mLeft == 242 && lp.mTop == 0)
 						{
 							LayoutPosition lp1 = mTextModeSelectPic[k]->getPosition();
 							lp1.mLeft = 30;
