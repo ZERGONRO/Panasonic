@@ -807,7 +807,7 @@ void ModePicSelectFunc(bool type, int count, int focus)
 							lp5.mTop = lp1.mTop + lp1.mHeight + 30;
 							lp5.mHeight = 70;
 							lp5.mWidth = 120;
-							mTextModeSelectRecvData[k]->setTextSize(50);
+							mTextModeSelectRecvData[k]->setTextSize(38);
 							mTextModeSelectRecvData[k]->setAlpha(255);
 							mTextModeSelectRecvData[k]->setPosition(lp5);
 							LayoutPosition lp3 = mTextModeSelectString[k]->getPosition();
@@ -935,7 +935,7 @@ void ModePicSelectFunc(bool type, int count, int focus)
 							lp5.mHeight = 70;
 							lp5.mWidth = 120;
 							mTextModeSelectRecvData[k]->setPosition(lp5);
-							mTextModeSelectRecvData[k]->setTextSize(50);
+							mTextModeSelectRecvData[k]->setTextSize(38);
 							mTextModeSelectRecvData[k]->setAlpha(255);
 	//						mTextModeSelectRecvData[k]->setVisible(true);
 							LayoutPosition lp3 = mTextModeSelectString[k]->getPosition();
