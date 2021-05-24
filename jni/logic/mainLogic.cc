@@ -1,6 +1,7 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "entry/EasyUIContext.h"
+#include "utils/TimeHelper.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -53,7 +54,36 @@ extern void hidestatusbars();
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	{0,  6000}, //定时器id=0, 时间间隔6秒
 	{1,  1000},
+	{2,  500},
 };
+
+void SetEnvName(std::string focusindex)
+{
+	mButton2Ptr->setText(focusindex);
+	mButton8Ptr->setText(focusindex);
+}
+//struct tm *t = TimeHelper::getDateTime();
+
+static void updateTime()
+{
+	char timeStr[20];
+	static bool bflash = false;
+	struct tm *t = TimeHelper::getDateTime();
+
+//	sprintf(timeStr, "%02d:%02d:%02d", t->tm_hour,t->tm_min,t->tm_sec);
+//	mTextView42Ptr->setText(timeStr);
+	sprintf(timeStr, "%02d:%02d", t->tm_hour,t->tm_min);
+	mTextView42Ptr->setText(timeStr);
+
+//	sprintf(timeStr, "%d年%02d月%02d日", 1900 + t->tm_year, t->tm_mon + 1, t->tm_mday);
+//	mTextView5Ptr->setText(timeStr);
+	sprintf(timeStr, "%02d/%02d", t->tm_mon + 1, t->tm_mday);
+	mTextView5Ptr->setText(timeStr);
+
+	static const char *day[] = { "日", "一", "二", "三", "四", "五", "六" };
+	sprintf(timeStr, "星期%s", day[t->tm_wday]);
+	mTextView6Ptr->setText(timeStr);
+}
 
 static int GPIO_get_value()
 {
@@ -208,6 +238,7 @@ static void onUI_intent(const Intent *intentPtr) {
         //TODO
 
     }
+    system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
 }
 
 /*
@@ -271,6 +302,13 @@ static bool onUI_Timer(int id){
 
 	}
 		break;
+	case 2:
+	{
+
+		updateTime();
+	}
+		break;
+
 		default:
 			break;
 	}

@@ -26,6 +26,7 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAIN_TextView42    50070
 #define ID_MAIN_IconViewWifi    50046
 #define ID_MAIN_IconViewAirCold    50045
 #define ID_MAIN_IconViewHumdCold    50044

@@ -4,6 +4,7 @@
 #include "mainActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextView42Ptr;
 static ZKTextView* mIconViewWifiPtr;
 static ZKTextView* mIconViewAirColdPtr;
 static ZKTextView* mIconViewHumdColdPtr;
@@ -308,6 +309,7 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mTextView42Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView42);
     mIconViewWifiPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewWifi);
     mIconViewAirColdPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewAirCold);
     mIconViewHumdColdPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewHumdCold);

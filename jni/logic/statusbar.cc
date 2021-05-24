@@ -53,7 +53,10 @@ void initStatusBarMode()
 //		mWindowMainStatusBarPtr->setPosition(lp);
 		bStatusBarInited = true;
 	}
-
+	mSeekBarLightPtr->setProgress(mSeekBarLightPtr->getProgress());
+//	mSeekBarLightPtr->setProgress(50);
+	mSeekBarLightPtr->setMax(99);
+	mTextViewLightBarPtr->setText(mSeekBarLightPtr->getProgress());
 //	mstatusbarPtr->mMainWndPtr->setAlpha(255);
 }
 
@@ -91,7 +94,7 @@ static void onUI_init(){
 //	EASYUICONTEXT->hideNaviBar();
 //	mTextViewAlphaPtr->setAlpha(5);
 //	mWindowAlphaPtr->setAlpha(50);
-	mWindowBackgroundPtr->setAlpha(150);
+
 }
 
 /*
@@ -216,7 +219,7 @@ static bool onstatusbarActivityTouchEvent(const MotionEvent &ev) {
 	LayoutPosition lp = mButtonDropDownPtr->getPosition();
 	LayoutPosition lp1 = mstatusbarPtr->mMainWndPtr->getPosition();
 //	LayoutPosition lp1 = mWindowMainStatusBarPtr->getPosition();
-
+	mWindowBackgroundPtr->setAlpha(150);
 	static int x, y;
     switch (ev.mActionStatus) {
 		case MotionEvent::E_ACTION_DOWN://触摸按下
@@ -306,6 +309,11 @@ static bool onButtonClick_ButtonDropDown(ZKButton *pButton) {
 
 static void onProgressChanged_SeekBarLight(ZKSeekBar *pSeekBar, int progress) {
     //LOGD(" ProgressChanged SeekBarLight %d !!!\n", progress);
+	char cmd[128];
+	sprintf(cmd , "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle" , progress + 1);
+	system(cmd);
+//	MACHINESTATUSCONTEXT->setBackLight(progress+1);
+	mTextViewLightBarPtr->setText(std::to_string(progress + 1));
 }
 
 static bool onButtonClick_ButtonEasyMode(ZKButton *pButton) {
@@ -342,5 +350,11 @@ static bool onButtonClick_ButtonSetting(ZKButton *pButton) {
 	EASYUICONTEXT->openActivity("settingActivity", NULL);
 
 
+    return false;
+}
+static bool onButtonClick_Button1(ZKButton *pButton) {
+    LOGD(" ButtonClick Button1 !!!\n");
+    hidestatusbars();
+    EASYUICONTEXT->goBack();
     return false;
 }

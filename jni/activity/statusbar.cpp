@@ -2,6 +2,7 @@
 #include "entry/EasyUIContext.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton1Ptr;
 static ZKWindow* mWindowBackgroundPtr;
 static ZKTextView* mTextViewAlphaPtr;
 static ZKWindow* mWindowAlphaPtr;
@@ -57,6 +58,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_STATUSBAR_Button1, onButtonClick_Button1,
     ID_STATUSBAR_ButtonSetting, onButtonClick_ButtonSetting,
     ID_STATUSBAR_ButtonDarkColor, onButtonClick_ButtonDarkColor,
     ID_STATUSBAR_ButtonEasyMode, onButtonClick_ButtonEasyMode,
@@ -139,6 +141,7 @@ const char* statusbar::getAppName() const{
 //TAG:onCreate
 void statusbar::onCreate() {
 	BaseApp::onCreate();
+    mButton1Ptr = (ZKButton*)findControlByID(ID_STATUSBAR_Button1);
     mWindowBackgroundPtr = (ZKWindow*)findControlByID(ID_STATUSBAR_WindowBackground);
     mTextViewAlphaPtr = (ZKTextView*)findControlByID(ID_STATUSBAR_TextViewAlpha);
     mWindowAlphaPtr = (ZKWindow*)findControlByID(ID_STATUSBAR_WindowAlpha);

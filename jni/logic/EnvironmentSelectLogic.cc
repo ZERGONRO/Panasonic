@@ -29,7 +29,7 @@
 *
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
-
+extern void SetEnvName(std::string focusindex);
 
 //static char *gEnvironmentSelList[10] = {"卧室", "浴室", "客厅", "厨房", "次卧", "厨房", "书房", "阳台", "'储物间", "卫生间"};
 
@@ -164,6 +164,10 @@ static bool onButtonClick_ButtonCancel(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonConfirm(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonConfirm !!!\n");
+    int index = mListView_EnvPtr->getFirstVisibleItemIndex();
+    index = index + 2;
+    std::string focusindex = EnvironmentSelVector.at(index);
+    SetEnvName(focusindex);
     EASYUICONTEXT->goBack();
     return false;
 }
