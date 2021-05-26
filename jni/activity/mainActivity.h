@@ -24,6 +24,7 @@
 #include "control/ZKEditText.h"
 #include "control/ZKVideoView.h"
 #include "window/ZKSlideWindow.h"
+#include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
 #define ID_MAIN_TextView42    50070
@@ -179,6 +180,7 @@ class mainActivity : public Activity,
                      public ZKSlideWindow::ISlideItemClickListener,
                      public EasyUIContext::ITouchListener,
                      public ZKEditText::ITextChangeListener,
+					 public MyNetWorkingListener::MyNetWorkListener,
                      public ZKVideoView::IVideoPlayerMessageListener
 {
 public:
@@ -200,6 +202,7 @@ public:
 
 protected:
     /*TAG:PROTECTED_FUNCTION*/
+	virtual void MyNetworkNotify(int type , void *data);
     virtual const char* getAppName() const;
     virtual void onCreate();
     virtual void onClick(ZKBase *pBase);

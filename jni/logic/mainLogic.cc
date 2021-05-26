@@ -39,12 +39,17 @@ static int step;
 static int mode;
 static bool ButtonModeSelectStatus = false;
 static pthread_t g_MovePicPosThread = 0;
+static std::vector<WifiInfo_t *> *WifiInfo;
+
+
 
 static Mutex pLock;
 
 extern void initStatusBarMode();
 extern void showstatusbars();
 extern void hidestatusbars();
+
+//extern MyNetWorkingListener *nwlistener;
 
 /**
  * 注册定时器
@@ -121,7 +126,7 @@ void ResetStatusIconPos()
 		lp = mIconViewWifiPtr->getPosition();
 		lp.mLeft = StartLeft;
 		lp.mTop = 5;
-		StartLeft -= 22;
+		StartLeft -= 42;
 		mIconViewWifiPtr->setPosition(lp);
 	}
 	else
@@ -135,7 +140,7 @@ void ResetStatusIconPos()
 		lp = mIconViewAirColdPtr->getPosition();
 		lp.mLeft = StartLeft;
 		lp.mTop = 5;
-		StartLeft -= 22;
+		StartLeft -= 42;
 		mIconViewAirColdPtr->setPosition(lp);
 	}
 	else
@@ -149,7 +154,7 @@ void ResetStatusIconPos()
 		lp = mIconViewHumdColdPtr->getPosition();
 		lp.mLeft = StartLeft;
 		lp.mTop = 5;
-		StartLeft -= 22;
+		StartLeft -= 42;
 		mIconViewHumdColdPtr->setPosition(lp);
 	}
 	else
@@ -163,7 +168,7 @@ void ResetStatusIconPos()
 		lp = mIconViewHumdDryPtr->getPosition();
 		lp.mLeft = StartLeft;
 		lp.mTop = 5;
-		StartLeft -= 22;
+		StartLeft -= 42;
 		mIconViewHumdDryPtr->setPosition(lp);
 	}
 	else
@@ -177,7 +182,7 @@ void ResetStatusIconPos()
 		lp = mIconViewSecurityPtr->getPosition();
 		lp.mLeft = StartLeft;
 		lp.mTop = 5;
-		StartLeft -= 22;
+		StartLeft -= 42;
 		mIconViewSecurityPtr->setPosition(lp);
 	}
 	else
@@ -238,7 +243,14 @@ static void onUI_intent(const Intent *intentPtr) {
         //TODO
 
     }
-    system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
+    nwlistener->ScanNetWork();
+    if(nwlistener == NULL)
+    {
+    	nwlistener = new MyNetWorkingListener();
+    	nwlistener->run("nwlistener");
+    }
+
+//    system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
 }
 
 /*
@@ -250,6 +262,15 @@ static void onUI_show() {
 	hidestatusbars();
 //	mTextView31Ptr->setText(std::to_string(atoi(mTextView31Ptr->getText().c_str())));
 //	mTextView48Ptr->setText(std::to_string(atoi(mTextView48Ptr->getText().c_str())));
+
+	mIconViewWifiPtr->setVisible(nwlistener->IsConnected());
+//	mIconViewWifiPtr->setVisible(true);
+	mIconViewSecurityPtr->setVisible(true);
+	mIconViewHumdDryPtr->setVisible(false);
+	mIconViewHumdColdPtr->setVisible(true);
+	mIconViewAirColdPtr->setVisible(true);
+
+	ResetStatusIconPos();
 
 	mButtonHomepage2Ptr->setSelected(true);
 	mButtonSmart2Ptr->setSelected(false);
@@ -304,8 +325,29 @@ static bool onUI_Timer(int id){
 		break;
 	case 2:
 	{
+		if(nwlistener->IsConnected())
+		{
+			std::string ssid = nwlistener->getSSID();
+			WifiInfo = nwlistener->getSSIDInfo();
+			for(int i = 0;i < WifiInfo->size();i++)
+			{
+				int wifisignal = 0;
+				WifiInfo_t *child = WifiInfo->at(i);
+				if(ssid == std::string(child->ssid))
+				{
+					if(child->signal >= -55)
+						wifisignal = 100;
+					else if(child->signal <= -95)
+						wifisignal = 0;
+					else
+						wifisignal = ((child->signal + 95)*5)/2;
+				}
+			}
+		}
 
-		updateTime();
+		if(nwlistener->getWifiStatus())
+			nwlistener->resetScanCount();
+//		updateTime();
 	}
 		break;
 

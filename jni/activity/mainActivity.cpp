@@ -2,6 +2,7 @@
 /gen auto by zuitools
 ***********************************************/
 #include "mainActivity.h"
+#include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
 static ZKTextView* mTextView42Ptr;
@@ -157,6 +158,8 @@ static ZKTextView* mTextModeSelectTitle[5];
 static ZKTextView* mTextModeSelectRecvData[5];
 static ZKTextView* mTextModeSelectString[5];
 
+MyNetWorkingListener *nwlistener = NULL;
+
 
 //static ZKWindow* mWindowsSelectMode[5] = {mWindowHumidityPtr, mWindowPM25Ptr, mWindowTempPtr, mWindowCO2Ptr, mWindowFormaldehydePtr};
 //static ZKButton* mButtonModeSelect[5] = {mButtonSelect1Ptr, mButtonSelect2Ptr, mButtonSelect3Ptr, mButtonSelect4Ptr, mButtonSelect5Ptr};
@@ -297,6 +300,13 @@ mainActivity::mainActivity() {
 mainActivity::~mainActivity() {
   //todo add init file here
   // 退出应用时需要反注册
+	nwlistener->removeNetWorkListener(this);
+	if(nwlistener)
+	{
+		nwlistener->requestExitAndWait();
+		delete nwlistener;
+		nwlistener = NULL;
+	}
     EASYUICONTEXT->unregisterGlobalTouchListener(this);
     onUI_quit();
     unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
@@ -526,6 +536,14 @@ void mainActivity::onClick(ZKBase *pBase) {
 void mainActivity::onResume() {
 	Activity::onResume();
 	EASYUICONTEXT->registerGlobalTouchListener(this);
+	if(nwlistener->IsConnected())
+	{
+		mIconViewWifiPtr->setVisible(true);
+	}
+	else
+	{
+		mIconViewWifiPtr->setVisible(false);
+	}
 	startVideoLoopPlayback();
 	onUI_show();
 }
@@ -540,6 +558,7 @@ void mainActivity::onPause() {
 void mainActivity::onIntent(const Intent *intentPtr) {
 	Activity::onIntent(intentPtr);
 	onUI_intent(intentPtr);
+	nwlistener->setNetWorkListener(this);
 }
 
 bool mainActivity::onTimer(int id) {
@@ -758,6 +777,21 @@ void mainActivity::registerUserTimer(int id, int time) {
 
 void mainActivity::unregisterUserTimer(int id) {
 	unregisterTimer(id);
+}
+void mainActivity::MyNetworkNotify(int type, void* data) {
+	if(type == NW_NOTIFY_TYPE_CONNECT_STATUS) {				//连接状态变化
+		LOGD("connected %d\n" , (int)data);
+		if(1 == (int)data) {								//连接成功
+			//ltz modify begin
+			mIconViewWifiPtr->setVisible(true);
+		}
+		else {
+			if(!nwlistener->getWifiStatus()) {
+				mIconViewWifiPtr->setVisible(false);
+			}
+
+		}
+	}
 }
 
 void mainActivity::resetUserTimer(int id, int time) {

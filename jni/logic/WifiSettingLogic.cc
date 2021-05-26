@@ -30,14 +30,14 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
-
+extern MyNetWorkingListener *nwlistener;
 /**
  * 注册定时器
  * 填充数组用于注册定时器
  * 注意：id不能重复
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
-	//{0,  6000}, //定时器id=0, 时间间隔6秒
+	{0,  1000}, //定时器id=0, 时间间隔6秒
 	//{1,  1000},
 };
 
@@ -46,7 +46,8 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	mTextViewConnectFailMsgPtr->setTextRowSpace(6);
+	mTextViewConnectFailMsgPtr->setText("连接失败，\n请检查当前网络环境是否正常，\n账号/密码是否输入正确。");
 }
 
 /**
@@ -56,6 +57,19 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
+	if(nwlistener->getWifiStatus()) {
+		mButtonWifiSwitchPtr->setSelected(false);
+		nwlistener->ScanNetWork();
+		nwlistener->firstfresh();
+		wifiInfo = nwlistener->getSSIDInfo();
+		mListViewWifiInfoPtr->setVisible(true);
+		mListViewWifiInfoPtr->setSelection(0);
+		mListViewWifiInfoPtr->refreshListView();
+	}
+	else {
+		mButtonWifiSwitchPtr->setSelected(true);
+		mListViewWifiInfoPtr->setVisible(false);
+	}
 }
 
 /*
@@ -63,6 +77,14 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
+	mIconWifiPtr->setVisible(nwlistener->IsConnected());
+	if(nwlistener->getWifiStatus()) {
+		wifiInfo = nwlistener->getSSIDInfo();
+		mListViewWifiInfoPtr->setVisible(true);
+		mListViewWifiInfoPtr->setSelection(0);
+		mListViewWifiInfoPtr->refreshListView();
+	}
+	mListViewWifiInfoPtr->setDecRatio(0.7);
 }
 
 /*
@@ -98,7 +120,12 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  */
 static bool onUI_Timer(int id){
 	switch (id) {
-
+	case 0:
+	{
+		if(nwlistener->getWifiStatus())
+			nwlistener->resetScanCount();
+	}
+	break;
 		default:
 			break;
 	}
@@ -114,7 +141,7 @@ static bool onUI_Timer(int id){
  *         false
  *            触摸事件将继续传递到控件上
  */
-static bool onWirelessNetActivityTouchEvent(const MotionEvent &ev) {
+static bool onWifiSettingActivityTouchEvent(const MotionEvent &ev) {
     switch (ev.mActionStatus) {
 		case MotionEvent::E_ACTION_DOWN://触摸按下
 			//LOGD("时刻 = %ld 坐标  x = %d, y = %d", ev.mEventTime, ev.mX, ev.mY);
@@ -134,39 +161,103 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button1(ZKButton *pButton) {
-    LOGD(" ButtonClick Button1 !!!\n");
-    EASYUICONTEXT->openActivity("WifiSettingActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_Button2(ZKButton *pButton) {
-    LOGD(" ButtonClick Button2 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button6(ZKButton *pButton) {
-    LOGD(" ButtonClick Button6 !!!\n");
+static bool onButtonClick_ButtonWifiSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonWifiSwitch !!!\n");
     if(pButton->isSelected())
     {
     	pButton->setSelected(false);
+    	wifiInfo = nwlistener->getSSIDInfo();
+    	mListViewWifiInfoPtr->setVisible(true);
+    	nwlistener->startupWifi();
+    	nwlistener->firstfresh();
     }
     else
     {
     	pButton->setSelected(true);
+    	mListViewWifiInfoPtr->setVisible(false);
+    	nwlistener->ShutdownWifi();
     }
     return false;
 }
 
-static bool onButtonClick_Button3(ZKButton *pButton) {
-    LOGD(" ButtonClick Button3 !!!\n");
-    if(pButton->isSelected())
-   {
-	pButton->setSelected(false);
-   }
-   else
-   {
-	pButton->setSelected(true);
-   }
+static int getListItemCount_ListViewWifiInfo(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewWifiInfo !\n");
+	if(!wifiInfo)
+		return 0;
+	if(wifiInfo->size())
+		return wifiInfo->size();
+	else
+		return 0;
+//    return 3;
+}
+
+static void obtainListItemData_ListViewWifiInfo(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewWifiInfo  !!!\n");
+	ZKListView::ZKListSubItem *pWifiInfoItem = pListItem->findSubItemByID(ID_WIFISETTING_SSID);
+	WifiInfo_t *child = wifiInfo->at(index);
+	pWifiInfoItem->setText(child->ssid);
+
+	pWifiInfoItem = pListItem->findSubItemByID(ID_WIFISETTING_IconConnectedStatus);
+	int wifistatus = nwlistener->getWifiConnectStatus();
+	if(wifistatus == 1)
+	{
+		if(nwlistener->getSSIDConnecting().length() > 0)
+		{
+			if(!strcmp(child->ssid, nwlistener->getSSIDConnecting().c_str()))
+			{
+				pWifiInfoItem->setText("连接中");
+			}
+			else
+			{
+				pWifiInfoItem->setText("");
+			}
+		}
+		else
+		{
+		pWifiInfoItem->setText("");
+		}
+	}
+	else if(wifistatus ==2)
+	{
+		if(nwlistener->getSSID().length() > 0)
+		{
+			if(!strcmp(child->ssid, nwlistener->getSSID().c_str()))
+			{
+				pWifiInfoItem->setText("已连接");
+			}
+			else
+			{
+				pWifiInfoItem->setText("");
+			}
+		}
+		pWifiInfoItem->setText("");
+	}
+	else
+	{
+		pWifiInfoItem->setText("");
+	}
+
+
+}
+
+static void onListItemClick_ListViewWifiInfo(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewWifiInfo  !!!\n");
+	int wifistatus = nwlistener->getWifiConnectStatus();
+	if(wifistatus == 2)
+	{
+		if(nwlistener->getSSID().length() > 0)
+		{
+			if(!strcmp(wifiInfo->at(index)->ssid, nwlistener->getSSID().c_str()))
+			{
+				return;
+			}
+		}
+	}
+	Intent* intent = new Intent();
+	intent->putExtra("ssid", wifiInfo->at(index)->ssid);
+	EASYUICONTEXT->openActivity("WifiInputUIActivity", intent);
+}
+static bool onButtonClick_ButtonKnow(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonKnow !!!\n");
     return false;
 }

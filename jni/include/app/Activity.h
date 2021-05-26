@@ -135,7 +135,7 @@ private:
 #define REGISTER_ACTIVITY(_class) \
     static struct _ActivityFactory_##_class { \
         static Activity* create() { \
-            return new _class(); \
+    		return new _class(); \
         } \
         _ActivityFactory_##_class() { \
         	ACTIVITYFACTORY->registerActivity(#_class, create); \
