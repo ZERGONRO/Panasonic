@@ -77,6 +77,7 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
+	mWindowConnectFailPtr->setVisible(false);
 	mIconWifiPtr->setVisible(nwlistener->IsConnected());
 	if(nwlistener->getWifiStatus()) {
 		wifiInfo = nwlistener->getSSIDInfo();

@@ -22,6 +22,10 @@ static std::vector<WifiInfo_t *> WifiInfo;
 static Mutex sLock;
 
 
+bool MyNetWorkingListener::getWifiStatus()
+{
+	return bWifiStartup;
+}
 
 MyNetWorkingListener::MyNetWorkingListener()
 {
@@ -33,6 +37,7 @@ MyNetWorkingListener::MyNetWorkingListener()
 	ssid = "";
 	psd = "";
 	nwListener.clear();
+	bWifiStartup = true;
 	scanCount = -1;
 	connectingTimeCount = 0;
 	CheckconnectingTimeCount = 0;
@@ -203,6 +208,7 @@ void MyNetWorkingListener::ScanNetWork()
 {
 	system("/customer/wpa_cli -i wlan0 -p/var/run/wpa_supplicant scan");
 	scanCount = 1;
+//	LOGD("start scan network !!!\n ");
 }
 
 void MyNetWorkingListener::firstfresh()
@@ -254,10 +260,7 @@ void MyNetWorkingListener::ShutdownWifi()
 	bConnected = false;
 	scanCount = -1;
 }
-bool MyNetWorkingListener::getWifiStatus()
-{
-	return bWifiStartup;
-}
+
 int MyNetWorkingListener::getWifiConnectStatus()
 {
 	if(bConnected)
@@ -433,15 +436,13 @@ bool checkWifiProcessState(const char *procName)
 
 bool MyNetWorkingListener::threadLoop()
 {
-	LOGD("MyNetWorkingListener  threadLoop !!!\n");
+//	LOGD("MyNetWorkingListener  threadLoop !!!\n");
 	FILE *fp = NULL;
 	char stringLine[4096];
 	char *info[5];
 	if(!bWifiStartup)
-	{
-		Thread::sleep(100);
-		return true;
-	}
+		goto END;
+
 
 	if(scanCount > 0)
 	{
@@ -450,7 +451,7 @@ bool MyNetWorkingListener::threadLoop()
 		{
 			system("rm /tmp/info.txt");
 			system("/customer/wpa_cli -i wlan0 -p/var/run/wpa_supplicant scan_results > /tmp/info.txt");
-			LOGD("scan_results  >  /tmp/info.txt !!!\n");
+//			LOGD("scan_results  >  /tmp/info.txt !!!\n");
 
 			fp = fopen("/tmp/info.txt", "r");
 			if(fp ==NULL)
@@ -520,11 +521,11 @@ bool MyNetWorkingListener::threadLoop()
 		}
 	}
 
-	if(CheckconnectingTimeCount > 50 || (bConnecting && CheckconnectingTimeCount > 10))
+	if(CheckconnectingTimeCount > 50 || (bConnecting && (CheckconnectingTimeCount > 10)))
 	{
 		CheckconnectingTimeCount = 0;
 		system("/customer/wpa_cli -iwlan0 -p/var/run/wpa_supplicant status> /tmp/status.txt");
-		LOGD("status  >  /tmp/status.txt !!!\n");
+//		LOGD("status  >  /tmp/status.txt !!!\n");
 		FILE *fp = fopen("/tmp/status.txt" , "r");
 		if(fp != NULL)
 		{
@@ -648,7 +649,7 @@ bool MyNetWorkingListener::threadLoop()
 				}
 				else
 				{
-					LOGD("wifi not connect other status\n");
+//					LOGD("wifi not connect other status\n");
 					bConnected = false;
 				}
 
@@ -677,6 +678,9 @@ bool MyNetWorkingListener::threadLoop()
 			break;
 		}
 	}
+END:
+	Thread::sleep(100);
+	return true;
 }
 
 

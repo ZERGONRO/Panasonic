@@ -169,6 +169,7 @@ static bool onButtonClick_ButtonConfirm(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonQ(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonQ !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
 	if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -179,6 +180,7 @@ static bool onButtonClick_ButtonQ(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonW(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonW !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -190,6 +192,7 @@ static bool onButtonClick_ButtonW(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonE(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonE !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -201,6 +204,7 @@ static bool onButtonClick_ButtonE(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonR(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonR !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -212,6 +216,7 @@ static bool onButtonClick_ButtonR(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonT(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonT !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -223,6 +228,7 @@ static bool onButtonClick_ButtonT(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonY(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonY !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -234,6 +240,7 @@ static bool onButtonClick_ButtonY(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonU(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonU !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -245,6 +252,7 @@ static bool onButtonClick_ButtonU(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonI(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonI !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -256,6 +264,7 @@ static bool onButtonClick_ButtonI(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonO(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonO !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -267,6 +276,7 @@ static bool onButtonClick_ButtonO(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonP(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonP !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -278,6 +288,7 @@ static bool onButtonClick_ButtonP(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonBackspace(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBackspace !!!\n");
+//    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING) {
 		return false;
 	}
@@ -294,6 +305,7 @@ static bool onButtonClick_ButtonBackspace(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonA(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonA !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -305,6 +317,7 @@ static bool onButtonClick_ButtonA(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonS(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonS !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -316,6 +329,7 @@ static bool onButtonClick_ButtonS(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonD(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonD !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -327,6 +341,7 @@ static bool onButtonClick_ButtonD(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonF(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonF !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -338,6 +353,7 @@ static bool onButtonClick_ButtonF(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonG(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonG !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -349,6 +365,7 @@ static bool onButtonClick_ButtonG(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonH(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonH !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -360,6 +377,7 @@ static bool onButtonClick_ButtonH(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonJ(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonJ !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -371,6 +389,7 @@ static bool onButtonClick_ButtonJ(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonK(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonK !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -381,6 +400,7 @@ static bool onButtonClick_ButtonK(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonL(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonL !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -391,6 +411,7 @@ static bool onButtonClick_ButtonL(ZKButton *pButton) {
 
 static bool onButtonClick_Button22(ZKButton *pButton) {
     LOGD(" ButtonClick Button22 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
 	if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 		mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -400,6 +421,7 @@ static bool onButtonClick_Button22(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonExclamation(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonExclamation !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 		mPassWordTextViewPtr->setText("!");
 	else
@@ -428,6 +450,7 @@ static bool onButtonClick_ButtonUpper(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonM(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonM !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -438,6 +461,7 @@ static bool onButtonClick_ButtonM(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonC(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonC !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -448,6 +472,7 @@ static bool onButtonClick_ButtonC(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonX(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonX !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -458,6 +483,7 @@ static bool onButtonClick_ButtonX(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonB(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonB !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -468,6 +494,7 @@ static bool onButtonClick_ButtonB(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonZ(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonZ !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -478,6 +505,7 @@ static bool onButtonClick_ButtonZ(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonV(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonV !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -488,6 +516,7 @@ static bool onButtonClick_ButtonV(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonN(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonN !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -498,6 +527,7 @@ static bool onButtonClick_ButtonN(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonQM(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonQM !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
    		mPassWordTextViewPtr->setText(pButton->getText().c_str());
    	else
@@ -533,6 +563,7 @@ static bool onButtonClick_ButtonNum(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonSlash(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonSlash !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 		mPassWordTextViewPtr->setText("/");
 	else
@@ -542,6 +573,7 @@ static bool onButtonClick_ButtonSlash(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonSpace(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonSpace !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 		mPassWordTextViewPtr->setText(" ");
 	else
@@ -551,6 +583,7 @@ static bool onButtonClick_ButtonSpace(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonDCom(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDCom !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 		mPassWordTextViewPtr->setText(".com");
 	else
@@ -567,6 +600,7 @@ static bool onButtonClick_ButtonNum2(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonDot(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDot !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 		mPassWordTextViewPtr->setText(".");
 	else
@@ -575,6 +609,7 @@ static bool onButtonClick_ButtonDot(ZKButton *pButton) {
 }
 static bool onButtonClick_Button1(ZKButton *pButton) {
     LOGD(" ButtonClick Button1 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -585,6 +620,7 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
 
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -595,6 +631,7 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
 
 static bool onButtonClick_Button3(ZKButton *pButton) {
     LOGD(" ButtonClick Button3 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -605,6 +642,7 @@ static bool onButtonClick_Button3(ZKButton *pButton) {
 
 static bool onButtonClick_Button4(ZKButton *pButton) {
     LOGD(" ButtonClick Button4 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -615,6 +653,7 @@ static bool onButtonClick_Button4(ZKButton *pButton) {
 
 static bool onButtonClick_Button5(ZKButton *pButton) {
     LOGD(" ButtonClick Button5 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -625,6 +664,7 @@ static bool onButtonClick_Button5(ZKButton *pButton) {
 
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -635,6 +675,7 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
 
 static bool onButtonClick_Button7(ZKButton *pButton) {
     LOGD(" ButtonClick Button7 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -645,6 +686,7 @@ static bool onButtonClick_Button7(ZKButton *pButton) {
 
 static bool onButtonClick_Button8(ZKButton *pButton) {
     LOGD(" ButtonClick Button8 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -655,6 +697,7 @@ static bool onButtonClick_Button8(ZKButton *pButton) {
 
 static bool onButtonClick_Button9(ZKButton *pButton) {
     LOGD(" ButtonClick Button9 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -665,6 +708,7 @@ static bool onButtonClick_Button9(ZKButton *pButton) {
 
 static bool onButtonClick_Button0(ZKButton *pButton) {
     LOGD(" ButtonClick Button0 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -675,6 +719,7 @@ static bool onButtonClick_Button0(ZKButton *pButton) {
 
 static bool onButtonClick_Button11(ZKButton *pButton) {
     LOGD(" ButtonClick Button11 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -685,6 +730,7 @@ static bool onButtonClick_Button11(ZKButton *pButton) {
 
 static bool onButtonClick_Button12(ZKButton *pButton) {
     LOGD(" ButtonClick Button12 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -695,6 +741,7 @@ static bool onButtonClick_Button12(ZKButton *pButton) {
 
 static bool onButtonClick_Button13(ZKButton *pButton) {
     LOGD(" ButtonClick Button13 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -705,6 +752,7 @@ static bool onButtonClick_Button13(ZKButton *pButton) {
 
 static bool onButtonClick_Button14(ZKButton *pButton) {
     LOGD(" ButtonClick Button14 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -715,6 +763,7 @@ static bool onButtonClick_Button14(ZKButton *pButton) {
 
 static bool onButtonClick_Button15(ZKButton *pButton) {
     LOGD(" ButtonClick Button15 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -725,6 +774,7 @@ static bool onButtonClick_Button15(ZKButton *pButton) {
 
 static bool onButtonClick_Button16(ZKButton *pButton) {
     LOGD(" ButtonClick Button16 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -735,6 +785,7 @@ static bool onButtonClick_Button16(ZKButton *pButton) {
 
 static bool onButtonClick_Button17(ZKButton *pButton) {
     LOGD(" ButtonClick Button17 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -745,6 +796,7 @@ static bool onButtonClick_Button17(ZKButton *pButton) {
 
 static bool onButtonClick_Button18(ZKButton *pButton) {
     LOGD(" ButtonClick Button18 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -755,6 +807,7 @@ static bool onButtonClick_Button18(ZKButton *pButton) {
 
 static bool onButtonClick_Button19(ZKButton *pButton) {
     LOGD(" ButtonClick Button19 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -765,6 +818,7 @@ static bool onButtonClick_Button19(ZKButton *pButton) {
 
 static bool onButtonClick_Button20(ZKButton *pButton) {
     LOGD(" ButtonClick Button20 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -775,6 +829,7 @@ static bool onButtonClick_Button20(ZKButton *pButton) {
 
 static bool onButtonClick_Button21(ZKButton *pButton) {
     LOGD(" ButtonClick Button21 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -785,6 +840,7 @@ static bool onButtonClick_Button21(ZKButton *pButton) {
 
 static bool onButtonClick_Button23(ZKButton *pButton) {
     LOGD(" ButtonClick Button23 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -795,6 +851,7 @@ static bool onButtonClick_Button23(ZKButton *pButton) {
 
 static bool onButtonClick_Button24(ZKButton *pButton) {
     LOGD(" ButtonClick Button24 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -805,6 +862,7 @@ static bool onButtonClick_Button24(ZKButton *pButton) {
 
 static bool onButtonClick_Button25(ZKButton *pButton) {
     LOGD(" ButtonClick Button25 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -815,6 +873,7 @@ static bool onButtonClick_Button25(ZKButton *pButton) {
 
 static bool onButtonClick_Button26(ZKButton *pButton) {
     LOGD(" ButtonClick Button26 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -825,6 +884,7 @@ static bool onButtonClick_Button26(ZKButton *pButton) {
 
 static bool onButtonClick_Button27(ZKButton *pButton) {
     LOGD(" ButtonClick Button27 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -835,6 +895,7 @@ static bool onButtonClick_Button27(ZKButton *pButton) {
 
 static bool onButtonClick_Button28(ZKButton *pButton) {
     LOGD(" ButtonClick Button28 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -845,6 +906,7 @@ static bool onButtonClick_Button28(ZKButton *pButton) {
 
 static bool onButtonClick_Button29(ZKButton *pButton) {
     LOGD(" ButtonClick Button29 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -855,16 +917,14 @@ static bool onButtonClick_Button29(ZKButton *pButton) {
 
 static bool onButtonClick_Button30(ZKButton *pButton) {
     LOGD(" ButtonClick Button30 !!!\n");
-    if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
-	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
-	else
-		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + pButton->getText().c_str());
-
+    mWindow14Ptr->hideWnd();
+   	mWindow2Ptr->showWnd();
     return false;
 }
 
 static bool onButtonClick_Button31(ZKButton *pButton) {
     LOGD(" ButtonClick Button31 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -875,6 +935,7 @@ static bool onButtonClick_Button31(ZKButton *pButton) {
 
 static bool onButtonClick_Button32(ZKButton *pButton) {
     LOGD(" ButtonClick Button32 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -885,6 +946,7 @@ static bool onButtonClick_Button32(ZKButton *pButton) {
 
 static bool onButtonClick_Button33(ZKButton *pButton) {
     LOGD(" ButtonClick Button33 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -895,6 +957,7 @@ static bool onButtonClick_Button33(ZKButton *pButton) {
 
 static bool onButtonClick_Button34(ZKButton *pButton) {
     LOGD(" ButtonClick Button34 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -905,6 +968,7 @@ static bool onButtonClick_Button34(ZKButton *pButton) {
 
 static bool onButtonClick_Button35(ZKButton *pButton) {
     LOGD(" ButtonClick Button35 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -915,6 +979,7 @@ static bool onButtonClick_Button35(ZKButton *pButton) {
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else
@@ -925,6 +990,7 @@ static bool onButtonClick_Button10(ZKButton *pButton) {
 
 static bool onButtonClick_Button36(ZKButton *pButton) {
     LOGD(" ButtonClick Button36 !!!\n");
+    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
     if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
 	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
 	else

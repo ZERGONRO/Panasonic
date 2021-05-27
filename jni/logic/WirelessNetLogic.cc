@@ -56,6 +56,7 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
+    mButton6Ptr->setSelected(true);
 }
 
 /*
@@ -63,6 +64,7 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
+	mButton1Ptr->setSelected(mButton6Ptr->isSelected());
 }
 
 /*
@@ -136,7 +138,12 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
 
 static bool onButtonClick_Button1(ZKButton *pButton) {
     LOGD(" ButtonClick Button1 !!!\n");
-    EASYUICONTEXT->openActivity("WifiSettingActivity", NULL);
+    if(mButton6Ptr->isSelected())
+    {
+    	pButton->setSelected(true);
+    	EASYUICONTEXT->openActivity("WifiSettingActivity", NULL);
+    }
+
     return false;
 }
 
