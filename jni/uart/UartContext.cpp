@@ -60,7 +60,7 @@ UartContext::~UartContext() {
 }
 
 bool UartContext::openUart(const char *pFileName, UINT baudRate) {
-	LOGD("openUart pFileName = %s, baudRate = %s\n", pFileName, getBaudRate(baudRate));
+//	LOGD("openUart pFileName = %s, baudRate = %s\n", pFileName, getBaudRate(baudRate));
 	mUartID = open(pFileName, O_RDWR|O_NOCTTY);
 
 	if (mUartID <= 0) {
@@ -88,7 +88,7 @@ bool UartContext::openUart(const char *pFileName, UINT baudRate) {
 			mUartID = 0;
 		}
 
-		LOGD("openUart mIsOpen = %d\n", mIsOpen);
+//		LOGD("openUart mIsOpen = %d\n", mIsOpen);
 	}
 
 	return mIsOpen;

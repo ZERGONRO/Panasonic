@@ -57,9 +57,9 @@ extern void hidestatusbars();
  * 注意：id不能重复
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
-	{0,  6000}, //定时器id=0, 时间间隔6秒
-	{1,  1000},
-	{2,  500},
+//	{0,  6000}, //定时器id=0, 时间间隔6秒
+//	{1,  1000},
+//	{2,  500},
 };
 
 void SetEnvName(std::string focusindex)
@@ -110,7 +110,7 @@ static int GPIO_get_value()
 
     fread(buf, 1, 1, file);
     buf[1] = 0;
-    LOGD("GPIO_get_value:gpio_value is %s\n", buf);
+//    LOGD("GPIO_get_value:gpio_value is %s\n", buf);
 
     fclose(file);
 
@@ -243,12 +243,16 @@ static void onUI_intent(const Intent *intentPtr) {
         //TODO
 
     }
-    nwlistener->ScanNetWork();
+
+//    nwlistener->ScanNetWork();
+//    mActivityPtr->registerUserTimer(2, 5000);
     if(nwlistener == NULL)
     {
     	nwlistener = new MyNetWorkingListener();
-    	nwlistener->run("nwlistener");
+    	nwlistener->run("nwListener");
+//    	LOGD("new MyNetWorkingListener() and run !!!\n");
     }
+
 
 //    system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
 }
@@ -264,6 +268,7 @@ static void onUI_show() {
 //	mTextView48Ptr->setText(std::to_string(atoi(mTextView48Ptr->getText().c_str())));
 
 	mIconViewWifiPtr->setVisible(nwlistener->IsConnected());
+//	LOGD("mIconViewWifiPtr->setVisible(nwlistener->IsConnected()); !!!\n");
 //	mIconViewWifiPtr->setVisible(true);
 	mIconViewSecurityPtr->setVisible(true);
 	mIconViewHumdDryPtr->setVisible(false);
@@ -325,8 +330,11 @@ static bool onUI_Timer(int id){
 		break;
 	case 2:
 	{
+
 		if(nwlistener->IsConnected())
 		{
+			LOGD("nwlistener  onUI_Timer !!!\n");
+
 			std::string ssid = nwlistener->getSSID();
 			WifiInfo = nwlistener->getSSIDInfo();
 			for(int i = 0;i < WifiInfo->size();i++)
@@ -348,6 +356,8 @@ static bool onUI_Timer(int id){
 		if(nwlistener->getWifiStatus())
 			nwlistener->resetScanCount();
 //		updateTime();
+
+
 	}
 		break;
 

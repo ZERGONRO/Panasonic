@@ -25,6 +25,7 @@ static Mutex sLock;
 
 MyNetWorkingListener::MyNetWorkingListener()
 {
+	LOGD("MyNetWorkingListener init	!!!");
 	bConnecting = false;
 	bConnectOtherAp = false;
 	bConnected = false;
@@ -36,6 +37,7 @@ MyNetWorkingListener::MyNetWorkingListener()
 	connectingTimeCount = 0;
 	CheckconnectingTimeCount = 0;
 	bFirstRefresh = false;
+	bWifiProcessIsRun = false;
 	if(bWifiStartup)
 		system("ifconfig wlan0 up");
 	else
@@ -68,6 +70,7 @@ void MyNetWorkingListener::setNetWorkListener(MyNetWorkListener *listener)
 		if(!exitflag)
 			nwListener.push_back(listener);
 	}
+//	LOGD("MyNetWorkingListener setNetWorkListener 	!!!");
 }
 
 void MyNetWorkingListener::removeNetWorkListener(MyNetWorkListener *listener)
@@ -430,6 +433,7 @@ bool checkWifiProcessState(const char *procName)
 
 bool MyNetWorkingListener::threadLoop()
 {
+	LOGD("MyNetWorkingListener  threadLoop !!!\n");
 	FILE *fp = NULL;
 	char stringLine[4096];
 	char *info[5];
@@ -446,6 +450,8 @@ bool MyNetWorkingListener::threadLoop()
 		{
 			system("rm /tmp/info.txt");
 			system("/customer/wpa_cli -i wlan0 -p/var/run/wpa_supplicant scan_results > /tmp/info.txt");
+			LOGD("scan_results  >  /tmp/info.txt !!!\n");
+
 			fp = fopen("/tmp/info.txt", "r");
 			if(fp ==NULL)
 			{
@@ -518,6 +524,7 @@ bool MyNetWorkingListener::threadLoop()
 	{
 		CheckconnectingTimeCount = 0;
 		system("/customer/wpa_cli -iwlan0 -p/var/run/wpa_supplicant status> /tmp/status.txt");
+		LOGD("status  >  /tmp/status.txt !!!\n");
 		FILE *fp = fopen("/tmp/status.txt" , "r");
 		if(fp != NULL)
 		{
@@ -664,6 +671,7 @@ bool MyNetWorkingListener::threadLoop()
 	if(CheckconnectingTimeCount >= 50)
 	{
 		while (!(bWifiProcessIsRun = checkWifiProcessState("/customer/wpa_supplicant"))) {
+			LOGD("wpa_supplicant  >  /wpa_supplicant.conf !!!\n");
 			system("/customer/wpa_supplicant -Dnl80211 -iwlan0 -c /appconfigs/wpa_supplicant.conf &");
 			Thread::sleep(100);
 			break;

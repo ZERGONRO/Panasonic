@@ -15,7 +15,7 @@ static std::vector<OnProtocolDataUpdateFun> sProtocolDataUpdateListenerList;
 
 void registerProtocolDataUpdateListener(OnProtocolDataUpdateFun pListener) {
 	Mutex::Autolock _l(sLock);
-	LOGD("registerProtocolDataUpdateListener\n");
+//	LOGD("registerProtocolDataUpdateListener\n");
 	if (pListener != NULL) {
 		sProtocolDataUpdateListenerList.push_back(pListener);
 	}

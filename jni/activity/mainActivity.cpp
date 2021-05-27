@@ -300,14 +300,14 @@ mainActivity::mainActivity() {
 mainActivity::~mainActivity() {
   //todo add init file here
   // 退出应用时需要反注册
-	nwlistener->removeNetWorkListener(this);
+    EASYUICONTEXT->unregisterGlobalTouchListener(this);
+    nwlistener->removeNetWorkListener(this);
 	if(nwlistener)
 	{
 		nwlistener->requestExitAndWait();
 		delete nwlistener;
 		nwlistener = NULL;
 	}
-    EASYUICONTEXT->unregisterGlobalTouchListener(this);
     onUI_quit();
     unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
 }
@@ -536,6 +536,7 @@ void mainActivity::onClick(ZKBase *pBase) {
 void mainActivity::onResume() {
 	Activity::onResume();
 	EASYUICONTEXT->registerGlobalTouchListener(this);
+
 	if(nwlistener->IsConnected())
 	{
 		mIconViewWifiPtr->setVisible(true);
@@ -544,6 +545,7 @@ void mainActivity::onResume() {
 	{
 		mIconViewWifiPtr->setVisible(false);
 	}
+
 	startVideoLoopPlayback();
 	onUI_show();
 }
