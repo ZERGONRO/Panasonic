@@ -37,6 +37,7 @@ static int timeOutCount;
 static int getFlag;
 static int step;
 static int mode;
+static bool NtpDateFlag = false;
 static bool ButtonModeSelectStatus = false;
 static pthread_t g_MovePicPosThread = 0;
 static std::vector<WifiInfo_t *> *WifiInfo;
@@ -253,6 +254,17 @@ static void onUI_intent(const Intent *intentPtr) {
 //    	LOGD("new MyNetWorkingListener() and run !!!\n");
     }
 
+    if(nwlistener->IsConnected())
+	{
+		LOGD("Load the time \n");
+		system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
+		NtpDateFlag = true;
+	}
+    else
+    {
+    	NtpDateFlag = false;
+    }
+
 
 //    system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
 }
@@ -355,6 +367,12 @@ static bool onUI_Timer(int id){
 
 		if(nwlistener->getWifiStatus())
 			nwlistener->resetScanCount();
+
+
+		if(NtpDateFlag)
+		{
+			updateTime();
+		}
 //		updateTime();
 
 

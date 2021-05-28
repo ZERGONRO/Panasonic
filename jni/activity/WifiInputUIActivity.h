@@ -141,6 +141,7 @@ class WifiInputUIActivity : public Activity,
                      public EasyUIContext::ITouchListener,
                      public ZKEditText::ITextChangeListener,
 					 public MyNetWorkingListener::MyNetWorkListener,
+					 public ZKBase::ILongClickListener,
                      public ZKVideoView::IVideoPlayerMessageListener
 {
 public:
@@ -165,6 +166,7 @@ protected:
     virtual const char* getAppName() const;
     virtual void onCreate();
     virtual void onClick(ZKBase *pBase);
+    virtual void onLongClick(ZKBase *pBase);
     virtual void onResume();
     virtual void onPause();
     virtual void onIntent(const Intent *intentPtr);

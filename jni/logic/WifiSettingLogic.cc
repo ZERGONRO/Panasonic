@@ -57,6 +57,7 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
+//    LOGD("nwlistener->getWifiStatus() is : %d \n", nwlistener->getWifiStatus());
 	if(nwlistener->getWifiStatus()) {
 		mButtonWifiSwitchPtr->setSelected(false);
 		nwlistener->ScanNetWork();
@@ -218,7 +219,7 @@ static void obtainListItemData_ListViewWifiInfo(ZKListView *pListView,ZKListView
 		pWifiInfoItem->setText("");
 		}
 	}
-	else if(wifistatus ==2)
+	else if(wifistatus == 2)
 	{
 		if(nwlistener->getSSID().length() > 0)
 		{
@@ -260,5 +261,6 @@ static void onListItemClick_ListViewWifiInfo(ZKListView *pListView, int index, i
 }
 static bool onButtonClick_ButtonKnow(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonKnow !!!\n");
+    mWindowConnectFailPtr->setVisible(false);
     return false;
 }

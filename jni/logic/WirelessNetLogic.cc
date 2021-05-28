@@ -56,7 +56,7 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
-    mButton6Ptr->setSelected(true);
+    mButton6Ptr->setSelected(mButton6Ptr->isSelected());
 }
 
 /*
@@ -157,10 +157,12 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
     if(pButton->isSelected())
     {
     	pButton->setSelected(false);
+    	mButton1Ptr->setSelected(false);
     }
     else
     {
     	pButton->setSelected(true);
+    	mButton1Ptr->setSelected(true);
     }
     return false;
 }

@@ -30,7 +30,7 @@
 *
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
-#define PASSWORK_DESCRIPTION_STRING "请输入密码"
+#define PASSWORK_DESCRIPTION_STRING 	"请输入密码"
 extern MyNetWorkingListener *nwlistener;
 /**
  * 注册定时器
@@ -65,9 +65,10 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
+	mWindow1Ptr->setBackgroundPic("./ui/输入框.png");
 	mIconWifiPtr->setVisible(nwlistener->IsConnected());
 	if(mPassWordTextViewPtr->getText().c_str() < 8 || mPassWordTextViewPtr->getText().c_str() > 64
-			|| mPassWordTextViewPtr->getText().compare(PASSWORK_DESCRIPTION_STRING))
+			|| (mPassWordTextViewPtr->getText().compare(PASSWORK_DESCRIPTION_STRING)) == 0)
 	{
 		int w, h;
 		LayoutPosition lp = mPassWordTextViewPtr->getPosition();
@@ -122,6 +123,75 @@ static bool onUI_Timer(int id){
 			break;
 	}
     return true;
+}
+
+static bool allHexCheck(char *text)
+{
+	if(strlen(text) == 0)
+		return true;
+	for(int i = 0;i < strlen(text);i++)
+	{
+		if((text[i] >= 'a' && text[i] <= 'f') || (text[i] >= '0' && text[i] <= '9') || (text[i] >= 'A' && text[i] <= 'F'))
+		{
+			continue;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+static void OnEditTextChanged_PassWordTextView(const std::string &text)
+{
+	LOGD("OnEditTextChanged_PassWordTextView !!! \n");
+	mPassWordTextView2Ptr->setText(text);
+	if((text.size() < 8 || text.size() > 64) || (text.compare(PASSWORK_DESCRIPTION_STRING) == 0))
+	{
+		if(!mButtonConfirmPtr->isInvalid())
+		{
+			mButtonConfirmPtr->setInvalid(true);
+			mButton22Ptr->setInvalid(true);
+		}
+	}
+	else if(text.size() == 64)
+	{
+		if(!allHexCheck(text.c_str()))
+		{
+			if(!mButtonConfirmPtr->isInvalid())
+			{
+				mButtonConfirmPtr->setInvalid(true);
+				mButton22Ptr->setInvalid(true);
+			}
+			else
+			{
+				mButtonConfirmPtr->setInvalid(false);
+				mButton22Ptr->setInvalid(false);
+			}
+		}
+	}
+	else
+	{
+		int w, h;
+		LayoutPosition lp = mPassWordTextView2Ptr->getPosition();
+		mPassWordTextView2Ptr->getTextExtent(text.c_str(), w, h);
+		if(w >= lp.mWidth)
+		{
+			mPassWordTextView2Ptr->setVisible(true);
+			mPassWordTextViewPtr->setVisible(false);
+		}
+		else
+		{
+			mPassWordTextView2Ptr->setVisible(false);
+			mPassWordTextViewPtr->setVisible(true);
+		}
+		if(mButtonConfirmPtr->isInvalid())
+		{
+			mButtonConfirmPtr->setInvalid(false);
+			mButton22Ptr->setInvalid(false);
+		}
+	}
 }
 
 /**
@@ -411,11 +481,15 @@ static bool onButtonClick_ButtonL(ZKButton *pButton) {
 
 static bool onButtonClick_Button22(ZKButton *pButton) {
     LOGD(" ButtonClick Button22 !!!\n");
-    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
-	if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
-		mPassWordTextViewPtr->setText(pButton->getText().c_str());
-	else
-		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + pButton->getText().c_str());
+    if((mPassWordTextViewPtr->getText() != PASSWORK_DESCRIPTION_STRING)
+		&& (mPassWordTextViewPtr->getText().length() >= 8 && mPassWordTextViewPtr->getText().length() <= 64)) {
+		nwlistener->startConnectWifi(mTextViewSSIDPtr->getText().c_str(), mPassWordTextViewPtr->getText().c_str());
+   }
+   else {
+	   LOGD("WIFI password wrong format\n");
+	//应在界面有相应提示
+   }
+       EASYUICONTEXT->goBack();
 	   return false;
 }
 
@@ -968,33 +1042,38 @@ static bool onButtonClick_Button34(ZKButton *pButton) {
 
 static bool onButtonClick_Button35(ZKButton *pButton) {
     LOGD(" ButtonClick Button35 !!!\n");
-    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
-    if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
-	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
-	else
-		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + pButton->getText().c_str());
-
+    mWindow14Ptr->hideWnd();
+   	mWindow2Ptr->showWnd();
     return false;
 }
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
-    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
-    if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
-	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
-	else
-		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + pButton->getText().c_str());
+    if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING) {
+		return false;
+	}
+	if(mPassWordTextViewPtr->getText().length() <= 1) {
+		mPassWordTextViewPtr->setText(PASSWORK_DESCRIPTION_STRING);
+	}
+	else {
+		char *psw = mPassWordTextViewPtr->getText().c_str();
+		psw[mPassWordTextViewPtr->getText().length() - 1] = 0;
+		mPassWordTextViewPtr->setText(psw);
+	}
 
     return false;
 }
 
 static bool onButtonClick_Button36(ZKButton *pButton) {
     LOGD(" ButtonClick Button36 !!!\n");
-    mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
-    if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING)
-	   mPassWordTextViewPtr->setText(pButton->getText().c_str());
-	else
-		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + pButton->getText().c_str());
-
+    if((mPassWordTextViewPtr->getText() != PASSWORK_DESCRIPTION_STRING)
+		&& (mPassWordTextViewPtr->getText().length() >= 8 && mPassWordTextViewPtr->getText().length() <= 64)) {
+		nwlistener->startConnectWifi(mTextViewSSIDPtr->getText().c_str(), mPassWordTextViewPtr->getText().c_str());
+   }
+   else {
+	   LOGD("WIFI password wrong format\n");
+	//应在界面有相应提示
+   }
+   EASYUICONTEXT->goBack();
     return false;
 }

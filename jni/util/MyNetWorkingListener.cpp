@@ -454,9 +454,9 @@ bool MyNetWorkingListener::threadLoop()
 //			LOGD("scan_results  >  /tmp/info.txt !!!\n");
 
 			fp = fopen("/tmp/info.txt", "r");
-			if(fp ==NULL)
+			if(fp == NULL)
 			{
-
+				LOGD("fopen /tmp/info.txt error \n");
 			}
 			else
 			{
@@ -474,8 +474,10 @@ bool MyNetWorkingListener::threadLoop()
 					child = NULL;
 				}
 				WifiInfo.clear();
-				while(!feof(fp))
+				while(!feof(fp))				//feof(fp)功能是检测流上的文件结束符，如果文件结束，则返回非0值，否则返回0
 				{
+					/*char *fgets(char *str, int n, FILE *stream) 从指定的流 stream 读取一行，
+					并把它存储在 str 所指向的字符串内。当读取 (n-1) 个字符时，或者读取到换行符时，或者到达文件末尾时，它会停止*/
 					fgets(stringLine, 1024, fp);
 					int n = ScanTabData(stringLine, (char **)info, strlen(stringLine));
 					URLDecode(info[4]);
@@ -488,8 +490,8 @@ bool MyNetWorkingListener::threadLoop()
 					child->freq = atoi(info[1]);
 					child->signal = atoi(info[2]);
 					strcpy(child->flags, info[3]);
-					strcpy(child->bssid, info[4]);
-					if(!strcmp(child->bssid, ssid.c_str()))
+					strcpy(child->ssid, info[4]);
+					if(!strcmp(child->ssid, ssid.c_str()))
 						WifiInfo.insert(WifiInfo.begin(), child);
 					else
 						WifiInfo.push_back(child);
@@ -611,6 +613,7 @@ bool MyNetWorkingListener::threadLoop()
 						bConnectOtherAp = false;
 						connectingTimeCount = 0;
 						system("udhcpc -i wlan0 -s /etc/init.d/udhcpc.script &");
+						LOGD("udhcpc.script !!!\n");
 						notifyNetWorkListener(NW_NOTIFY_TYPE_CONNECT_STATUS, (void *)1);
 
 					}
@@ -621,6 +624,7 @@ bool MyNetWorkingListener::threadLoop()
 						bConnectOtherAp = false;
 						connectingTimeCount = 0;
 						system("udhcpc -i wlan0 -s /etc/init.d/udhcpc.script &");
+						LOGD("udhcpc.script111 !!!\n");
 						notifyNetWorkListener(NW_NOTIFY_TYPE_CONNECT_STATUS, (void *)1);
 
 					}
@@ -634,6 +638,8 @@ bool MyNetWorkingListener::threadLoop()
 				}
 				else if(strstr(buf , "wpa_state=INTERFACE_DISABLED"))
 				{
+					/*判断文件是否存在，并判断文件是否可写
+					 * 如果文件具有指定的访问权限，则函数返回0；如果文件不存在或者不能访问指定的权限，则返回-1*/
 					if(access("/proc/net/rtl8188eu/wlan0", F_OK) == -1)
 					{
 						notifyNetWorkListener(NW_NOTIFY_TYPE_HW_ERROR, 0);

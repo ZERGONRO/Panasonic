@@ -270,6 +270,7 @@ typedef struct {
 }S_EditTextInputCallback;
 /*TAG:EditTextInputCallback*/
 static S_EditTextInputCallback SEditTextInputCallbackTab[] = {
+		{ID_WIFIINPUTUI_PassWordTextView, OnEditTextChanged_PassWordTextView}
 };
 
 typedef void (*VideoViewCallback)(ZKVideoView *pVideoView, int msg);
@@ -410,6 +411,44 @@ void WifiInputUIActivity::onCreate() {
     mIconWifiPtr = (ZKTextView*)findControlByID(ID_WIFIINPUTUI_IconWifi);
     mButtonBackPtr = (ZKButton*)findControlByID(ID_WIFIINPUTUI_ButtonBack);
     mTextViewSSIDPtr = (ZKTextView*)findControlByID(ID_WIFIINPUTUI_TextViewSSID);
+
+    mButtonWords[0] = mButtonAPtr;
+	mButtonWords[1] = mButtonBPtr;
+	mButtonWords[2] = mButtonCPtr;
+	mButtonWords[3] = mButtonDPtr;
+	mButtonWords[4] = mButtonEPtr;
+	mButtonWords[5] = mButtonFPtr;
+	mButtonWords[6] = mButtonGPtr;
+	mButtonWords[7] = mButtonHPtr;
+	mButtonWords[8] = mButtonIPtr;
+	mButtonWords[9] = mButtonJPtr;
+	mButtonWords[10] = mButtonKPtr;
+	mButtonWords[11] = mButtonLPtr;
+	mButtonWords[12] = mButtonMPtr;
+	mButtonWords[13] = mButtonNPtr;
+	mButtonWords[14] = mButtonOPtr;
+	mButtonWords[15] = mButtonPPtr;
+	mButtonWords[16] = mButtonQPtr;
+	mButtonWords[17] = mButtonRPtr;
+	mButtonWords[18] = mButtonSPtr;
+	mButtonWords[19] = mButtonTPtr;
+	mButtonWords[20] = mButtonUPtr;
+	mButtonWords[21] = mButtonVPtr;
+	mButtonWords[22] = mButtonWPtr;
+	mButtonWords[23] = mButtonXPtr;
+	mButtonWords[24] = mButtonYPtr;
+	mButtonWords[25] = mButtonZPtr;
+	mButtonQPtr->setLongClickListener(this);
+	mButtonWPtr->setLongClickListener(this);
+	mButtonEPtr->setLongClickListener(this);
+	mButtonRPtr->setLongClickListener(this);
+	mButtonTPtr->setLongClickListener(this);
+	mButtonYPtr->setLongClickListener(this);
+	mButtonUPtr->setLongClickListener(this);
+	mButtonIPtr->setLongClickListener(this);
+	mButtonOPtr->setLongClickListener(this);
+	mButtonPPtr->setLongClickListener(this);
+
 	mActivityPtr = this;
 	onUI_init();
 	nwlistener->setNetWorkListener(this);
@@ -422,6 +461,9 @@ void WifiInputUIActivity::onClick(ZKBase *pBase) {
 	//TODO: add widget onClik code 
     int buttonTablen = sizeof(sButtonCallbackTab) / sizeof(S_ButtonCallback);
     for (int i = 0; i < buttonTablen; ++i) {
+    	if(strcmp(EASYUICONTEXT->currentAppName() , "WifiInputUIActivity")) {
+			return ;
+		}
         if (sButtonCallbackTab[i].id == pBase->getID()) {
             if (sButtonCallbackTab[i].callback((ZKButton*)pBase)) {
             	return;
@@ -537,6 +579,7 @@ bool WifiInputUIActivity::onTouchEvent(const MotionEvent &ev) {
 void WifiInputUIActivity::onTextChanged(ZKTextView *pTextView, const std::string &text) {
     int tablen = sizeof(SEditTextInputCallbackTab) / sizeof(S_EditTextInputCallback);
     for (int i = 0; i < tablen; ++i) {
+
         if (SEditTextInputCallbackTab[i].id == pTextView->getID()) {
             SEditTextInputCallbackTab[i].onEditTextChangedCallback(text);
             break;
@@ -695,3 +738,54 @@ void WifiInputUIActivity::unregisterUserTimer(int id) {
 void WifiInputUIActivity::resetUserTimer(int id, int time) {
 	resetTimer(id, time);
 }
+
+void WifiInputUIActivity::onLongClick(ZKBase *pBase) {
+	//TODO: add widget onClik code
+	ZKButton *btn = (ZKButton*)pBase;
+	LOGD("long click\n");
+	if(mPassWordTextViewPtr->getText() == PASSWORK_DESCRIPTION_STRING) {
+		mPassWordTextViewPtr->setText("");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	if(btn == mButtonQPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "1");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonWPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "2");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonEPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "3");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonRPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "4");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonTPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "5");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonYPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "6");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonUPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "7");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonIPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "8");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonOPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "9");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+	else if(btn == mButtonPPtr) {
+		mPassWordTextViewPtr->setText(mPassWordTextViewPtr->getText() + "0");
+		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
+	}
+}
+

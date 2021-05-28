@@ -155,6 +155,7 @@ void WifiSettingActivity::onCreate() {
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 
     rigesterActivityTimer();
+    mListViewWifiInfoPtr->setDecRatio(0.8);
     nwlistener->setNetWorkListener(this);
 }
 
@@ -162,6 +163,9 @@ void WifiSettingActivity::onClick(ZKBase *pBase) {
 	//TODO: add widget onClik code 
     int buttonTablen = sizeof(sButtonCallbackTab) / sizeof(S_ButtonCallback);
     for (int i = 0; i < buttonTablen; ++i) {
+    	if(strcmp(EASYUICONTEXT->currentAppName() , "WifiSettingActivity")) {
+			return ;
+		}
         if (sButtonCallbackTab[i].id == pBase->getID()) {
             if (sButtonCallbackTab[i].callback((ZKButton*)pBase)) {
             	return;
@@ -373,10 +377,23 @@ void WifiSettingActivity::MyNetworkNotify(int type , void *data) {
 			mIconWifiPtr->setVisible(true);
 //			resetStatusIconim();
 		}
+		else if(-1 == (int)data)
+		{
+			mWindowConnectFailPtr->setVisible(true);
+			mIconWifiPtr->setVisible(false);
+		}
 		else {
 			mIconWifiPtr->setVisible(false);
 //			resetStatusIconim();
 		}
+		mListViewWifiInfoPtr->setSelection(0);
+		mListViewWifiInfoPtr->refreshListView();
+	}
+	else if(type == NW_NOTIFY_TYPE_SSIDS_INFO)
+	{
+		wifiInfo = (std::vector<std::_WifiInfo_t *>*)data;
+		LOGD("get %d ssid\n" , wifiInfo->size());
+		mListViewWifiInfoPtr->refreshListView();
 	}
 }
 
