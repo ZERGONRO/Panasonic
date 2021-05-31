@@ -22,6 +22,7 @@ static ZKButton* mButtonDropDownPtr;
 static ZKTextView* mTextView12Ptr;
 static ZKWindow* mWindowStatusBarPtr;
 static statusbar* mstatusbarPtr;
+extern bool checkWifiProcessState(const char *procName);
 /* register sysapp */
 REGISTER_SYSAPP(APP_TYPE_SYS_STATUSBAR, statusbar);
 

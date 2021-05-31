@@ -21,6 +21,8 @@ namespace std{
 static std::vector<WifiInfo_t *> WifiInfo;
 static Mutex sLock;
 
+//
+
 
 bool MyNetWorkingListener::getWifiStatus()
 {
@@ -625,6 +627,7 @@ bool MyNetWorkingListener::threadLoop()
 						connectingTimeCount = 0;
 						system("udhcpc -i wlan0 -s /etc/init.d/udhcpc.script &");
 						LOGD("udhcpc.script111 !!!\n");
+//						system("/customer/ntpdate -u ntp1.aliyun.com&");				//1bz
 						notifyNetWorkListener(NW_NOTIFY_TYPE_CONNECT_STATUS, (void *)1);
 
 					}

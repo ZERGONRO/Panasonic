@@ -27,6 +27,9 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAIN_ButtonNetworkConnect    20035
+#define ID_MAIN_TextView43    50071
+#define ID_MAIN_Window24    110040
 #define ID_MAIN_TextView42    50070
 #define ID_MAIN_IconViewWifi    50046
 #define ID_MAIN_IconViewAirCold    50045

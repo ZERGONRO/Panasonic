@@ -20,6 +20,7 @@
 #include "control/ZKEditText.h"
 #include "control/ZKVideoView.h"
 #include "window/ZKSlideWindow.h"
+#include "util/MyNetWorkingListener.h"
 /*TAG:Macro宏ID*/
 #define ID_STATUSBAR_Button1    20005
 #define ID_STATUSBAR_WindowBackground    110005
@@ -48,6 +49,7 @@ class statusbar : public BaseApp,
                   public ZKSlideWindow::ISlideItemClickListener,
                   public EasyUIContext::ITouchListener,
                   public ZKEditText::ITextChangeListener,
+//				  public MyNetWorkingListener::MyNetWorkListener,
                   public ZKVideoView::IVideoPlayerMessageListener
 {
 public:

@@ -5,6 +5,9 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButtonNetworkConnectPtr;
+static ZKTextView* mTextView43Ptr;
+static ZKWindow* mWindow24Ptr;
 static ZKTextView* mTextView42Ptr;
 static ZKTextView* mIconViewWifiPtr;
 static ZKTextView* mIconViewAirColdPtr;
@@ -198,6 +201,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_MAIN_ButtonNetworkConnect, onButtonClick_ButtonNetworkConnect,
     ID_MAIN_ButtonSelect4, onButtonClick_ButtonSelect4,
     ID_MAIN_ButtonSelect5, onButtonClick_ButtonSelect5,
     ID_MAIN_ButtonSelect3, onButtonClick_ButtonSelect3,
@@ -319,6 +323,9 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mButtonNetworkConnectPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonNetworkConnect);
+    mTextView43Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView43);
+    mWindow24Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window24);
     mTextView42Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView42);
     mIconViewWifiPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewWifi);
     mIconViewAirColdPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewAirCold);

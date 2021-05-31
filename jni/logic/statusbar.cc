@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MyNetWorkingListener.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -33,11 +34,12 @@ static bool bDropDownButtonPress;
 static bool bDropDown;
 static bool bMoveThreadRun = false;
 static pthread_t g_MoveThread = 0;
+bool UpdateTimeFlag = false;
 
 
 static bool bStatusBarInited = false;
-
-
+extern MyNetWorkingListener *nwlistener;
+extern void updateTime();
 
 void initStatusBarMode()
 {
@@ -53,6 +55,7 @@ void initStatusBarMode()
 //		mWindowMainStatusBarPtr->setPosition(lp);
 		bStatusBarInited = true;
 	}
+	nwlistener = NULL;
 	mSeekBarLightPtr->setProgress(mSeekBarLightPtr->getProgress());
 //	mSeekBarLightPtr->setProgress(50);
 	mSeekBarLightPtr->setMax(99);
@@ -83,7 +86,7 @@ void hidestatusbars()
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	{0,  1000}, //定时器id=0, 时间间隔6秒
-	{1,  2000},
+	{1,  1000},
 };
 
 /**
@@ -122,10 +125,35 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  *             停止运行当前定时器
  */
 static bool onUI_Timer(int id){
+	static int checkWifiCount = 0;
+	static int checkWifiCount1 = 0;
 	switch (id) {
 		case 0:
 			break;
 		case 1:
+		{
+			if(nwlistener)
+			{
+				if(nwlistener->IsConnected())
+				{
+					checkWifiCount++;
+					if(checkWifiCount == 5)
+					{
+
+						UpdateTimeFlag = true;
+//							system("/customer/ntpdate -v -t 5  ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
+//							system("/customer/ntpdate -u cn.pool.ntp.org 0.asia.pool.ntp.org ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com&");
+						system("/customer/ntpdate -u ntp1.aliyun.com&");
+//
+					}
+				}
+				else
+				{
+					checkWifiCount = 0;
+				}
+			}
+
+		}
 			break;
 		default:
 			break;

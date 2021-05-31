@@ -46,6 +46,7 @@ static std::vector<WifiInfo_t *> *WifiInfo;
 
 static Mutex pLock;
 
+extern bool UpdateTimeFlag;
 extern void initStatusBarMode();
 extern void showstatusbars();
 extern void hidestatusbars();
@@ -60,7 +61,7 @@ extern void hidestatusbars();
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 //	{0,  6000}, //定时器id=0, 时间间隔6秒
 //	{1,  1000},
-//	{2,  500},
+	{2,  1000},
 };
 
 void SetEnvName(std::string focusindex)
@@ -73,19 +74,68 @@ void SetEnvName(std::string focusindex)
 static void updateTime()
 {
 	char timeStr[20];
-	static bool bflash = false;
+//	static bool bflash = false;
 	struct tm *t = TimeHelper::getDateTime();
 
+//	LOGD("The time is : %02d-%02d-%02d-%02d \n", t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min);
 //	sprintf(timeStr, "%02d:%02d:%02d", t->tm_hour,t->tm_min,t->tm_sec);
 //	mTextView42Ptr->setText(timeStr);
+	t->tm_mon = t->tm_mon + 1;
+	t->tm_hour = t->tm_hour + 8;
+	if(t->tm_hour >= 24)
+	{
+		t->tm_hour = t->tm_hour - 24;
+		t->tm_mday++;
+		t->tm_wday++;
+	}
+
 	sprintf(timeStr, "%02d:%02d", t->tm_hour,t->tm_min);
 	mTextView42Ptr->setText(timeStr);
 
 //	sprintf(timeStr, "%d年%02d月%02d日", 1900 + t->tm_year, t->tm_mon + 1, t->tm_mday);
 //	mTextView5Ptr->setText(timeStr);
-	sprintf(timeStr, "%02d/%02d", t->tm_mon + 1, t->tm_mday);
+	if((t->tm_mon == 1) || (t->tm_mon == 3) || (t->tm_mon == 5) || (t->tm_mon == 7) || (t->tm_mon == 8)
+			|| (t->tm_mon == 10) || (t->tm_mon == 12))
+	{
+		if(t->tm_mday >= 32)
+		{
+			t->tm_mon++;
+			t->tm_mday = 1;
+			if(t->tm_mon >= 13)
+			{
+				t->tm_mon = 1;
+			}
+		}
+	}
+	else if(t->tm_mon == 2)
+	{
+		if(t->tm_mday >= 28)
+		{
+			t->tm_mon++;
+			t->tm_mday = 1;
+			if(t->tm_mon >= 13)
+			{
+				t->tm_mon = 1;
+			}
+		}
+	}
+	else
+	{
+		if(t->tm_mday >= 31)
+		{
+			t->tm_mon++;
+			t->tm_mday = 1;
+			if(t->tm_mon >= 13)
+			{
+				t->tm_mon = 1;
+			}
+		}
+	}
+	sprintf(timeStr, "%02d/%02d", t->tm_mon, t->tm_mday);
 	mTextView5Ptr->setText(timeStr);
 
+	if(t->tm_wday > 6)
+		t->tm_wday = 0;
 	static const char *day[] = { "日", "一", "二", "三", "四", "五", "六" };
 	sprintf(timeStr, "星期%s", day[t->tm_wday]);
 	mTextView6Ptr->setText(timeStr);
@@ -133,7 +183,7 @@ void ResetStatusIconPos()
 	else
 	{
 		lp = mIconViewWifiPtr->getPosition();
-		lp.mTop = -10;
+		lp.mTop = -30;
 		mIconViewWifiPtr->setPosition(lp);
 	}
 	if(mIconViewAirColdPtr->isVisible())
@@ -147,7 +197,7 @@ void ResetStatusIconPos()
 	else
 	{
 		lp = mIconViewAirColdPtr->getPosition();
-		lp.mTop = -10;
+		lp.mTop = -30;
 		mIconViewAirColdPtr->setPosition(lp);
 	}
 	if(mIconViewHumdColdPtr->isVisible())
@@ -161,7 +211,7 @@ void ResetStatusIconPos()
 	else
 	{
 		lp = mIconViewHumdColdPtr->getPosition();
-		lp.mTop = -10;
+		lp.mTop = -30;
 		mIconViewHumdColdPtr->setPosition(lp);
 	}
 	if(mIconViewHumdDryPtr->isVisible())
@@ -175,7 +225,7 @@ void ResetStatusIconPos()
 	else
 	{
 		lp = mIconViewHumdDryPtr->getPosition();
-		lp.mTop = -10;
+		lp.mTop = -30;
 		mIconViewHumdDryPtr->setPosition(lp);
 	}
 	if(mIconViewSecurityPtr->isVisible())
@@ -189,7 +239,7 @@ void ResetStatusIconPos()
 	else
 	{
 		lp = mIconViewSecurityPtr->getPosition();
-		lp.mTop = -10;
+		lp.mTop = -30;
 		mIconViewSecurityPtr->setPosition(lp);
 	}
 }
@@ -245,8 +295,7 @@ static void onUI_intent(const Intent *intentPtr) {
 
     }
 
-//    nwlistener->ScanNetWork();
-//    mActivityPtr->registerUserTimer(2, 5000);
+
     if(nwlistener == NULL)
     {
     	nwlistener = new MyNetWorkingListener();
@@ -255,18 +304,17 @@ static void onUI_intent(const Intent *intentPtr) {
     }
 
     if(nwlistener->IsConnected())
-	{
-		LOGD("Load the time \n");
-		system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
-		NtpDateFlag = true;
-	}
+    {
+    	mWindow24Ptr->setVisible(false);
+		mWindow5Ptr->setVisible(true);
+    }
     else
     {
-    	NtpDateFlag = false;
+    	mWindow24Ptr->setVisible(true);
+    	mWindow5Ptr->setVisible(false);
     }
 
 
-//    system("/customer/ntpdate -v -t 5 ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
 }
 
 /*
@@ -282,10 +330,10 @@ static void onUI_show() {
 	mIconViewWifiPtr->setVisible(nwlistener->IsConnected());
 //	LOGD("mIconViewWifiPtr->setVisible(nwlistener->IsConnected()); !!!\n");
 //	mIconViewWifiPtr->setVisible(true);
-	mIconViewSecurityPtr->setVisible(true);
+	mIconViewSecurityPtr->setVisible(false);
 	mIconViewHumdDryPtr->setVisible(false);
-	mIconViewHumdColdPtr->setVisible(true);
-	mIconViewAirColdPtr->setVisible(true);
+	mIconViewHumdColdPtr->setVisible(false);
+	mIconViewAirColdPtr->setVisible(false);
 
 	ResetStatusIconPos();
 
@@ -332,6 +380,7 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  *             停止运行当前定时器
  */
 static bool onUI_Timer(int id){
+	static int DispTimeCount = 0;
 	switch (id) {
 	case 0:
 		break;
@@ -342,40 +391,35 @@ static bool onUI_Timer(int id){
 		break;
 	case 2:
 	{
-
 		if(nwlistener->IsConnected())
 		{
-			LOGD("nwlistener  onUI_Timer !!!\n");
-
-			std::string ssid = nwlistener->getSSID();
-			WifiInfo = nwlistener->getSSIDInfo();
-			for(int i = 0;i < WifiInfo->size();i++)
+			if(UpdateTimeFlag)
 			{
-				int wifisignal = 0;
-				WifiInfo_t *child = WifiInfo->at(i);
-				if(ssid == std::string(child->ssid))
+				DispTimeCount++;
+				if(DispTimeCount > 10)
 				{
-					if(child->signal >= -55)
-						wifisignal = 100;
-					else if(child->signal <= -95)
-						wifisignal = 0;
-					else
-						wifisignal = ((child->signal + 95)*5)/2;
+					DispTimeCount = 0;
+					mIconViewWifiPtr->setVisible(true);
+					mWindow24Ptr->setVisible(false);
+					mWindow5Ptr->setVisible(true);
+					updateTime();
+					ResetStatusIconPos();
 				}
 			}
 		}
-
-		if(nwlistener->getWifiStatus())
-			nwlistener->resetScanCount();
-
-
-		if(NtpDateFlag)
+		else
 		{
-			updateTime();
+			mIconViewWifiPtr->setVisible(false);
+			mWindow24Ptr->setVisible(true);
+			mWindow5Ptr->setVisible(false);
+			UpdateTimeFlag = false;
+			ResetStatusIconPos();
 		}
-//		updateTime();
 
-
+//		if(nwlistener->getWifiStatus())
+//		{
+//			nwlistener->resetScanCount();
+//		}
 	}
 		break;
 
@@ -1247,5 +1291,10 @@ static bool onButtonClick_ButtonSelect4(ZKButton *pButton) {
 //	g_MovePicPosThread = 1;
 	ModePicSelectFunc(true, 2, i);
 //    ModePicSelectFunc(true, 1);
+    return false;
+}
+static bool onButtonClick_ButtonNetworkConnect(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonNetworkConnect !!!\n");
+    EASYUICONTEXT->openActivity("WifiSettingActivity", NULL);
     return false;
 }
