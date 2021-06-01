@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -69,9 +70,9 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
-	mTextView45Ptr->setText(std::to_string(atoi(mTextView45Ptr->getText().c_str())));
-	mTextView43Ptr->setText(std::to_string(atoi(mTextView43Ptr->getText().c_str())));
-
+//	mTextView45Ptr->setText(std::to_string(atoi(mTextView45Ptr->getText().c_str())));
+//	mTextView43Ptr->setText(std::to_string(atoi(mTextView43Ptr->getText().c_str())));
+//
 	mButtonHomepage2Ptr->setSelected(false);
 	mButtonSmart2Ptr->setSelected(true);
 	mButtonManual2Ptr->setSelected(false);
@@ -82,16 +83,8 @@ static void onUI_show() {
 	mTextViewManual2Ptr->setSelected(false);
 	mTextViewHistory2Ptr->setSelected(false);
 
-	DisPlayFocusMode(SmartModeSelect);
-//	mButtonStdModePtr->setSelected(true);
-//	mButtonHokiModePtr->setSelected(false);
-//	mButtonHawaiModePtr->setSelected(false);
-//	mButtonVacModePtr->setSelected(false);
-//
-//	mWindowStandardModePtr->setVisible(true);
-//	mWindowHokkaidoModePtr->setVisible(false);
-//	mWindowHawaiiModePtr->setVisible(false);
-//	mWindowVacationModePtr->setVisible(false);
+	DisPlayFocusMode(MACHINESTATUS->getsmartmode());
+
 }
 
 /*
@@ -436,11 +429,7 @@ static bool onButtonClick_ButtonDropDown(ZKButton *pButton) {
 }
 static bool onButtonClick_ButtonStdMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonStdMode !!!\n");
-    if(SmartModeSelect != StandardMode)
-    {
-    	SmartModeSelect = StandardMode;
-    }
-
+    SmartModeSelect = StandardMode;
     if(pButton->isSelected())
     {
     	return false;
@@ -453,17 +442,14 @@ static bool onButtonClick_ButtonStdMode(ZKButton *pButton) {
     	}
     	//DisPlayFocusMode(index);
     	DisPlayFocusMode(SmartModeSelect);
+    	MACHINESTATUS->setsmartmode(SmartModeSelect);
     }
     return false;
 }
 
 static bool onButtonClick_ButtonHokiMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHokiMode !!!\n");
-    if(SmartModeSelect != HokiMode)
-	{
-		SmartModeSelect = HokiMode;
-	}
-
+	SmartModeSelect = HokiMode;
 	if(pButton->isSelected())
 	{
 		return false;
@@ -476,17 +462,14 @@ static bool onButtonClick_ButtonHokiMode(ZKButton *pButton) {
 		}
 		//DisPlayFocusMode(index);
 		DisPlayFocusMode(SmartModeSelect);
+		MACHINESTATUS->setsmartmode(SmartModeSelect);
 	}
     return false;
 }
 
 static bool onButtonClick_ButtonHawaiMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHawaiMode !!!\n");
-    if(SmartModeSelect != HawaiMode)
-	{
-		SmartModeSelect = HawaiMode;
-	}
-
+	SmartModeSelect = HawaiMode;
 	if(pButton->isSelected())
 	{
 		return false;
@@ -499,17 +482,14 @@ static bool onButtonClick_ButtonHawaiMode(ZKButton *pButton) {
 		}
 		//DisPlayFocusMode(index);
 		DisPlayFocusMode(SmartModeSelect);
+		MACHINESTATUS->setsmartmode(SmartModeSelect);
 	}
     return false;
 }
 
 static bool onButtonClick_ButtonVacMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonVacMode !!!\n");
-    if(SmartModeSelect != VacMode)
-	{
-		SmartModeSelect = VacMode;
-	}
-
+	SmartModeSelect = VacMode;
 	if(pButton->isSelected())
 	{
 		return false;
@@ -522,6 +502,7 @@ static bool onButtonClick_ButtonVacMode(ZKButton *pButton) {
 		}
 		//DisPlayFocusMode(index);
 		DisPlayFocusMode(SmartModeSelect);
+		MACHINESTATUS->setsmartmode(SmartModeSelect);
 	}
     return false;
 }

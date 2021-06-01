@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -56,7 +57,7 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
-    mButton6Ptr->setSelected(mButton6Ptr->isSelected());
+
 }
 
 /*
@@ -64,7 +65,17 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
-	mButton1Ptr->setSelected(mButton6Ptr->isSelected());
+	if(MACHINESTATUS->getwifistatus())
+	{
+		mButton1Ptr->setSelected(true);
+		mButton6Ptr->setSelected(true);
+	}
+	else
+	{
+		mButton1Ptr->setSelected(false);
+		mButton6Ptr->setSelected(false);
+	}
+
 }
 
 /*
@@ -158,11 +169,13 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
     {
     	pButton->setSelected(false);
     	mButton1Ptr->setSelected(false);
+    	MACHINESTATUS->setwifistatus(0);
     }
     else
     {
     	pButton->setSelected(true);
     	mButton1Ptr->setSelected(true);
+    	MACHINESTATUS->setwifistatus(1);
     }
     return false;
 }
@@ -171,11 +184,11 @@ static bool onButtonClick_Button3(ZKButton *pButton) {
     LOGD(" ButtonClick Button3 !!!\n");
     if(pButton->isSelected())
    {
-	pButton->setSelected(false);
+    	pButton->setSelected(false);
    }
    else
    {
-	pButton->setSelected(true);
+	    pButton->setSelected(true);
    }
     return false;
 }

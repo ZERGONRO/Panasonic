@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -79,7 +80,7 @@ static void onUI_intent(const Intent *intentPtr) {
 static void onUI_show() {
 
 	mWindowConnectFailPtr->setVisible(false);
-	mIconWifiPtr->setVisible(nwlistener->IsConnected());
+	mIconWifiPtr->setVisible(MACHINESTATUS->getwifistatus());
 	if(nwlistener->getWifiStatus()) {
 		wifiInfo = nwlistener->getSSIDInfo();
 		mListViewWifiInfoPtr->setVisible(true);

@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -68,9 +69,6 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
-	mTextView7Ptr->setText(mTextView7Ptr->getText().c_str());
-	mTextView11Ptr->setText(mTextView11Ptr->getText().c_str());
-	mTextView13Ptr->setText(mTextView13Ptr->getText().c_str());
 
 	mButtonHomepage2Ptr->setSelected(false);
 	mButtonSmart2Ptr->setSelected(false);
@@ -82,24 +80,8 @@ static void onUI_show() {
 	mTextViewManual2Ptr->setSelected(true);
 	mTextViewHistory2Ptr->setSelected(false);
 
+	ManualMode11SelStatus(MACHINESTATUS->getmanualmode());
 
-
-	ManualMode11SelStatus(ManualType);
-//	mButtonPurifyPtr->setSelected(true);
-//	mButtonAirPtr->setSelected(false);
-//	mButtonHotChangePtr->setSelected(false);
-//	mButtonModHumdPtr->setSelected(false);
-//	mButtonChangeWindPtr->setSelected(false);
-//	mButtonSterilizationPtr->setSelected(false);
-//	mButtonYuBaPtr->setSelected(false);
-//
-//	mWindowAirPFPtr->setVisible(true);
-//	mWindowAirSwitchPtr->setVisible(false);
-//	mWindowHotChangeSwitchPtr->setVisible(false);
-//	mWindowHumdSwitchPtr->setVisible(false);
-//	mWindowWindSwitchPtr->setVisible(false);
-//	mWindowYubaSwitchPtr->setVisible(false);
-//	mWindowSterilizationPtr->setVisible(false);
 }
 
 /*
@@ -312,6 +294,7 @@ static bool onButtonClick_ButtonPurify(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonPurify !!!\n");
     ManualType = Manual_AirPF;
     ManualMode11SelStatus(ManualType);
+    MACHINESTATUS->setmanualmode(ManualType);
     return false;
 }
 
@@ -319,6 +302,7 @@ static bool onButtonClick_ButtonAir(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAir !!!\n");
     ManualType = Manual_Air;
     ManualMode11SelStatus(ManualType);
+    MACHINESTATUS->setmanualmode(ManualType);
     return false;
 }
 
@@ -326,6 +310,7 @@ static bool onButtonClick_ButtonHotChange(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChange !!!\n");
     ManualType = Manual_HotChange;
     ManualMode11SelStatus(ManualType);
+    MACHINESTATUS->setmanualmode(ManualType);
     return false;
 }
 
@@ -333,6 +318,7 @@ static bool onButtonClick_ButtonModHumd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonModHumd !!!\n");
     ManualType = Manual_Humd;
     ManualMode11SelStatus(ManualType);
+    MACHINESTATUS->setmanualmode(ManualType);
     return false;
 }
 
@@ -340,6 +326,7 @@ static bool onButtonClick_ButtonChangeWind(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonChangeWind !!!\n");
     ManualType = Manual_WindChange;
     ManualMode11SelStatus(ManualType);
+    MACHINESTATUS->setmanualmode(ManualType);
     return false;
 }
 
@@ -347,6 +334,7 @@ static bool onButtonClick_ButtonSterilization(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonSterilization !!!\n");
     ManualType = Manual_Ster;
     ManualMode11SelStatus(ManualType);
+    MACHINESTATUS->setmanualmode(ManualType);
     return false;
 }
 
@@ -354,6 +342,7 @@ static bool onButtonClick_ButtonYuBa(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBa !!!\n");
     ManualType = Manual_YuBa;
     ManualMode11SelStatus(ManualType);
+    MACHINESTATUS->setmanualmode(ManualType);
     return false;
 }
 

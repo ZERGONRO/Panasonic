@@ -270,7 +270,7 @@ typedef struct {
 }S_EditTextInputCallback;
 /*TAG:EditTextInputCallback*/
 static S_EditTextInputCallback SEditTextInputCallbackTab[] = {
-		{ID_WIFIINPUTUI_PassWordTextView, OnEditTextChanged_PassWordTextView}
+		{ID_WIFIINPUTUI_PassWordTextView, onEditTextChanged_PassWordTextView}
 };
 
 typedef void (*VideoViewCallback)(ZKVideoView *pVideoView, int msg);
@@ -579,7 +579,6 @@ bool WifiInputUIActivity::onTouchEvent(const MotionEvent &ev) {
 void WifiInputUIActivity::onTextChanged(ZKTextView *pTextView, const std::string &text) {
     int tablen = sizeof(SEditTextInputCallbackTab) / sizeof(S_EditTextInputCallback);
     for (int i = 0; i < tablen; ++i) {
-
         if (SEditTextInputCallbackTab[i].id == pTextView->getID()) {
             SEditTextInputCallbackTab[i].onEditTextChangedCallback(text);
             break;

@@ -2,6 +2,7 @@
 #include "uart/ProtocolSender.h"
 #include "entry/EasyUIContext.h"
 #include "utils/TimeHelper.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -251,6 +252,7 @@ void ResetStatusIconPos()
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
 
+	char cmd[128];
 	buttonStatus = 0;
 	powerButtonStatus = 0;
 	timeOutCount = 0;
@@ -259,6 +261,9 @@ static void onUI_init(){
 	mode = 0;
 	initStatusBarMode();
 //	initStatusBar();
+	sprintf(cmd , "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle" , MACHINESTATUS->getbacklight());
+	system(cmd);
+	system("echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable");
 //	disableStatusBar();
 //	setStatusBarBarrelNotice(false);
 	system("echo 9 > /sys/class/gpio/export");
@@ -336,6 +341,7 @@ static void onUI_show() {
 	mIconViewAirColdPtr->setVisible(false);
 
 	ResetStatusIconPos();
+//	MACHINESTATUS->setwifistatus(nwlistener->IsConnected());
 
 	mButtonHomepage2Ptr->setSelected(true);
 	mButtonSmart2Ptr->setSelected(false);
@@ -415,7 +421,7 @@ static bool onUI_Timer(int id){
 			UpdateTimeFlag = false;
 			ResetStatusIconPos();
 		}
-
+		MACHINESTATUS->setwifistatus(nwlistener->IsConnected());
 //		if(nwlistener->getWifiStatus())
 //		{
 //			nwlistener->resetScanCount();

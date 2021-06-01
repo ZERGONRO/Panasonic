@@ -1,6 +1,7 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "util/MyNetWorkingListener.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -56,10 +57,13 @@ void initStatusBarMode()
 		bStatusBarInited = true;
 	}
 	nwlistener = NULL;
-	mSeekBarLightPtr->setProgress(mSeekBarLightPtr->getProgress());
+	mSeekBarLightPtr->setProgress(mSeekBarLightPtr->getProgress()-1);
 //	mSeekBarLightPtr->setProgress(50);
 	mSeekBarLightPtr->setMax(99);
-	mTextViewLightBarPtr->setText(mSeekBarLightPtr->getProgress());
+	mTextViewLightBarPtr->setText(std::to_string(mSeekBarLightPtr->getProgress()));
+	mSeekBarSoundPtr->setProgress(mSeekBarSoundPtr->getProgress()-1);
+	mSeekBarSoundPtr->setMax(99);
+	mTextViewSoundBarPtr->setText(std::to_string(mSeekBarSoundPtr->getProgress()));
 //	mstatusbarPtr->mMainWndPtr->setAlpha(255);
 }
 
@@ -104,7 +108,10 @@ static void onUI_init(){
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-
+//	LayoutPosition lp3 = mWindowBackgroundPtr->getPosition();
+//	lp3.mTop = -600;
+//	mWindowBackgroundPtr->setAlpha(255);
+//	mWindowBackgroundPtr->setPosition(lp3);
 }
 
 /**
@@ -143,7 +150,7 @@ static bool onUI_Timer(int id){
 						UpdateTimeFlag = true;
 //							system("/customer/ntpdate -v -t 5  ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
 //							system("/customer/ntpdate -u cn.pool.ntp.org 0.asia.pool.ntp.org ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com&");
-						system("/customer/ntpdate -u ntp1.aliyun.com&");
+						system("/customer/ntpdate -u ntp2.aliyun.com&");
 //
 					}
 				}
@@ -247,7 +254,6 @@ static bool onstatusbarActivityTouchEvent(const MotionEvent &ev) {
 	LayoutPosition lp = mButtonDropDownPtr->getPosition();
 	LayoutPosition lp1 = mstatusbarPtr->mMainWndPtr->getPosition();
 //	LayoutPosition lp1 = mWindowMainStatusBarPtr->getPosition();
-	mWindowBackgroundPtr->setAlpha(150);
 	static int x, y;
     switch (ev.mActionStatus) {
 		case MotionEvent::E_ACTION_DOWN://触摸按下
@@ -264,7 +270,7 @@ static bool onstatusbarActivityTouchEvent(const MotionEvent &ev) {
 				mstatusbarPtr->mMainWndPtr->setPosition(lp1);
 //				mWindowMainStatusBarPtr->setPosition(lp1);
 			}
-			else if((!bDropDownButtonPress && bDropDown) && ((ev.mY > 330) && (ev.mY < 430) && (ev.mX > lp.mLeft) && (ev.mX < lp.mLeft + lp.mWidth)))
+			else if((!bDropDownButtonPress && bDropDown) && ((ev.mY > 530) && (ev.mY < 600) && (ev.mX > lp.mLeft) && (ev.mX < lp.mLeft + lp.mWidth)))
 			{
 				x = ev.mX;
 				y = ev.mY;
@@ -340,7 +346,7 @@ static void onProgressChanged_SeekBarLight(ZKSeekBar *pSeekBar, int progress) {
 	char cmd[128];
 	sprintf(cmd , "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle" , progress + 1);
 	system(cmd);
-//	MACHINESTATUSCONTEXT->setBackLight(progress+1);
+	MACHINESTATUS->setbacklight(progress+1);
 	mTextViewLightBarPtr->setText(std::to_string(progress + 1));
 }
 
@@ -385,4 +391,13 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
     hidestatusbars();
     EASYUICONTEXT->goBack();
     return false;
+}
+
+static void onProgressChanged_SeekBarSound(ZKSeekBar *pSeekBar, int progress) {
+    //LOGD(" ProgressChanged SeekBarSound %d !!!\n", progress);
+	char cmd[128];
+//	sprintf(cmd , "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle" , progress + 1);
+//	system(cmd);
+	MACHINESTATUS->setvol(progress+1);
+	mTextViewSoundBarPtr->setText(std::to_string(progress + 1));
 }

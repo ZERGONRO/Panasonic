@@ -22,6 +22,11 @@
 #include "window/ZKSlideWindow.h"
 #include "util/MyNetWorkingListener.h"
 /*TAG:Macro宏ID*/
+#define ID_STATUSBAR_TextViewSoundBar    50010
+#define ID_STATUSBAR_SeekBarSound    91002
+#define ID_STATUSBAR_TextViewSound    50009
+#define ID_STATUSBAR_TextViewPicSound    50008
+#define ID_STATUSBAR_WindowSoundProcessBar    110006
 #define ID_STATUSBAR_Button1    20005
 #define ID_STATUSBAR_WindowBackground    110005
 #define ID_STATUSBAR_TextViewAlpha    50007

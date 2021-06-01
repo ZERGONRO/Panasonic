@@ -1,6 +1,7 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "util/MyNetWorkingListener.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -66,7 +67,7 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 	mWindow1Ptr->setBackgroundPic("./ui/输入框.png");
-	mIconWifiPtr->setVisible(nwlistener->IsConnected());
+	mIconWifiPtr->setVisible(MACHINESTATUS->getwifistatus());
 	if(mPassWordTextViewPtr->getText().c_str() < 8 || mPassWordTextViewPtr->getText().c_str() > 64
 			|| (mPassWordTextViewPtr->getText().compare(PASSWORK_DESCRIPTION_STRING)) == 0)
 	{
@@ -80,8 +81,8 @@ static void onUI_show() {
 			mPassWordTextViewPtr->setVisible(true);
 			mPassWordTextView2Ptr->setVisible(false);
 		}
-		mButtonConfirmPtr->setInvalid(true);
-		mButton22Ptr->setInvalid(true);
+		mButtonConfirmPtr->setSelected(false);
+		mButton22Ptr->setSelected(false);
 	}
 }
 
@@ -143,32 +144,29 @@ static bool allHexCheck(char *text)
 	return true;
 }
 
-static void OnEditTextChanged_PassWordTextView(const std::string &text)
+
+static void onEditTextChanged_PassWordTextView(const std::string &text)
 {
-	LOGD("OnEditTextChanged_PassWordTextView !!! \n");
+//	LOGD("OnEditTextChanged_PassWordTextView !!! \n");
 	mPassWordTextView2Ptr->setText(text);
 	if((text.size() < 8 || text.size() > 64) || (text.compare(PASSWORK_DESCRIPTION_STRING) == 0))
 	{
-		if(!mButtonConfirmPtr->isInvalid())
-		{
-			mButtonConfirmPtr->setInvalid(true);
-			mButton22Ptr->setInvalid(true);
-		}
+			mButtonConfirmPtr->setSelected(false);
+			mButton22Ptr->setSelected(false);
 	}
 	else if(text.size() == 64)
 	{
 		if(!allHexCheck(text.c_str()))
 		{
-			if(!mButtonConfirmPtr->isInvalid())
-			{
-				mButtonConfirmPtr->setInvalid(true);
-				mButton22Ptr->setInvalid(true);
-			}
-			else
-			{
-				mButtonConfirmPtr->setInvalid(false);
-				mButton22Ptr->setInvalid(false);
-			}
+
+				mButtonConfirmPtr->setSelected(false);
+				mButton22Ptr->setSelected(false);
+
+		}
+		else
+		{
+				mButtonConfirmPtr->setSelected(true);
+				mButton22Ptr->setSelected(true);
 		}
 	}
 	else
@@ -186,13 +184,11 @@ static void OnEditTextChanged_PassWordTextView(const std::string &text)
 			mPassWordTextView2Ptr->setVisible(false);
 			mPassWordTextViewPtr->setVisible(true);
 		}
-		if(mButtonConfirmPtr->isInvalid())
-		{
-			mButtonConfirmPtr->setInvalid(false);
-			mButton22Ptr->setInvalid(false);
-		}
+		mButtonConfirmPtr->setSelected(true);
+		mButton22Ptr->setSelected(true);
 	}
 }
+
 
 /**
  * 有新的触摸事件时触发
@@ -225,14 +221,17 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonConfirm(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonConfirm !!!\n");
-    if((mPassWordTextViewPtr->getText() != PASSWORK_DESCRIPTION_STRING)
-		&& (mPassWordTextViewPtr->getText().length() >= 8 && mPassWordTextViewPtr->getText().length() <= 64)) {
-    	nwlistener->startConnectWifi(mTextViewSSIDPtr->getText().c_str(), mPassWordTextViewPtr->getText().c_str());
-   }
-   else {
-	   LOGD("WIFI password wrong format\n");
-	//应在界面有相应提示
-   }
+    if(pButton->isSelected())
+    {
+		if((mPassWordTextViewPtr->getText() != PASSWORK_DESCRIPTION_STRING)
+			&& (mPassWordTextViewPtr->getText().length() >= 8 && mPassWordTextViewPtr->getText().length() <= 64)) {
+			nwlistener->startConnectWifi(mTextViewSSIDPtr->getText().c_str(), mPassWordTextViewPtr->getText().c_str());
+	   }
+	   else {
+		   LOGD("WIFI password wrong format\n");
+		//应在界面有相应提示
+	   }
+    }
    EASYUICONTEXT->goBack();
     return false;
 }

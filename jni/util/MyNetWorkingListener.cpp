@@ -6,6 +6,7 @@
  */
 
 #include "util/MyNetWorkingListener.h"
+#include "util/MachineStatus.h"
 #include "string.h"
 #include "utils/log.h"
 #include <unistd.h>
@@ -39,7 +40,7 @@ MyNetWorkingListener::MyNetWorkingListener()
 	ssid = "";
 	psd = "";
 	nwListener.clear();
-	bWifiStartup = true;
+	bWifiStartup = (MACHINESTATUS->getwifistatus() == 1)?true : false;
 	scanCount = -1;
 	connectingTimeCount = 0;
 	CheckconnectingTimeCount = 0;
@@ -147,8 +148,13 @@ void MyNetWorkingListener::startConnectWifi(char *Ssid, char *psd)
 		return;
 
 	/*判断之前的SSID和PSW是否符合连接	(open)*/
-//	char old_ssid = getSSID();
-//	char old_psd = getPSD();
+	char *old_ssid = MACHINESTATUS->getwifissid();
+	char *old_psd = MACHINESTATUS->getwifipasswd();
+	if((strcmp(old_ssid, Ssid) != 0) || (strcmp(old_psd, psd) != 0))
+	{
+		MACHINESTATUS->setwifissid(Ssid);
+		MACHINESTATUS->setwifipasswd(psd);
+	}
 
 	//
 	ssid = "";
@@ -241,6 +247,7 @@ void MyNetWorkingListener::startupWifi()
 	if(bWifiStartup)
 		return;
 
+	MACHINESTATUS->setwifistatus(1);
 	bConnecting = true;
 	bWifiStartup = true;
 	bConnected = false;
@@ -257,6 +264,7 @@ void MyNetWorkingListener::ShutdownWifi()
 	WifiInfo.clear();
 	notifyNetWorkListener(NW_NOTIFY_TYPE_CONNECT_STATUS, 0);
 
+	MACHINESTATUS->setwifistatus(0);
 	bConnecting = false;
 	bWifiStartup = false;
 	bConnected = false;

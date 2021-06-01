@@ -2,6 +2,11 @@
 #include "entry/EasyUIContext.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewSoundBarPtr;
+static ZKSeekBar* mSeekBarSoundPtr;
+static ZKTextView* mTextViewSoundPtr;
+static ZKTextView* mTextViewPicSoundPtr;
+static ZKWindow* mWindowSoundProcessBarPtr;
 static ZKButton* mButton1Ptr;
 static ZKWindow* mWindowBackgroundPtr;
 static ZKTextView* mTextViewAlphaPtr;
@@ -75,6 +80,7 @@ typedef struct {
 }S_ZKSeekBarCallback;
 /*TAG:SeekBarCallbackTab*/
 static S_ZKSeekBarCallback SZKSeekBarCallbackTab[] = {
+    ID_STATUSBAR_SeekBarSound, onProgressChanged_SeekBarSound,
     ID_STATUSBAR_SeekBarLight, onProgressChanged_SeekBarLight,
 };
 
@@ -142,6 +148,11 @@ const char* statusbar::getAppName() const{
 //TAG:onCreate
 void statusbar::onCreate() {
 	BaseApp::onCreate();
+    mTextViewSoundBarPtr = (ZKTextView*)findControlByID(ID_STATUSBAR_TextViewSoundBar);
+    mSeekBarSoundPtr = (ZKSeekBar*)findControlByID(ID_STATUSBAR_SeekBarSound);if(mSeekBarSoundPtr!= NULL){mSeekBarSoundPtr->setSeekBarChangeListener(this);}
+    mTextViewSoundPtr = (ZKTextView*)findControlByID(ID_STATUSBAR_TextViewSound);
+    mTextViewPicSoundPtr = (ZKTextView*)findControlByID(ID_STATUSBAR_TextViewPicSound);
+    mWindowSoundProcessBarPtr = (ZKWindow*)findControlByID(ID_STATUSBAR_WindowSoundProcessBar);
     mButton1Ptr = (ZKButton*)findControlByID(ID_STATUSBAR_Button1);
     mWindowBackgroundPtr = (ZKWindow*)findControlByID(ID_STATUSBAR_WindowBackground);
     mTextViewAlphaPtr = (ZKTextView*)findControlByID(ID_STATUSBAR_TextViewAlpha);
