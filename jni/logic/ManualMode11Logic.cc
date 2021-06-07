@@ -1,6 +1,8 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "util/MachineStatus.h"
+#include "util/ProtocolDataRecv.h"
+#include "util/ProtocolDataSend.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -147,8 +149,229 @@ static bool onManualMode11ActivityTouchEvent(const MotionEvent &ev) {
 	}
 	return false;
 }
+
+static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
+{
+	SProtocolRecvDate data = Data;
+	if(data.PurifyData.Switch)							//净化
+	{
+		mTextView17Ptr->setText(data.PurifyData.WindDirectSetting + '°');
+		mTextView18Ptr->setText(data.PurifyData.AddHumdSetting + '%');
+		mButtonAirPFNANOEXPtr->setSelected(data.PurifyData.NanoexSetting);
+		mButtonAirPFLightPtr->setSelected(data.PurifyData.BrightSetting);
+		mButtonAirPFFilterResetPtr->setSelected(data.PurifyData.FilterReset);
+		mButtonAirPFChildLockPtr->setSelected(data.PurifyData.ChildLock);
+	}
+
+
+	if(data.AirConditionData.Swtich)					//空调
+	{
+		if(data.AirConditionData.WindDirectSetting)
+		{
+			mButtonAirSwitchWindDirectUpDownPtr->setSelected(false);
+			mButtonAirSwitchWindDirectLeftRightPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonAirSwitchWindDirectUpDownPtr->setSelected(true);
+			mButtonAirSwitchWindDirectLeftRightPtr->setSelected(false);
+		}
+
+		if(data.AirConditionData.ModeSelect == 1)
+		{
+			mButtonAirSwitchModeAutoPtr->setSelected(false);
+			mButtonAirSwitchModeHotPtr->setSelected(true);
+			mButtonAirSwitchModeColdPtr->setSelected(false);
+			mButtonAirSwitchModeHumdPtr->setSelected(false);
+		}
+		else if(data.AirConditionData.ModeSelect == 2)
+		{
+			mButtonAirSwitchModeAutoPtr->setSelected(false);
+			mButtonAirSwitchModeHotPtr->setSelected(false);
+			mButtonAirSwitchModeColdPtr->setSelected(true);
+			mButtonAirSwitchModeHumdPtr->setSelected(false);
+		}
+		else if(data.AirConditionData.ModeSelect == 3)
+		{
+			mButtonAirSwitchModeAutoPtr->setSelected(false);
+			mButtonAirSwitchModeHotPtr->setSelected(false);
+			mButtonAirSwitchModeColdPtr->setSelected(false);
+			mButtonAirSwitchModeHumdPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonAirSwitchModeAutoPtr->setSelected(true);
+			mButtonAirSwitchModeHotPtr->setSelected(false);
+			mButtonAirSwitchModeColdPtr->setSelected(false);
+			mButtonAirSwitchModeHumdPtr->setSelected(false);
+		}
+
+		mTextView22Ptr->setText(data.AirConditionData.TempSettingValue + '℃');
+		mButtonAirSwitchNANOEXPtr->setSelected(data.AirConditionData.NanoeX);
+	}
+
+	if(data.HeatChangeData.Swtich)							//热交换
+	{
+		if(data.HeatChangeData.ModeSetting == 1)
+		{
+			mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
+			mButtonHotChangeSwitchModeHotChangePtr->setSelected(true);
+			mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
+		}
+		else if(data.HeatChangeData.ModeSetting == 2)
+		{
+			mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
+			mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
+			mButtonHotChangeSwitchModeCyclePtr->setSelected(true);
+		}
+		else
+		{
+			mButtonHotChangeSwitchModeAutoPtr->setSelected(true);
+			mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
+			mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
+		}
+
+		mButtonHotChangeSwitchNANOEXPtr->setSelected(data.HeatChangeData.NanoeX);
+
+	}
+
+
+	if(data.AdjustHumdData.Swtich)							//调湿
+	{
+		mTextView29Ptr->setText(data.AdjustHumdData.AirDirectSetting + '°');
+		mTextView30Ptr->setText(data.AdjustHumdData.AdjustHumdValue + '%');
+		if(data.AdjustHumdData.FunctionSelectSetting == 1)
+		{
+			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelContPtr->setSelected(true);
+			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
+		}
+		else if(data.AdjustHumdData.FunctionSelectSetting == 2)
+		{
+			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelContPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelKeepPtr->setSelected(true);
+			mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
+		}
+		else if(data.AdjustHumdData.FunctionSelectSetting == 3)
+		{
+			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelContPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelSendPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonHumdSwitchFuncSelAutoPtr->setSelected(true);
+			mButtonHumdSwitchFuncSelContPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
+			mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
+		}
+
+//		if(data.AdjustHumdData.)
+
+	}
+
+	if(data.WindChangAirData.Swtich)							//新风
+	{
+		mButtonWindSwitchNANOEXPtr->setSelected(data.WindChangAirData.NanoeX);
+	}
+
+	if(data.YuBaData.Swtich)									//浴霸
+	{
+		mButtonYuBaNANOEXPtr->setSelected(data.YuBaData.NanoeX);
+
+		if(data.YuBaData.HeatingSetting)
+		{
+			mButtonYuBaHeatingStrPtr->setSelected(false);
+			mButtonYuBaHeatingWeakPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonYuBaHeatingStrPtr->setSelected(true);
+			mButtonYuBaHeatingWeakPtr->setSelected(false);
+		}
+
+		if(data.YuBaData.AirDirectSetting)
+		{
+			mButtonYuBaWindDirectManualPtr->setSelected(false);
+			mButtonYuBaWindDirectAutoPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonYuBaWindDirectManualPtr->setSelected(true);
+			mButtonYuBaWindDirectAutoPtr->setSelected(false);
+		}
+
+		if(data.YuBaData.HeatDrySetting)
+		{
+			mButtonYuBaHottingStrPtr->setSelected(false);
+			mButtonYuBaHottingWeakPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonYuBaHottingStrPtr->setSelected(true);
+			mButtonYuBaHottingWeakPtr->setSelected(false);
+		}
+
+		if(data.YuBaData.ColdDrySetting)
+		{
+			mButtonYuBaColdHotStrPtr->setSelected(false);
+			mButtonYuBaColdHotWeakPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonYuBaColdHotStrPtr->setSelected(true);
+			mButtonYuBaColdHotWeakPtr->setSelected(false);
+		}
+
+		if(data.YuBaData.WindType)
+		{
+			mButtonYuBaWindClassConcenPtr->setSelected(false);
+			mButtonYuBaWindClassdiffusionPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonYuBaWindClassConcenPtr->setSelected(true);
+			mButtonYuBaWindClassdiffusionPtr->setSelected(false);
+		}
+
+		if(data.YuBaData.AirChangeSetting == 1)
+		{
+			mButtonYuBaChangAirFastPtr->setSelected(false);
+			mButtonYuBaChangAirStrPtr->setSelected(true);
+			mButtonYuBaChangAirWeakPtr->setSelected(false);
+		}
+		else if(data.YuBaData.AirChangeSetting == 2)
+		{
+			mButtonYuBaChangAirFastPtr->setSelected(false);
+			mButtonYuBaChangAirStrPtr->setSelected(false);
+			mButtonYuBaChangAirWeakPtr->setSelected(true);
+		}
+		else
+		{
+			mButtonYuBaChangAirFastPtr->setSelected(true);
+			mButtonYuBaChangAirStrPtr->setSelected(false);
+			mButtonYuBaChangAirWeakPtr->setSelected(false);
+		}
+
+		if(data.YuBaData.BrightnessSetting)
+		{
+
+		}
+		else
+		{
+
+		}
+
+	}
+
+}
+
 void ManualMode11SelStatus(int index)
 {
+
 	switch(index)
 	{
 		case Manual_AirPF:
@@ -168,6 +391,8 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(false);
 			mWindowYubaSwitchPtr->setVisible(false);
 			mWindowSterilizationPtr->setVisible(false);
+
+
 		}
 			break;
 		case Manual_Air:
@@ -1073,3 +1298,7 @@ static bool onButtonClick_ButtonHistorty2(ZKButton *pButton) {
     return false;
 }
 
+static bool onButtonClick_ButtonDropDown(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonDropDown !!!\n");
+    return false;
+}

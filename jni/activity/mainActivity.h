@@ -27,6 +27,12 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAIN_Button15    20037
+#define ID_MAIN_ButtonImmediaCommunicate    20036
+#define ID_MAIN_SubItemButton    20025
+#define ID_MAIN_SubItemTitle    20024
+#define ID_MAIN_ListView1    80001
+#define ID_MAIN_Button16    20038
 #define ID_MAIN_ButtonNetworkConnect    20035
 #define ID_MAIN_TextView43    50071
 #define ID_MAIN_Window24    110040
@@ -66,25 +72,6 @@
 #define ID_MAIN_Window19    110033
 #define ID_MAIN_WindowNavibar2    110032
 #define ID_MAIN_ButtonDropDown    20030
-#define ID_MAIN_Button14    20029
-#define ID_MAIN_TextView57    50058
-#define ID_MAIN_Window18    110031
-#define ID_MAIN_Button13    20028
-#define ID_MAIN_TextView56    50057
-#define ID_MAIN_Window17    110030
-#define ID_MAIN_Button12    20027
-#define ID_MAIN_TextView55    50056
-#define ID_MAIN_Window16    110029
-#define ID_MAIN_Button11    20026
-#define ID_MAIN_TextView54    50055
-#define ID_MAIN_Window15    110028
-#define ID_MAIN_Button10    20025
-#define ID_MAIN_TextView53    50054
-#define ID_MAIN_Window14    110027
-#define ID_MAIN_Button9    20024
-#define ID_MAIN_TextView52    50053
-#define ID_MAIN_Window12    110026
-#define ID_MAIN_TextView51    50052
 #define ID_MAIN_Button8    20023
 #define ID_MAIN_Button2    20022
 #define ID_MAIN_Window1    110025

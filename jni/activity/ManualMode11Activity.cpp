@@ -4,6 +4,8 @@
 #include "ManualMode11Activity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewWifiPtr;
+static ZKButton* mButtonDropDownPtr;
 static ZKTextView* mTextViewHumidityPtr;
 static ZKTextView* mTextView60Ptr;
 static ZKWindow* mWindow23Ptr;
@@ -250,6 +252,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_MANUALMODE11_ButtonDropDown, onButtonClick_ButtonDropDown,
     ID_MANUALMODE11_ButtonHistorty2, onButtonClick_ButtonHistorty2,
     ID_MANUALMODE11_ButtonManual2, onButtonClick_ButtonManual2,
     ID_MANUALMODE11_ButtonSmart2, onButtonClick_ButtonSmart2,
@@ -452,6 +455,8 @@ const char* ManualMode11Activity::getAppName() const{
 //TAG:onCreate
 void ManualMode11Activity::onCreate() {
 	Activity::onCreate();
+    mTextViewWifiPtr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewWifi);
+    mButtonDropDownPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonDropDown);
     mTextViewHumidityPtr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewHumidity);
     mTextView60Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView60);
     mWindow23Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_Window23);

@@ -3,6 +3,9 @@
 #include "entry/EasyUIContext.h"
 #include "utils/TimeHelper.h"
 #include "util/MachineStatus.h"
+#include "util/ProtocolDataRecv.h"
+
+
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -433,6 +436,29 @@ static bool onUI_Timer(int id){
 			break;
 	}
     return true;
+}
+
+static void RecvDataUpdate(const SProtocolRecvDate &Data)
+{
+	CommonRecvDate data = Data.CommonDate;
+
+	mTextView10Ptr = data.OutdoorTempData;
+	mTextView11Ptr = data.OutdoorHumdData;
+	mTextView12Ptr = data.OutdoorPM25Data;
+
+	mTextView19Ptr = data.IndoorHumdData;
+	mTextView22Ptr = data.IndoorPm25Data;
+	mTextView26Ptr = data.IndoorTempData;
+	mTextView30Ptr = data.IndoorFormaldehydeData;
+	mTextView33Ptr = data.IndoorCo2Data;
+
+	mIconViewWifiPtr->setVisible((data.WIFIStatus)?1 : 0);
+	mIconViewAirColdPtr->setVisible((data.AirCondiOutdoorDefrost)?1 : 0);
+	mIconViewHumdColdPtr->setVisible((data.AdjustHumdPreCondensation)?1 : 0);
+	mIconViewHumdDryPtr->setVisible((data.AdjustHumdDry)?1 : 0);
+	mIconViewSecurityPtr->setVisible((data.PreventMode)?1 : 0);
+	mTextView16Ptr->setVisible(data.NanoeXSwitch);
+
 }
 
 /**
@@ -1302,5 +1328,32 @@ static bool onButtonClick_ButtonSelect4(ZKButton *pButton) {
 static bool onButtonClick_ButtonNetworkConnect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNetworkConnect !!!\n");
     EASYUICONTEXT->openActivity("WifiSettingActivity", NULL);
+    return false;
+}
+static bool onButtonClick_Button16(ZKButton *pButton) {
+    LOGD(" ButtonClick Button16 !!!\n");
+    return false;
+}
+
+static int getListItemCount_ListView1(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListView1 !\n");
+    return 7;
+}
+
+static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListView1  !!!\n");
+}
+
+static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListView1  !!!\n");
+}
+
+static bool onButtonClick_ButtonImmediaCommunicate(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonImmediaCommunicate !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button15(ZKButton *pButton) {
+    LOGD(" ButtonClick Button15 !!!\n");
     return false;
 }

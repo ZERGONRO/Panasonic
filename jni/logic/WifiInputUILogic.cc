@@ -33,6 +33,9 @@
 */
 #define PASSWORK_DESCRIPTION_STRING 	"请输入密码"
 extern MyNetWorkingListener *nwlistener;
+
+
+static void onEditTextChanged_PassWordTextView(const std::string &text);
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -40,7 +43,7 @@ extern MyNetWorkingListener *nwlistener;
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{0,  6000}, //定时器id=0, 时间间隔6秒
-	//{1,  1000},
+	{1,  500},
 };
 
 /**
@@ -68,7 +71,7 @@ static void onUI_intent(const Intent *intentPtr) {
 static void onUI_show() {
 	mWindow1Ptr->setBackgroundPic("./ui/输入框.png");
 	mIconWifiPtr->setVisible(MACHINESTATUS->getwifistatus());
-	if(mPassWordTextViewPtr->getText().c_str() < 8 || mPassWordTextViewPtr->getText().c_str() > 64
+	if((mPassWordTextViewPtr->getText().c_str() < 8 || mPassWordTextViewPtr->getText().c_str() > 64)
 			|| (mPassWordTextViewPtr->getText().compare(PASSWORK_DESCRIPTION_STRING)) == 0)
 	{
 		int w, h;
@@ -119,12 +122,48 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  */
 static bool onUI_Timer(int id){
 	switch (id) {
+	case 0:
+	{
 
+	}
+	break;
+	case 1:
+	{
+		onEditTextChanged_PassWordTextView(mPassWordTextViewPtr->getText());
+	}
+	break;
 		default:
 			break;
 	}
     return true;
 }
+
+
+
+/**
+ * 有新的触摸事件时触发
+ * 参数：ev
+ *         新的触摸事件
+ * 返回值：true
+ *            表示该触摸事件在此被拦截，系统不再将此触摸事件传递到控件上
+ *         false
+ *            触摸事件将继续传递到控件上
+ */
+static bool onWifiInputUIActivityTouchEvent(const MotionEvent &ev) {
+    switch (ev.mActionStatus) {
+		case MotionEvent::E_ACTION_DOWN://触摸按下
+			//LOGD("时刻 = %ld 坐标  x = %d, y = %d", ev.mEventTime, ev.mX, ev.mY);
+			break;
+		case MotionEvent::E_ACTION_MOVE://触摸滑动
+			break;
+		case MotionEvent::E_ACTION_UP:  //触摸抬起
+			break;
+		default:
+			break;
+	}
+	return false;
+}
+
 
 static bool allHexCheck(char *text)
 {
@@ -151,8 +190,8 @@ static void onEditTextChanged_PassWordTextView(const std::string &text)
 	mPassWordTextView2Ptr->setText(text);
 	if((text.size() < 8 || text.size() > 64) || (text.compare(PASSWORK_DESCRIPTION_STRING) == 0))
 	{
-			mButtonConfirmPtr->setSelected(false);
-			mButton22Ptr->setSelected(false);
+		mButtonConfirmPtr->setSelected(false);
+		mButton22Ptr->setSelected(false);
 	}
 	else if(text.size() == 64)
 	{
@@ -189,30 +228,6 @@ static void onEditTextChanged_PassWordTextView(const std::string &text)
 	}
 }
 
-
-/**
- * 有新的触摸事件时触发
- * 参数：ev
- *         新的触摸事件
- * 返回值：true
- *            表示该触摸事件在此被拦截，系统不再将此触摸事件传递到控件上
- *         false
- *            触摸事件将继续传递到控件上
- */
-static bool onWifiInputUIActivityTouchEvent(const MotionEvent &ev) {
-    switch (ev.mActionStatus) {
-		case MotionEvent::E_ACTION_DOWN://触摸按下
-			//LOGD("时刻 = %ld 坐标  x = %d, y = %d", ev.mEventTime, ev.mX, ev.mY);
-			break;
-		case MotionEvent::E_ACTION_MOVE://触摸滑动
-			break;
-		case MotionEvent::E_ACTION_UP:  //触摸抬起
-			break;
-		default:
-			break;
-	}
-	return false;
-}
 static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack !!!\n");
     EASYUICONTEXT->goBack();

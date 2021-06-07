@@ -13,6 +13,7 @@
 
 #include "utils/Log.h"
 #include "control/ZKDigitalClock.h"
+#include "control/ZKPainter.h"
 #include "control/ZKButton.h"
 #include "control/ZKCircleBar.h"
 #include "control/ZKDiagram.h"
@@ -22,10 +23,16 @@
 #include "control/ZKTextView.h"
 #include "control/ZKSeekBar.h"
 #include "control/ZKEditText.h"
+#include "control/ZKPainter.h"
 #include "control/ZKVideoView.h"
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_HISTORYDATE_WindowTempHumdWaveMonth    110017
+#define ID_HISTORYDATE_Painter4    52004
+#define ID_HISTORYDATE_Painter3    52003
+#define ID_HISTORYDATE_Painter2    52002
+#define ID_HISTORYDATE_Painter1    52001
 #define ID_HISTORYDATE_TextViewHumidity    50158
 #define ID_HISTORYDATE_TextView103    50157
 #define ID_HISTORYDATE_Window23    110039
@@ -99,7 +106,6 @@
 #define ID_HISTORYDATE_TextView73    50102
 #define ID_HISTORYDATE_TextView72    50098
 #define ID_HISTORYDATE_TextView51    50077
-#define ID_HISTORYDATE_WindowCO2HumdWaveMonth    110017
 #define ID_HISTORYDATE_TextViewPicBad    50022
 #define ID_HISTORYDATE_TextViewPicMid    50021
 #define ID_HISTORYDATE_TextViewPicMidGood    50020
@@ -233,6 +239,7 @@ class HistoryDateActivity : public Activity,
                      public EasyUIContext::ITouchListener,
                      public ZKEditText::ITextChangeListener,
                      public ZKVideoView::IVideoPlayerMessageListener
+//					 public ZKPainter::ZKPainter
 {
 public:
     HistoryDateActivity();

@@ -5,6 +5,10 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton15Ptr;
+static ZKButton* mButtonImmediaCommunicatePtr;
+static ZKListView* mListView1Ptr;
+static ZKButton* mButton16Ptr;
 static ZKButton* mButtonNetworkConnectPtr;
 static ZKTextView* mTextView43Ptr;
 static ZKWindow* mWindow24Ptr;
@@ -44,23 +48,6 @@ static ZKButton* mButtonHomepage2Ptr;
 static ZKWindow* mWindow19Ptr;
 static ZKWindow* mWindowNavibar2Ptr;
 static ZKButton* mButtonDropDownPtr;
-static ZKButton* mButton14Ptr;
-static ZKTextView* mTextView57Ptr;
-static ZKWindow* mWindow18Ptr;
-static ZKButton* mButton13Ptr;
-static ZKTextView* mTextView56Ptr;
-static ZKWindow* mWindow17Ptr;
-static ZKButton* mButton12Ptr;
-static ZKTextView* mTextView55Ptr;
-static ZKWindow* mWindow16Ptr;
-static ZKButton* mButton11Ptr;
-static ZKTextView* mTextView54Ptr;
-static ZKWindow* mWindow15Ptr;
-static ZKButton* mButton10Ptr;
-static ZKTextView* mTextView53Ptr;
-static ZKButton* mButton9Ptr;
-static ZKTextView* mTextView52Ptr;
-static ZKTextView* mTextView51Ptr;
 static ZKButton* mButton8Ptr;
 static ZKButton* mButton2Ptr;
 static ZKWindow* mWindowModeSelect2Ptr;
@@ -72,7 +59,6 @@ static ZKTextView* mTextView49Ptr;
 static ZKTextView* mTextView48Ptr;
 static ZKTextView* mTextView47Ptr;
 static ZKTextView* mTextView40Ptr;
-static ZKWindow* mWindow14Ptr;
 static ZKTextView* mTextViewWifiPtr;
 static ZKButton* mButton1Ptr;
 static ZKButton* mButton7Ptr;
@@ -88,7 +74,6 @@ static ZKWindow* mWindow10Ptr;
 static ZKButton* mButton3Ptr;
 static ZKButton* mButtonOFFPtr;
 static ZKButton* mButtonONPtr;
-static ZKWindow* mWindow12Ptr;
 static ZKTextView* mTextView35Ptr;
 static ZKTextView* mTextView34Ptr;
 static ZKTextView* mTextView33Ptr;
@@ -201,6 +186,9 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_MAIN_Button15, onButtonClick_Button15,
+    ID_MAIN_ButtonImmediaCommunicate, onButtonClick_ButtonImmediaCommunicate,
+    ID_MAIN_Button16, onButtonClick_Button16,
     ID_MAIN_ButtonNetworkConnect, onButtonClick_ButtonNetworkConnect,
     ID_MAIN_ButtonSelect4, onButtonClick_ButtonSelect4,
     ID_MAIN_ButtonSelect5, onButtonClick_ButtonSelect5,
@@ -212,12 +200,6 @@ static S_ButtonCallback sButtonCallbackTab[] = {
     ID_MAIN_ButtonSmart2, onButtonClick_ButtonSmart2,
     ID_MAIN_ButtonHomepage2, onButtonClick_ButtonHomepage2,
     ID_MAIN_ButtonDropDown, onButtonClick_ButtonDropDown,
-    ID_MAIN_Button14, onButtonClick_Button14,
-    ID_MAIN_Button13, onButtonClick_Button13,
-    ID_MAIN_Button12, onButtonClick_Button12,
-    ID_MAIN_Button11, onButtonClick_Button11,
-    ID_MAIN_Button10, onButtonClick_Button10,
-    ID_MAIN_Button9, onButtonClick_Button9,
     ID_MAIN_Button8, onButtonClick_Button8,
     ID_MAIN_Button2, onButtonClick_Button2,
     ID_MAIN_Button1, onButtonClick_Button1,
@@ -261,6 +243,7 @@ typedef struct {
 }S_ListViewFunctionsCallback;
 /*TAG:ListViewFunctionsCallback*/
 static S_ListViewFunctionsCallback SListViewFunctionsCallbackTab[] = {
+    ID_MAIN_ListView1, getListItemCount_ListView1, obtainListItemData_ListView1, onListItemClick_ListView1,
 };
 
 
@@ -323,6 +306,10 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mButton15Ptr = (ZKButton*)findControlByID(ID_MAIN_Button15);
+    mButtonImmediaCommunicatePtr = (ZKButton*)findControlByID(ID_MAIN_ButtonImmediaCommunicate);
+    mListView1Ptr = (ZKListView*)findControlByID(ID_MAIN_ListView1);if(mListView1Ptr!= NULL){mListView1Ptr->setListAdapter(this);mListView1Ptr->setItemClickListener(this);}
+    mButton16Ptr = (ZKButton*)findControlByID(ID_MAIN_Button16);
     mButtonNetworkConnectPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonNetworkConnect);
     mTextView43Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView43);
     mWindow24Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window24);
@@ -362,23 +349,6 @@ void mainActivity::onCreate() {
     mWindow19Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window19);
     mWindowNavibar2Ptr = (ZKWindow*)findControlByID(ID_MAIN_WindowNavibar2);
     mButtonDropDownPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonDropDown);
-    mButton14Ptr = (ZKButton*)findControlByID(ID_MAIN_Button14);
-    mTextView57Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView57);
-    mWindow18Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window18);
-    mButton13Ptr = (ZKButton*)findControlByID(ID_MAIN_Button13);
-    mTextView56Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView56);
-    mWindow17Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window17);
-    mButton12Ptr = (ZKButton*)findControlByID(ID_MAIN_Button12);
-    mTextView55Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView55);
-    mWindow16Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window16);
-    mButton11Ptr = (ZKButton*)findControlByID(ID_MAIN_Button11);
-    mTextView54Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView54);
-    mWindow15Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window15);
-    mButton10Ptr = (ZKButton*)findControlByID(ID_MAIN_Button10);
-    mTextView53Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView53);
-    mButton9Ptr = (ZKButton*)findControlByID(ID_MAIN_Button9);
-    mTextView52Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView52);
-    mTextView51Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView51);
     mButton8Ptr = (ZKButton*)findControlByID(ID_MAIN_Button8);
     mButton2Ptr = (ZKButton*)findControlByID(ID_MAIN_Button2);
     mWindowModeSelect2Ptr = (ZKWindow*)findControlByID(ID_MAIN_WindowModeSelect2);
@@ -390,7 +360,6 @@ void mainActivity::onCreate() {
     mTextView48Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView48);
     mTextView47Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView47);
     mTextView40Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView40);
-    mWindow14Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window14);
     mTextViewWifiPtr = (ZKTextView*)findControlByID(ID_MAIN_TextViewWifi);
     mButton1Ptr = (ZKButton*)findControlByID(ID_MAIN_Button1);
     mButton7Ptr = (ZKButton*)findControlByID(ID_MAIN_Button7);
@@ -406,7 +375,6 @@ void mainActivity::onCreate() {
     mButton3Ptr = (ZKButton*)findControlByID(ID_MAIN_Button3);
     mButtonOFFPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonOFF);
     mButtonONPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonON);
-    mWindow12Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window12);
     mTextView35Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView35);
     mTextView34Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView34);
     mTextView33Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView33);

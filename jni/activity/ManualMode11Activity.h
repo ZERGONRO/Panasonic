@@ -26,6 +26,8 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MANUALMODE11_TextViewWifi    50040
+#define ID_MANUALMODE11_ButtonDropDown    20123
 #define ID_MANUALMODE11_TextViewHumidity    50069
 #define ID_MANUALMODE11_TextView60    50068
 #define ID_MANUALMODE11_Window23    110039

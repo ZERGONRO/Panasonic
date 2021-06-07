@@ -578,6 +578,7 @@ bool WifiInputUIActivity::onTouchEvent(const MotionEvent &ev) {
 
 void WifiInputUIActivity::onTextChanged(ZKTextView *pTextView, const std::string &text) {
     int tablen = sizeof(SEditTextInputCallbackTab) / sizeof(S_EditTextInputCallback);
+    LOGD("WifiInputUIActivity::onTextChanged  \n");
     for (int i = 0; i < tablen; ++i) {
         if (SEditTextInputCallbackTab[i].id == pTextView->getID()) {
             SEditTextInputCallbackTab[i].onEditTextChangedCallback(text);

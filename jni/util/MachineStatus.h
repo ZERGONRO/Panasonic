@@ -30,6 +30,7 @@ typedef struct _EnvironmentDate_t{
 	float CO2;
 	int bl;
 	int vol;
+	int envindex;
 }EnvironmentDate_t;
 enum {
 	STANDARD_MODE,
@@ -81,7 +82,8 @@ public:
 
 	int getenvmode();
 	void setenvmode();
-
+	int getenvironmentindex();
+	void setenvironmentindex(int index);
 
 	void setwifissid(std::string ssid);
 	void setwifipasswd(std::string ssid_passwd);

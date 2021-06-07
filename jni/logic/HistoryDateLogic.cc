@@ -1,5 +1,7 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "uart/CommDef.h"
+//#include "ZKPainter.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -35,6 +37,22 @@ static int HistoryMode = History_TempMode;
 
 void DisPlaySelectModeStatus(int index);
 
+SZKPoint pointX0[] = {
+	{-5 , 288},{0 , 263},{90, 96},{180 , 48},{270, 96},{360, 144},{450, 230},{540, 15},{630, 188},{720, 248},{750, 288}
+};
+
+SZKPoint pointX1[] = {
+	{-5 , 288},{0 , 80},{90, 134},{180 , 42},{270, 253},{360, 144},{450, 86},{540, 106},{630, 13},{720, 248},{750, 288}
+};
+
+SZKPoint pointX2[] = {
+	{-5 , 288},{0 , 159},{90, 64},{180 , 133},{270, 78},{360, 100},{450, 144},{540, 18},{630, 240},{720, 277},{750, 288}
+};
+
+SZKPoint pointX3[] = {
+	{-5 , 288},{0 , 277},{90, 12},{180 , 26},{270, 143},{360, 206},{450, 78},{540, 169},{630, 204},{720, 183},{750, 288}
+};
+
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -45,11 +63,48 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{1,  1000},
 };
 
+void DispLineCharFunc()
+{
+
+	mPainterXPtr[0]->setLineWidth(2);
+	mPainterXPtr[0]->setSourceColor(0x88cffa);
+	mPainterXPtr[0]->drawLines(pointX0, TABLESIZE(pointX0));
+
+	mPainterXPtr[1]->setLineWidth(2);
+	mPainterXPtr[1]->setSourceColor(0x88cffa);
+	mPainterXPtr[1]->drawLines(pointX1, TABLESIZE(pointX1));
+
+	mPainterXPtr[2]->setLineWidth(2);
+	mPainterXPtr[2]->setSourceColor(0x88cffa);
+	mPainterXPtr[2]->drawLines(pointX2, TABLESIZE(pointX2));
+
+	mPainterXPtr[3]->setLineWidth(2);
+	mPainterXPtr[3]->setSourceColor(0x88cffa);
+	mPainterXPtr[3]->drawLines(pointX3, TABLESIZE(pointX3));
+}
+
+
+
 /**
  * 当界面构造时触发
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
+//	 SZKPoint points1[] = {
+//		    {-5 , 288},
+//			{0 , 263},
+//			{90, 96},
+//			{180 , 48},
+//			{270, 96},
+//			{360, 144},
+//			{450, 230},
+//			{540, 15},
+//			{630, 188},
+//			{720, 248},
+//			{750, 288},
+////			{50 , 150}
+//	    };
+//	DispLineCharFunc();
 
 }
 
@@ -76,7 +131,9 @@ static void onUI_show() {
 	mTextViewSmart2Ptr->setSelected(false);
 	mTextViewManual2Ptr->setSelected(false);
 	mTextViewHistory2Ptr->setSelected(true);
-
+	mButtonDayPtr->setSelected(true);
+	mButtonWeekPtr->setSelected(false);
+	mButtonMonthPtr->setSelected(false);
 
 	DisPlaySelectModeStatus(HistoryMode);
 
@@ -90,12 +147,10 @@ static void onUI_show() {
 //	mWindowCO2PM25Ptr->setVisible(false);
 //	mWindowFormalDedhyPtr->setVisible(false);
 
-	mButtonDayPtr->setSelected(true);
-	mButtonWeekPtr->setSelected(false);
-	mButtonMonthPtr->setSelected(false);
+
 //	mWindowTempHumdWavePtr->setVisible(true);
 //	mWindowCO2PM25JQPtr->setVisible(false);
-//	mWindowCO2HumdWaveMonthPtr->setVisible(false);
+//	mWindowTempHumdWaveMonthPtr->setVisible(false);
 //	mWindowCO2PM25JQMonthPtr->setVisible(false);
 }
 
@@ -141,6 +196,7 @@ static bool onUI_Timer(int id){
 
 void DisPlaySelectModeStatus(int index)
 {
+	int linechar_index;
 	switch(index)
 	{
 		case History_TempMode:
@@ -150,24 +206,32 @@ void DisPlaySelectModeStatus(int index)
 			mWindowCO2PM25Ptr->setVisible(false);
 			mWindowFormalDedhyPtr->setVisible(false);
 
-			if(mButtonDayPtr->isSelected())
+			if(mButtonDayPtr->isSelected() || mButtonWeekPtr->isSelected())
 			{
+				linechar_index = 0;
 				mWindowTempHumdWavePtr->setVisible(true);
 				mWindowCO2PM25JQPtr->setVisible(false);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
-			}
-			else if(mButtonWeekPtr->isSelected())
-			{
-				//The text is different between the day and week
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX0, TABLESIZE(pointX0));
 			}
 			else
 			{
+				linechar_index = 2;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(false);
-				mWindowCO2HumdWaveMonthPtr->setVisible(true);
+				mWindowTempHumdWaveMonthPtr->setVisible(true);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX2, TABLESIZE(pointX2));
 			}
+
+
 
 			mTextView6Ptr->setVisible(true);
 			mTextView7Ptr->setVisible(true);
@@ -208,23 +272,29 @@ void DisPlaySelectModeStatus(int index)
 			mWindowCO2PM25Ptr->setVisible(false);
 			mWindowFormalDedhyPtr->setVisible(false);
 
-			if(mButtonDayPtr->isSelected())
+			if(mButtonDayPtr->isSelected() || mButtonWeekPtr->isSelected())
 			{
+				linechar_index = 0;
 				mWindowTempHumdWavePtr->setVisible(true);
 				mWindowCO2PM25JQPtr->setVisible(false);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
-			}
-			else if(mButtonWeekPtr->isSelected())
-			{
-				//The text is different between the day and week
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX0, TABLESIZE(pointX0));
 			}
 			else
 			{
+				linechar_index = 2;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(false);
-				mWindowCO2HumdWaveMonthPtr->setVisible(true);
+				mWindowTempHumdWaveMonthPtr->setVisible(true);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX2, TABLESIZE(pointX2));
 			}
 
 			mTextView6Ptr->setVisible(true);
@@ -272,23 +342,29 @@ void DisPlaySelectModeStatus(int index)
 
 			//顶部的状态“优良中差”
 
-			if(mButtonDayPtr->isSelected())
+			if(mButtonDayPtr->isSelected() || mButtonWeekPtr->isSelected())
 			{
+				linechar_index = 1;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(true);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
-			}
-			else if(mButtonWeekPtr->isSelected())
-			{
-				//The text is different between the day and week
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
 			}
 			else
 			{
+				linechar_index = 3;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(false);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(true);
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
 			}
 
 			mTextView26Ptr->setVisible(false);
@@ -332,23 +408,29 @@ void DisPlaySelectModeStatus(int index)
 
 			//顶部的状态“优良中差”
 
-			if(mButtonDayPtr->isSelected())
+			if(mButtonDayPtr->isSelected() || mButtonWeekPtr->isSelected())
 			{
+				linechar_index = 1;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(true);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
-			}
-			else if(mButtonWeekPtr->isSelected())
-			{
-				//The text is different between the day and week
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
 			}
 			else
 			{
+				linechar_index = 3;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(false);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(true);
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
 			}
 
 			mTextView26Ptr->setVisible(true);
@@ -396,23 +478,29 @@ void DisPlaySelectModeStatus(int index)
 
 			mTextViewmgm3Ptr->setVisible(true);
 
-			if(mButtonDayPtr->isSelected())
+			if(mButtonDayPtr->isSelected() || mButtonWeekPtr->isSelected())
 			{
+				linechar_index = 1;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(true);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
-			}
-			else if(mButtonWeekPtr->isSelected())
-			{
-				//The text is different between the day and week
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
 			}
 			else
 			{
+				linechar_index = 3;
 				mWindowTempHumdWavePtr->setVisible(false);
 				mWindowCO2PM25JQPtr->setVisible(false);
-				mWindowCO2HumdWaveMonthPtr->setVisible(false);
+				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(true);
+
+				mPainterXPtr[linechar_index]->setLineWidth(2);
+				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
 			}
 			mTextViewppmPtr->setVisible(false);
 			mTextViewugm3Ptr->setVisible(false);
@@ -437,6 +525,7 @@ void DisPlaySelectModeStatus(int index)
 		default:
 			break;
 	}
+
 
 }
 
@@ -555,18 +644,18 @@ static bool onButtonClick_ButtonDay(ZKButton *pButton) {
         {
         	mWindowTempHumdWavePtr->setVisible(true);
         	mWindowCO2PM25JQPtr->setVisible(false);
-        	mWindowCO2HumdWaveMonthPtr->setVisible(false);
+        	mWindowTempHumdWaveMonthPtr->setVisible(false);
 			mWindowCO2PM25JQMonthPtr->setVisible(false);
         }
     	else if((HistoryMode == History_CO2Mode) || (HistoryMode == History_PM25Mode) || (HistoryMode == History_JQMode))
         {
         	mWindowTempHumdWavePtr->setVisible(false);
     		mWindowCO2PM25JQPtr->setVisible(true);
-    		mWindowCO2HumdWaveMonthPtr->setVisible(false);
+    		mWindowTempHumdWaveMonthPtr->setVisible(false);
 			mWindowCO2PM25JQMonthPtr->setVisible(false);
         }
     }
-
+    DisPlaySelectModeStatus(HistoryMode);
     return false;
 }
 
@@ -586,17 +675,18 @@ static bool onButtonClick_ButtonWeek(ZKButton *pButton) {
 		{
 			mWindowTempHumdWavePtr->setVisible(true);
 			mWindowCO2PM25JQPtr->setVisible(false);
-			mWindowCO2HumdWaveMonthPtr->setVisible(false);
+			mWindowTempHumdWaveMonthPtr->setVisible(false);
 			mWindowCO2PM25JQMonthPtr->setVisible(false);
 		}
 		else if((HistoryMode == History_CO2Mode) || (HistoryMode == History_PM25Mode) || (HistoryMode == History_JQMode))
 		{
 			mWindowTempHumdWavePtr->setVisible(false);
 			mWindowCO2PM25JQPtr->setVisible(true);
-			mWindowCO2HumdWaveMonthPtr->setVisible(false);
+			mWindowTempHumdWaveMonthPtr->setVisible(false);
 			mWindowCO2PM25JQMonthPtr->setVisible(false);
 		}
 	}
+    DisPlaySelectModeStatus(HistoryMode);
     return false;
 }
 
@@ -616,17 +706,18 @@ static bool onButtonClick_ButtonMonth(ZKButton *pButton) {
 		{
 			mWindowTempHumdWavePtr->setVisible(false);
 			mWindowCO2PM25JQPtr->setVisible(false);
-			mWindowCO2HumdWaveMonthPtr->setVisible(true);
+			mWindowTempHumdWaveMonthPtr->setVisible(true);
 			mWindowCO2PM25JQMonthPtr->setVisible(false);
 		}
 		else if((HistoryMode == History_CO2Mode) || (HistoryMode == History_PM25Mode) || (HistoryMode == History_JQMode))
 		{
 			mWindowTempHumdWavePtr->setVisible(false);
 			mWindowCO2PM25JQPtr->setVisible(false);
-			mWindowCO2HumdWaveMonthPtr->setVisible(false);
+			mWindowTempHumdWaveMonthPtr->setVisible(false);
 			mWindowCO2PM25JQMonthPtr->setVisible(true);
 		}
    	}
+    DisPlaySelectModeStatus(HistoryMode);
     return false;
 }
 

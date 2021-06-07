@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -77,6 +78,8 @@ static void onUI_intent(const Intent *intentPtr) {
 //    	EnvironmentSelVector.push_back(std::to_string(gEnvironmentSelList[i]));
 //    }
     setEnvSelList();
+    mListView_EnvPtr->setSelected(MACHINESTATUS->getenvironmentindex());
+    mListView_EnvPtr->refreshListView();
     mWindowBGPtr->setAlpha(150);
 }
 
@@ -199,6 +202,8 @@ static void showListviewItems(MiddleItemDisplayMode_e eDispMode, int selectIdx, 
 	pMaxSizeItem->setVisible(false);
 	pMinSizeItem->setVisible(false);
 
+	MACHINESTATUS->setenvironmentindex(itemIdx);
+//	LOGD("itemIdx is : %d\n", itemIdx);
 	switch (eDispMode)
 	{
 		case E_CENTER_MODE:
@@ -329,6 +334,9 @@ static void obtainListItemData_ListView_Env(ZKListView *pListView,ZKListView::ZK
 		};
 	int focusIdx;
 	std::string focusString;
+	if(index > (EnvironmentSelVector.size() - 1))
+		index = index - EnvironmentSelVector.size();
+
 	setListViewItems(pListView, index, focusIdx, focusString, listItems, EnvironmentSelVector);
 }
 

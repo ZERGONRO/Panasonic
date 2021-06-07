@@ -4,6 +4,11 @@
 #include "HistoryDateActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKWindow* mWindowTempHumdWaveMonthPtr;
+static ZKPainter* mPainter4Ptr;
+static ZKPainter* mPainter3Ptr;
+static ZKPainter* mPainter2Ptr;
+static ZKPainter* mPainter1Ptr;
 static ZKTextView* mTextViewHumidityPtr;
 static ZKTextView* mTextView103Ptr;
 static ZKWindow* mWindow23Ptr;
@@ -77,7 +82,6 @@ static ZKTextView* mTextView74Ptr;
 static ZKTextView* mTextView73Ptr;
 static ZKTextView* mTextView72Ptr;
 static ZKTextView* mTextView51Ptr;
-static ZKWindow* mWindowCO2HumdWaveMonthPtr;
 static ZKTextView* mTextViewPicBadPtr;
 static ZKTextView* mTextViewPicMidPtr;
 static ZKTextView* mTextViewPicMidGoodPtr;
@@ -202,7 +206,13 @@ static ZKButton* mButtonHumdPtr;
 static ZKButton* mButtonTempPtr;
 static ZKWindow* mWindow2Ptr;
 static HistoryDateActivity* mActivityPtr;
+static ZKPainter* mPainterXPtr[4];
+//static SZKPoint pointX[4][];
+//SZKPoint pointX[4][];
 
+
+
+//SZKPoint point1[];
 /*register activity*/
 REGISTER_ACTIVITY(HistoryDateActivity);
 
@@ -213,6 +223,12 @@ enum HistoryMode_t{
 	History_PM25Mode,
 	History_JQMode,
 };
+
+typedef struct {
+	float x;
+	float y;
+}MPPOINT;
+
 
 typedef struct {
 	int id; // 定时器ID ， 不能重复
@@ -341,6 +357,11 @@ const char* HistoryDateActivity::getAppName() const{
 //TAG:onCreate
 void HistoryDateActivity::onCreate() {
 	Activity::onCreate();
+    mWindowTempHumdWaveMonthPtr = (ZKWindow*)findControlByID(ID_HISTORYDATE_WindowTempHumdWaveMonth);
+    mPainter4Ptr = (ZKPainter*)findControlByID(ID_HISTORYDATE_Painter4);
+    mPainter3Ptr = (ZKPainter*)findControlByID(ID_HISTORYDATE_Painter3);
+    mPainter2Ptr = (ZKPainter*)findControlByID(ID_HISTORYDATE_Painter2);
+    mPainter1Ptr = (ZKPainter*)findControlByID(ID_HISTORYDATE_Painter1);
     mTextViewHumidityPtr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextViewHumidity);
     mTextView103Ptr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextView103);
     mWindow23Ptr = (ZKWindow*)findControlByID(ID_HISTORYDATE_Window23);
@@ -414,7 +435,6 @@ void HistoryDateActivity::onCreate() {
     mTextView73Ptr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextView73);
     mTextView72Ptr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextView72);
     mTextView51Ptr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextView51);
-    mWindowCO2HumdWaveMonthPtr = (ZKWindow*)findControlByID(ID_HISTORYDATE_WindowCO2HumdWaveMonth);
     mTextViewPicBadPtr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextViewPicBad);
     mTextViewPicMidPtr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextViewPicMid);
     mTextViewPicMidGoodPtr = (ZKTextView*)findControlByID(ID_HISTORYDATE_TextViewPicMidGood);
@@ -538,6 +558,13 @@ void HistoryDateActivity::onCreate() {
     mButtonHumdPtr = (ZKButton*)findControlByID(ID_HISTORYDATE_ButtonHumd);
     mButtonTempPtr = (ZKButton*)findControlByID(ID_HISTORYDATE_ButtonTemp);
     mWindow2Ptr = (ZKWindow*)findControlByID(ID_HISTORYDATE_Window2);
+    mPainterXPtr[0] = mPainter1Ptr;
+    mPainterXPtr[1] = mPainter2Ptr;
+    mPainterXPtr[2] = mPainter3Ptr;
+    mPainterXPtr[3] = mPainter4Ptr;
+
+
+
 	mActivityPtr = this;
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 
