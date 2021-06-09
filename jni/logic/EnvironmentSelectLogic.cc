@@ -57,6 +57,7 @@ void setEnvSelList()
 	EnvironmentSelVector.push_back("阳台");
 	EnvironmentSelVector.push_back("储物间");
 	EnvironmentSelVector.push_back("卫生间");
+
 }
 /**
  * 当界面构造时触发

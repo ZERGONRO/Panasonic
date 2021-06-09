@@ -45,7 +45,7 @@ static bool NtpDateFlag = false;
 static bool ButtonModeSelectStatus = false;
 static pthread_t g_MovePicPosThread = 0;
 static std::vector<WifiInfo_t *> *WifiInfo;
-
+static std::vector<std::string > EnvInfoVector;
 
 
 static Mutex pLock;
@@ -57,6 +57,19 @@ extern void hidestatusbars();
 
 //extern MyNetWorkingListener *nwlistener;
 
+static EnvInfo EnvInfoData[] = {
+		{"全热交换", false},
+		{"新风换气", false},
+		{"调湿自动40%-60%", false},
+		{"空调湿度调节26℃", false},
+		{"净化", false},
+		{"除味", false},
+		{"空调", false},
+		{"浴霸", false},
+		{"除湿", false}
+};
+
+
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -67,6 +80,17 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 //	{1,  1000},
 	{2,  1000},
 };
+
+void SetEnvInfoListliew()
+{
+	EnvInfoVector.push_back("全热交换");
+	EnvInfoVector.push_back("新风换气");
+	EnvInfoVector.push_back("调湿自动\n40%-60%");
+	EnvInfoVector.push_back("空调湿度\n调节26℃");
+	EnvInfoVector.push_back("净化");
+	EnvInfoVector.push_back("除味");
+	EnvInfoVector.push_back("空调");
+}
 
 void SetEnvName(std::string focusindex)
 {
@@ -335,6 +359,7 @@ static void onUI_show() {
 //	mTextView31Ptr->setText(std::to_string(atoi(mTextView31Ptr->getText().c_str())));
 //	mTextView48Ptr->setText(std::to_string(atoi(mTextView48Ptr->getText().c_str())));
 
+	mListView1Ptr->setDecRatio(0.7);
 	mIconViewWifiPtr->setVisible(nwlistener->IsConnected());
 //	LOGD("mIconViewWifiPtr->setVisible(nwlistener->IsConnected()); !!!\n");
 //	mIconViewWifiPtr->setVisible(true);
@@ -566,93 +591,19 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
 }
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
-    EASYUICONTEXT->openActivity("EnvironmentSelectActivity", NULL);
+    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
+//    mWindowEnvBGDispPtr->setVisible(true);
     return false;
 }
 
 static bool onButtonClick_Button8(ZKButton *pButton) {
     LOGD(" ButtonClick Button8 !!!\n");
-    EASYUICONTEXT->openActivity("EnvironmentSelectActivity", NULL);
+//    mWindowEnvBGDispPtr->setVisible(true);
+    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
     return false;
 }
 
-static bool onButtonClick_Button9(ZKButton *pButton) {
-    LOGD(" ButtonClick Button9 !!!\n");
-    if(pButton->isSelected())
-    {
-    	pButton->setSelected(false);
-    }
-    else
-    {
-    	pButton->setSelected(true);
-    }
-    return false;
-}
 
-static bool onButtonClick_Button10(ZKButton *pButton) {
-    LOGD(" ButtonClick Button10 !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
-
-static bool onButtonClick_Button11(ZKButton *pButton) {
-    LOGD(" ButtonClick Button11 !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
-
-static bool onButtonClick_Button12(ZKButton *pButton) {
-    LOGD(" ButtonClick Button12 !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
-
-static bool onButtonClick_Button13(ZKButton *pButton) {
-    LOGD(" ButtonClick Button13 !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
-
-static bool onButtonClick_Button14(ZKButton *pButton) {
-    LOGD(" ButtonClick Button14 !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
 static bool onButtonClick_ButtonDropDown(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDropDown !!!\n");
 //    EASYUICONTEXT->showStatusBar();
@@ -1337,15 +1288,21 @@ static bool onButtonClick_Button16(ZKButton *pButton) {
 
 static int getListItemCount_ListView1(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView1 !\n");
-    return 7;
+    return sizeof(EnvInfoData) / sizeof(EnvInfo);
 }
 
 static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
     //LOGD(" obtainListItemData_ ListView1  !!!\n");
+	ZKListView::ZKListSubItem* psubText = pListItem->findSubItemByID(ID_MAIN_SubItemTitle);
+	ZKListView::ZKListSubItem* psubButton = pListItem->findSubItemByID(ID_MAIN_SubItemButton);
+	psubText->setText(EnvInfoData[index].maintext);
+	psubButton->setSelected(EnvInfoData[index].buttonstatus);
 }
 
 static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) {
     //LOGD(" onListItemClick_ ListView1  !!!\n");
+	EnvInfoData[index].buttonstatus = !EnvInfoData[index].buttonstatus;
+	mListView1Ptr->refreshListView();
 }
 
 static bool onButtonClick_ButtonImmediaCommunicate(ZKButton *pButton) {
@@ -1353,7 +1310,40 @@ static bool onButtonClick_ButtonImmediaCommunicate(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button15(ZKButton *pButton) {
-    LOGD(" ButtonClick Button15 !!!\n");
+static bool onButtonClick_ButtonEmergencyCall(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonEmergencyCall !!!\n");
+    return false;
+}
+static bool onButtonClick_ButtonOneKeyAdjust(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonOneKeyAdjust !!!\n");
+    return false;
+}
+
+
+static bool onButtonClick_Button9(ZKButton *pButton) {
+    LOGD(" ButtonClick Button9 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonBack(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonBack !!!\n");
+    return false;
+}
+
+static int getListItemCount_ListView2(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListView2 !\n");
+    return 12;
+}
+
+static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListView2  !!!\n");
+}
+
+static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListView2  !!!\n");
+}
+
+static bool onButtonClick_Button10(ZKButton *pButton) {
+    LOGD(" ButtonClick Button10 !!!\n");
     return false;
 }

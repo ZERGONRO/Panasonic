@@ -5,10 +5,10 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
-static ZKButton* mButton15Ptr;
+static ZKButton* mButtonOneKeyAdjustPtr;
+static ZKButton* mButtonEmergencyCallPtr;
 static ZKButton* mButtonImmediaCommunicatePtr;
 static ZKListView* mListView1Ptr;
-static ZKButton* mButton16Ptr;
 static ZKButton* mButtonNetworkConnectPtr;
 static ZKTextView* mTextView43Ptr;
 static ZKWindow* mWindow24Ptr;
@@ -151,6 +151,13 @@ MyNetWorkingListener *nwlistener = NULL;
 
 //static ZKWindow* mWindowsSelectMode[5] = {mWindowHumidityPtr, mWindowPM25Ptr, mWindowTempPtr, mWindowCO2Ptr, mWindowFormaldehydePtr};
 //static ZKButton* mButtonModeSelect[5] = {mButtonSelect1Ptr, mButtonSelect2Ptr, mButtonSelect3Ptr, mButtonSelect4Ptr, mButtonSelect5Ptr};
+typedef struct {
+	const char* maintext;
+	bool buttonstatus;
+}EnvInfo;
+
+
+
 
 /*register activity*/
 REGISTER_ACTIVITY(mainActivity);
@@ -186,9 +193,9 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
-    ID_MAIN_Button15, onButtonClick_Button15,
+    ID_MAIN_ButtonOneKeyAdjust, onButtonClick_ButtonOneKeyAdjust,
+    ID_MAIN_ButtonEmergencyCall, onButtonClick_ButtonEmergencyCall,
     ID_MAIN_ButtonImmediaCommunicate, onButtonClick_ButtonImmediaCommunicate,
-    ID_MAIN_Button16, onButtonClick_Button16,
     ID_MAIN_ButtonNetworkConnect, onButtonClick_ButtonNetworkConnect,
     ID_MAIN_ButtonSelect4, onButtonClick_ButtonSelect4,
     ID_MAIN_ButtonSelect5, onButtonClick_ButtonSelect5,
@@ -306,10 +313,10 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
-    mButton15Ptr = (ZKButton*)findControlByID(ID_MAIN_Button15);
+    mButtonOneKeyAdjustPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonOneKeyAdjust);
+    mButtonEmergencyCallPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonEmergencyCall);
     mButtonImmediaCommunicatePtr = (ZKButton*)findControlByID(ID_MAIN_ButtonImmediaCommunicate);
     mListView1Ptr = (ZKListView*)findControlByID(ID_MAIN_ListView1);if(mListView1Ptr!= NULL){mListView1Ptr->setListAdapter(this);mListView1Ptr->setItemClickListener(this);}
-    mButton16Ptr = (ZKButton*)findControlByID(ID_MAIN_Button16);
     mButtonNetworkConnectPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonNetworkConnect);
     mTextView43Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView43);
     mWindow24Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window24);
