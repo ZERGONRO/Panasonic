@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include "system/Thread.h"
+#include "activity/EnvSettingActivity.h"
 
 //namespace std{
 
@@ -91,6 +92,9 @@ public:
 	void setwifistatus(int status);
 	char *getwifissid();
 	char *getwifipasswd();
+
+
+	std::vector<SpaceInfo *> getEnvSpaceInfo();
 protected:
 
 private:

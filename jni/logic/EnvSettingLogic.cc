@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include <pthread.h>
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -30,8 +31,19 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
+static char *text_name;
+static char *pic_name;
+static int EnvDevSetting_index;
+static int DevListType;
 static Mutex lLock;
-static std::vector<SpaceInfo *> EnvSettingVector;
+static std::vector<DeviceInfo *> *EnvSettingVector[10];
+static std::vector<SpaceInfo *> *EnvSettingVectorList;			//用指针直接操作，无需中间介质（EnvSettingVector）代替操作
+static std::vector<DeviceInfo *> *DevSettingVectorList;
+static std::vector<IOTDevInfo *> *IOTDevSettingVectorList;
+static std::vector<DeviceInfo *> BedroomDevSettingVector, LivingroomDevSettingVector, StudyDevSettingVector, KitcheenDevSettingVector, SecRoomDevSettingVector, BathRoomDevSettingVector;
+static std::vector<IOTDevInfo *> AllDevListVector, LifeSmallDevListVector, BigDevListVector, KitcheenDevListVector, HomeDevListVector;
+
+static bool pushback_flag = true;
 
 static SpaceInfo SpaceInfoList[] = {
 		{"卧室", "./ui/图标-天气-大雪-56.png", false},
@@ -43,23 +55,103 @@ static SpaceInfo SpaceInfoList[] = {
 		{"自定义", "", false}
 };
 
-static DeviceInfo DeviceInfoDataList[] = {
-		{"全热交换器", false},
-		{"空   调", false},
-		{"浴   霸", false},
-		{"空气净化器", false},
-//		{"./ui/智能模式-按钮-+-dis.png", false}
-		{"+", false}
+static IOTDevInfo IOTDevInfoList[] = {
+		{"空气净化器", "./ui/图标-天气-大雪-56.png"},
+		{"空  调", "./ui/图标-天气-晴-32.png"},
+		{"全热交换器", "./ui/图标-天气-大雪-56.png"},
+		{"除湿器", "./ui/图标-天气-晴-32.png"},
+		{"浴  霸", "./ui/图标-天气-大雪-56.png"},
+		{"油烟机", "./ui/图标-天气-晴-32.png"},
+		{"冰箱", "./ui/图标-天气-大雪-56.png"},
+		{"洗衣机", "./ui/图标-天气-晴-32.png"}
 };
 
-typedef struct Link {
-//	char b[];
-	SpaceInfo text;
-	struct Link *next;
-}Link_t;
+static DeviceInfo DeviceInfoDataList[] = {
+		"全热交换器",
+		"空   调",
+		"浴   霸",
+		"空气净化器",
+//		{"./ui/智能模式-按钮-+-dis.png", false}
+		"+"
+};
+
+static IOTDevInfo LifeSmallDevInfoList[] = {
+		{"全热交换器", "./ui/图标-天气-大雪-56.png"},
+		{"除湿器", "./ui/图标-天气-晴-32.png"}
+};
+
+static IOTDevInfo BigDevInfoList[] = {
+		{"空气净化器", "./ui/图标-天气-大雪-56.png"},
+		{"空   调", "./ui/图标-天气-晴-32.png"}
+};
+
+static IOTDevInfo KitcheenDevInfoList[] = {
+		{"油烟机", "./ui/图标-天气-晴-32.png"},
+		{"冰  箱", "./ui/图标-天气-大雪-56.png"}
+};
+
+static IOTDevInfo HomecheenDevInfoList[] = {
+		{"洗衣机", "./ui/图标-天气-晴-32.png"},
+		{"浴   霸", "./ui/图标-天气-大雪-56.png"}
+};
+
+//typedef struct Link {
+////	char b[];
+//	SpaceInfo text;
+//	struct Link *next;
+//}Link_t;
+
+/*
+void setDeviceVector(int index)
+{
+
+//	DevSettingVector.clear();
+	if(index == 0)
+	{
+//		DevSettingVector.clear();
+		DevSettingVector.push_back("全热交换器");
+		DevSettingVector.push_back("空调");
+		DevSettingVector.push_back("除湿器");
+		DevSettingVector.push_back("空气净化器");
+	}
+	else if(index == 1)
+	{
+//		DevSettingVector.clear();
+		DevSettingVector.push_back("扫地机器人");
+		DevSettingVector.push_back("空调");
+		DevSettingVector.push_back("除湿器");
+		DevSettingVector.push_back("吊灯");
+	}
+	else if(index == 2)
+	{
+//		DevSettingVector.clear();
+		DevSettingVector.push_back("洗衣机");
+		DevSettingVector.push_back("空气净化器");
+		DevSettingVector.push_back("全热交换器");
+		DevSettingVector.push_back("油烟机");
+	}
+	else if(index == 3)
+	{
+//		DevSettingVector.clear();
+		DevSettingVector.push_back("空调");
+		DevSettingVector.push_back("空气净化器");
+		DevSettingVector.push_back("全热交换器");
+		DevSettingVector.push_back("除湿器");
+	}
+	else
+	{
+		DevSettingVector.push_back("空调");
+		DevSettingVector.push_back("空气净化器");
+		DevSettingVector.push_back("全热交换器");
+		DevSettingVector.push_back("除湿器");
+	}
+}
+*/
+
 
 /*
 Link_t *initLink()
+
 {
 	Link_t *p = (Link_t*)malloc(sizeof(Link_t));
 	Link_t *temp = p;
@@ -140,12 +232,146 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{1,  1000},
 };
 
+void InitDevVector()
+{
+	if(!LifeSmallDevListVector.size())
+	{
+//		LifeSmallDevListVector = new std::vector<IOTDevInfo *>[5];
+		LifeSmallDevListVector.clear();
+		for(int i = 0;i < (sizeof(LifeSmallDevInfoList) / sizeof(IOTDevInfo));i++)
+		{
+			IOTDevInfo *LifeSmalldev = (IOTDevInfo*)malloc(sizeof(IOTDevInfo));
+			memcpy(LifeSmalldev, &LifeSmallDevInfoList[i], sizeof(IOTDevInfo));
+			LifeSmallDevListVector.push_back(LifeSmalldev);
+		}
+	}
+
+	if(!BigDevListVector.size())
+	{
+//		BigDevListVector = new std::vector<IOTDevInfo *>[5];
+		BigDevListVector.clear();
+		for(int i = 0;i < (sizeof(BigDevInfoList) / sizeof(IOTDevInfo));i++)
+		{
+			IOTDevInfo *Bigdev = (IOTDevInfo*)malloc(sizeof(IOTDevInfo));
+			memcpy(Bigdev, &BigDevInfoList[i], sizeof(IOTDevInfo));
+			BigDevListVector.push_back(Bigdev);
+		}
+	}
+
+	if(!KitcheenDevListVector.size())
+	{
+//		KitcheenDevListVector = new std::vector<IOTDevInfo *>[5];
+		KitcheenDevListVector.clear();
+		for(int i = 0;i < (sizeof(KitcheenDevInfoList) / sizeof(IOTDevInfo));i++)
+		{
+			IOTDevInfo *Kitdev = (IOTDevInfo*)malloc(sizeof(IOTDevInfo));
+			memcpy(Kitdev, &KitcheenDevInfoList[i], sizeof(IOTDevInfo));
+			KitcheenDevListVector.push_back(Kitdev);
+		}
+	}
+
+	if(!HomeDevListVector.size())
+	{
+//		HomeDevListVector = new std::vector<IOTDevInfo *>[5];
+		HomeDevListVector.clear();
+		for(int i = 0;i < (sizeof(HomecheenDevInfoList) / sizeof(IOTDevInfo));i++)
+		{
+			IOTDevInfo *Homedev = (IOTDevInfo*)malloc(sizeof(IOTDevInfo));
+			memcpy(Homedev, &HomecheenDevInfoList[i], sizeof(IOTDevInfo));
+			HomeDevListVector.push_back(Homedev);
+		}
+	}
+
+	if(!AllDevListVector.size())
+	{
+//		AllDevListVector = new std::vector<IOTDevInfo *>[15];
+		AllDevListVector.clear();
+		for(int i = 0;i < LifeSmallDevListVector.size();i++)
+		{
+			IOTDevInfo *tmp = LifeSmallDevListVector.at(i);
+			AllDevListVector.push_back(tmp);
+		}
+		for(int i = 0;i < BigDevListVector.size();i++)
+		{
+			IOTDevInfo *tmp1 = BigDevListVector.at(i);
+			AllDevListVector.push_back(tmp1);
+		}
+		for(int i = 0;i < KitcheenDevListVector.size();i++)
+		{
+			IOTDevInfo *tmp2 = KitcheenDevListVector.at(i);
+			AllDevListVector.push_back(tmp2);
+		}
+		for(int i = 0;i < HomeDevListVector.size();i++)
+		{
+			IOTDevInfo *tmp3 = HomeDevListVector.at(i);
+			AllDevListVector.push_back(tmp3);
+		}
+	}
+}
+
 /**
  * 当界面构造时触发
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-	EnvSettingVector.clear();
+//	EnvSettingVector.clear();
+	if(!EnvSettingVectorList)
+	{
+		LOGD("EnvSettingVectorList is NULL\n");
+		EnvSettingVectorList = new std::vector<SpaceInfo *>[20];
+		EnvSettingVectorList->clear();
+
+		//数据初始化
+		for(int i = 0;i < (sizeof(SpaceInfoList) / sizeof(SpaceInfo));i++)
+		{
+			SpaceInfo *EnvInfo = (SpaceInfo*)malloc(sizeof(SpaceInfo));
+			memcpy(EnvInfo, &SpaceInfoList[i], sizeof(SpaceInfo));
+			EnvSettingVectorList->push_back(EnvInfo);
+		}
+//		EnvSettingVectorList = EnvSettingVector[i];
+	}
+
+
+
+	for(int j = 0;j < EnvSettingVectorList->size();j++)
+	{
+		if(!EnvSettingVector[j])
+		{
+			EnvSettingVector[j] = new std::vector<DeviceInfo *>[5];
+			EnvSettingVector[j]->clear();
+			DeviceInfo *tmp1 = (DeviceInfo*)malloc(sizeof(DeviceInfo));
+			tmp1->maintext = "+";
+			EnvSettingVector[j]->push_back(tmp1);
+		}
+
+	}
+
+//	if(!DevSettingVectorList)
+//	{
+//		LOGD("DevSettingVectorList is NULL\n");
+//		DevSettingVectorList = new std::vector<DeviceInfo *>[20];
+//		DevSettingVectorList->clear();
+//
+//		for(int i = 0;i < (sizeof(DeviceInfoDataList) / sizeof(DeviceInfo));i++)
+//		{
+//			DeviceInfo *DevInfo = (DeviceInfo*)malloc(sizeof(DeviceInfo));
+//			memcpy(DevInfo, &DeviceInfoDataList[i], sizeof(DeviceInfo));
+//			DevSettingVectorList->push_back(DevInfo);
+//		}
+//
+//	}
+
+
+	InitDevVector();
+	if(!IOTDevSettingVectorList)
+	{
+		LOGD("IOTDevSettingVectorList is NULL\n");
+		IOTDevSettingVectorList = new std::vector<IOTDevInfo *>[20];
+		IOTDevSettingVectorList->clear();
+		IOTDevSettingVectorList = &AllDevListVector;
+
+	}
+
 }
 
 /**
@@ -155,7 +381,7 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
-//    strncpy(EnvSettingVector, SpaceInfoList, sizeof(SpaceInfoList));
+
     mButton10Ptr->setSelected(false);
     mButtonDelete1Ptr->setSelected(false);
 }
@@ -164,10 +390,15 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-//EnvSettingVector
-//	SpaceInfo *info = (SpaceInfo *)malloc(sizeof(SpaceInfo));
-//	memset(info , 0 , sizeof(SpaceInfo));
-	EnvSettingVector.push_back(SpaceInfoList);
+/*
+
+*/
+//	for(int i = 0;i < (sizeof(DeviceInfoDataList) / sizeof(DeviceInfo));i++)
+//	{
+//		DeviceInfo *DevInfo = (DeviceInfo*)malloc(sizeof(DeviceInfo));
+//		memcpy(DevInfo, &DeviceInfoDataList[i], sizeof(DeviceInfo));
+//		BedroomDevSettingVector.push_back(DevInfo);
+//	}
 	mWindow14Ptr->setAlpha(170);
 }
 
@@ -242,6 +473,10 @@ static bool onButtonClick_Button9(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack !!!\n");
+    if(mButton10Ptr->isSelected())
+    {
+    	mButton10Ptr->setSelected(false);
+    }
     EASYUICONTEXT->goBack();
     return false;
 }
@@ -249,7 +484,7 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
 static int getListItemCount_ListView2(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView2 !\n");
 
-    return EnvSettingVector.size();
+    return EnvSettingVectorList->size();
 }
 
 static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
@@ -258,21 +493,17 @@ static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKLis
 	ZKListView::ZKListSubItem* psubPic  = pListItem->findSubItemByID(ID_ENVSETTING_SubItemPic);
 	ZKListView::ZKListSubItem* psubButton = pListItem->findSubItemByID(ID_ENVSETTING_SubItemCancel);
 //	int Len = sizeof(SpaceInfoList) / sizeof(SpaceInfo);
-	if(EnvSettingVector.size())
-	{
-		for(std::vector<SpaceInfo *>::iterator it = EnvSettingVector.begin();it != EnvSettingVector.end();it++)
-		{
-			SpaceInfo *tmp = (*it);
-			psubPic->setBackgroundPic(tmp->mainPic);
-			psubText->setText(tmp->maintext);
-		}
-	}
+	SpaceInfo *tmp = EnvSettingVectorList->at(index);
+	psubPic->setBackgroundPic(tmp->mainPic);
+	psubText->setText(tmp->maintext);
+
 	if(mButton10Ptr->isSelected())
 	{
 //		psubButton->setVisible(true);
-		if(EnvSettingVector.size() != index)
+		if(EnvSettingVectorList->size() - 1 != index)
 		{
 			psubButton->setVisible(true);
+//			setDeviceVector(index);
 		}
 		else
 		{
@@ -283,7 +514,7 @@ static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKLis
 	{
 		psubButton->setVisible(false);
 	}
-//	mListView2Ptr->refreshListView();
+	mListView2Ptr->refreshListView();
 }
 
 static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) {
@@ -294,19 +525,44 @@ static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) 
 	if(mButton10Ptr->isSelected())
 	{
 		LOGD("psubButtonClick!!! and index is : %d\n", index);
-//		EnvSettingVector->pop_back(SpaceInfoList[index]);
-		SpaceInfo *del = EnvSettingVector.at(index);
-		delete(del);
-		del = NULL;
-		mListView2Ptr->refreshListView();
-//		LOGD("psubButtonClick end!!!\n");
+//		EnvSettingVectorList->clear();
+		for(std::vector<SpaceInfo *>::iterator it = EnvSettingVectorList->begin() ; it != EnvSettingVectorList->end();it++)
+		{
+			if(index == EnvSettingVectorList->size() - 1)
+			{
+				LOGD(" DIY button, Click_ListView2 can't press down  !!!\n");
+				break;
+			}
+			if((*it) == EnvSettingVectorList->at(index))
+			{
+//				delete EnvSettingVector[index];
+//				EnvSettingVector[index] = NULL;
+				SpaceInfo *tmp = (*it);
+				it = EnvSettingVectorList->erase(it);
+				free(tmp);
+				tmp = NULL;
+
+			}
+		}
 	}
 	else
 	{
-		mListView2Ptr->setVisible(false);
-		mWindow12Ptr->setVisible(false);
-		mWindow4Ptr->setVisible(true);
-//		mRadioGroup1Ptr->isWndValid()
+		if(EnvSettingVectorList->size() - 1 == index)
+		{
+			/*自定义设置区*/
+
+		}
+		else
+		{
+			SpaceInfo *tmp1 = EnvSettingVectorList->at(index);
+			text_name = tmp1->maintext;
+			pic_name = tmp1->mainPic;
+			EnvDevSetting_index = index;
+			DevSettingVectorList = EnvSettingVector[index];
+			mListView2Ptr->setVisible(false);
+			mWindow12Ptr->setVisible(false);
+			mWindow4Ptr->setVisible(true);
+		}
 	}
 }
 
@@ -333,39 +589,32 @@ static void onCheckedChanged_RadioGroup1(ZKRadioGroup* pRadioGroup, int checkedI
     {
 		case ID_ENVSETTING_RadioButtonAll:
 		{
-			mWindowAllPtr->setVisible(true);
-			mWindowSmallMachinePtr->setVisible(false);
-			mWindowBigMachinePtr->setVisible(false);
-			mWindowKitchenPtr->setVisible(false);
+			DevListType = AllMachine;
+			IOTDevSettingVectorList = &AllDevListVector;
 		}
 			break;
 		case ID_ENVSETTING_RadioButtonSmallMachine:
 		{
-			mWindowAllPtr->setVisible(false);
-			mWindowSmallMachinePtr->setVisible(true);
-			mWindowBigMachinePtr->setVisible(false);
-			mWindowKitchenPtr->setVisible(false);
+			DevListType = LifeSmallMachine;
+			IOTDevSettingVectorList = &LifeSmallDevListVector;
 		}
 			break;
 		case ID_ENVSETTING_RadioButtonBigMachine:
 		{
-			mWindowAllPtr->setVisible(false);
-			mWindowSmallMachinePtr->setVisible(false);
-			mWindowBigMachinePtr->setVisible(true);
-			mWindowKitchenPtr->setVisible(false);
+			DevListType = BigMachine;
+			IOTDevSettingVectorList = &BigDevListVector;
 		}
 			break;
 		case ID_ENVSETTING_RadioButtonKitchen:
 		{
-			mWindowAllPtr->setVisible(false);
-			mWindowSmallMachinePtr->setVisible(false);
-			mWindowBigMachinePtr->setVisible(false);
-			mWindowKitchenPtr->setVisible(true);
+			DevListType = KitcheenMachine;
+			IOTDevSettingVectorList = &KitcheenDevListVector;
 		}
 			break;
 		case ID_ENVSETTING_RadioButtonHomeDev:
 		{
-
+			DevListType = HomeMachine;
+			IOTDevSettingVectorList = &HomeDevListVector;
 		}
 			break;
 		default:
@@ -377,6 +626,8 @@ static void onCheckedChanged_RadioGroup1(ZKRadioGroup* pRadioGroup, int checkedI
 //}
 static bool onButtonClick_ButtonBack1(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack1 !!!\n");
+//    if(mButtonDelete1Ptr->isSelected())
+//		mButtonDelete1Ptr->setSelected(false);
     mListView1Ptr->setVisible(true);
 	mWindow1Ptr->setVisible(false);
 	mWindow4Ptr->setVisible(true);
@@ -385,6 +636,8 @@ static bool onButtonClick_ButtonBack1(ZKButton *pButton) {
 }
 static bool onButtonClick_ButtonBack2(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack2 !!!\n");
+    if(mButtonDelete1Ptr->isSelected())
+    	mButtonDelete1Ptr->setSelected(false);
     mListView2Ptr->setVisible(true);
 	mWindow12Ptr->setVisible(true);
 	mWindow4Ptr->setVisible(false);
@@ -393,18 +646,21 @@ static bool onButtonClick_ButtonBack2(ZKButton *pButton) {
 
 static int getListItemCount_ListView1(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView1 !\n");
-    return sizeof(DeviceInfoDataList) / sizeof(DeviceInfo);
+    return DevSettingVectorList->size();
 }
 
 static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
     //LOGD(" obtainListItemData_ ListView1  !!!\n");
+	mTextView15Ptr->setText(text_name);
+	mTextViewPicShowPtr->setBackgroundPic(pic_name);
 	ZKListView::ZKListItem *psubText = pListItem->findSubItemByID(ID_ENVSETTING_SubItemText);
 	ZKListView::ZKListItem *psubCancelClick = pListItem->findSubItemByID(ID_ENVSETTING_SubItemDelete);
-	int Len = sizeof(DeviceInfoDataList) / sizeof(DeviceInfo);
-	psubText->setText(DeviceInfoDataList[index].maintext);
+//	int Len = sizeof(DeviceInfoDataList) / sizeof(DeviceInfo);
+	DeviceInfo *tmp = DevSettingVectorList->at(index);
+	psubText->setText(tmp->maintext);
 	if(mButtonDelete1Ptr->isSelected())
 	{
-		if(Len-1 != index)
+		if(DevSettingVectorList->size()-1 != index)
 		{
 			psubCancelClick->setVisible(true);
 		}
@@ -415,6 +671,7 @@ static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKLis
 	}
 	else
 	{
+
 		psubCancelClick->setVisible(false);
 	}
 
@@ -426,17 +683,36 @@ static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) 
 //	ZKListView::ZKListSubItem* psubButtonClick = pListItem->findSubItemByID(ID_ENVSETTING_SubItemDelete);
 	if(mButtonDelete1Ptr->isSelected())
 	{
-//		if(id == ID_ENVSETTING_SubItemDelete)
-//		if(psubButtonClick->isPressed())
-//		{
-			LOGD("onListItemClick_ ListView1 !!! and index is : %d\n", index);
-//		}
+		LOGD("onListItemClick_ ListView1 !!! and index is : %d\n", index);
+		for(std::vector<DeviceInfo *>::iterator it = DevSettingVectorList->begin(); it != DevSettingVectorList->end();it++)
+		{
+			if(DevSettingVectorList->size() - 1 == index)
+			{
+				LOGD(" DIY button, Click_ListView1 can't press down  !!!\n");
+				break;
+			}
+			if((*it) == DevSettingVectorList->at(index))
+			{
+				DeviceInfo *tmp = (*it);
+				it = DevSettingVectorList->erase(it);
+//				EnvSettingVector[EnvDevSetting_index]->erase(it);
+				free(tmp);
+				tmp = NULL;
+
+			}
+		}
+
 	}
 	else
 	{
-		mListView1Ptr->setVisible(false);
-		mWindow1Ptr->setVisible(true);
-		mWindow4Ptr->setVisible(false);
+		if(DevSettingVectorList->size() - 1 == index)
+		{
+			mListView1Ptr->setVisible(false);
+			mWindow1Ptr->setVisible(true);
+			mWindow4Ptr->setVisible(false);
+
+//			onCheckedChanged_RadioGroup1(mRadioGroup1Ptr, ID_ENVSETTING_RadioButtonAll);
+		}
 	}
 }
 
@@ -451,4 +727,48 @@ static bool onButtonClick_ButtonDelete1(ZKButton *pButton) {
     	pButton->setSelected(true);
     }
     return false;
+}
+static bool onButtonClick_ButtonInput(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonInput !!!\n");
+    return false;
+}
+static int getListItemCount_ListView3(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListView3 !\n");
+    return IOTDevSettingVectorList->size();
+}
+
+static void obtainListItemData_ListView3(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListView3  !!!\n");
+	ZKListView::ZKListItem *psubText = pListItem->findSubItemByID(ID_ENVSETTING_SubItemDevName);
+	ZKListView::ZKListItem *psubPic = pListItem->findSubItemByID(ID_ENVSETTING_SubItemDevPic);
+	IOTDevInfo *tmp = IOTDevSettingVectorList->at(index);
+	psubText->setText(tmp->maintext);
+	psubPic->setBackgroundPic(tmp->mainPic);
+	mListView3Ptr->refreshListView();
+}
+
+static void onListItemClick_ListView3(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListView3  !!!\n");
+	for(std::vector<IOTDevInfo *>::iterator it = IOTDevSettingVectorList->begin(); it != IOTDevSettingVectorList->end();it++)
+	{
+		/*将对应的设备增加到相应的环境当中*/
+		if(IOTDevSettingVectorList->at(index) == (*it))
+		{
+			for(std::vector<DeviceInfo *>::iterator it1 = DevSettingVectorList->begin(); it1 != DevSettingVectorList->end();it1++)
+			{
+				if((*it)->maintext == (*it1)->maintext)
+				{
+					LOGD(" The IOTDevSettingVectorList is exist  !!!\n");
+					return;
+				}
+			}
+			LOGD(" Add IOTDevSettingVectorList : %d  !!!\n", index);
+			DeviceInfo *tmp = (DeviceInfo*)malloc(sizeof(DeviceInfo));
+//			DeviceInfo *tmp = (DeviceInfo *)(*it);
+			tmp->maintext = (*it)->maintext;
+			DevSettingVectorList->insert(DevSettingVectorList->end()-1, tmp);
+//			EnvSettingVector[EnvDevSetting_index]->insert(EnvSettingVector[EnvDevSetting_index]->end()-1, tmp);
+		}
+
+	}
 }

@@ -27,6 +27,11 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_ENVSETTING_TextViewPicShow    50001
+#define ID_ENVSETTING_SubItemDevName    20008
+#define ID_ENVSETTING_SubItemDevPic    20007
+#define ID_ENVSETTING_ListView3    80003
+#define ID_ENVSETTING_ButtonInput    20006
 #define ID_ENVSETTING_SubItemDelete    20005
 #define ID_ENVSETTING_SubItemText    20002
 #define ID_ENVSETTING_ListView1    80001
@@ -48,9 +53,6 @@
 #define ID_ENVSETTING_TextView6    50006
 #define ID_ENVSETTING_TextView5    50005
 #define ID_ENVSETTING_WindowSmallMachine    110005
-#define ID_ENVSETTING_TextView4    50004
-#define ID_ENVSETTING_TextView3    50003
-#define ID_ENVSETTING_TextView1    50001
 #define ID_ENVSETTING_WindowAll    110004
 #define ID_ENVSETTING_RadioButtonHomeDev    22005
 #define ID_ENVSETTING_RadioButtonKitchen    22004
@@ -77,6 +79,17 @@
 #define ID_ENVSETTING_Window14    110027
 #define ID_ENVSETTING_WindowEnvBGDisp    110026
 
+
+typedef struct {
+	const char maintext[128];
+	const char mainPic[128];
+	bool cancelstatus;
+}SpaceInfo;
+
+typedef struct {
+	const char maintext[128];
+	const char mainPic[128];
+}IOTDevInfo;
 
 /*TAG:Macro宏ID END*/
 

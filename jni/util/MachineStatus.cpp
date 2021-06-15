@@ -313,7 +313,16 @@ void MachineStatusListener::setenvironmentindex(int index)
 	EnvDate->envindex = index;
 }
 
+std::vector<SpaceInfo *> MachineStatusListener::getEnvSpaceInfo()
+{
+	std::vector<SpaceInfo *> Vector;
+	Vector.clear();
+//	std::vector<SpaceInfo *>::iterator it = EnvSettingVector
 
+
+
+	return Vector;
+}
 
 
 

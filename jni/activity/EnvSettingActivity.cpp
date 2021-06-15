@@ -4,6 +4,9 @@
 #include "EnvSettingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewPicShowPtr;
+static ZKListView* mListView3Ptr;
+static ZKButton* mButtonInputPtr;
 static ZKButton* mButtonDelete1Ptr;
 static ZKListView* mListView1Ptr;
 static ZKButton* mButtonBack2Ptr;
@@ -24,9 +27,6 @@ static ZKTextView* mTextView7Ptr;
 static ZKTextView* mTextView6Ptr;
 static ZKTextView* mTextView5Ptr;
 static ZKWindow* mWindowSmallMachinePtr;
-static ZKTextView* mTextView4Ptr;
-static ZKTextView* mTextView3Ptr;
-static ZKTextView* mTextView1Ptr;
 static ZKWindow* mWindowAllPtr;
 static ZKRadioGroup* mRadioGroup1Ptr;
 static ZKWindow* mWindow3Ptr;
@@ -45,16 +45,22 @@ static ZKWindow* mWindow14Ptr;
 static ZKWindow* mWindowEnvBGDispPtr;
 static EnvSettingActivity* mActivityPtr;
 
-typedef struct {
-	const char maintext[128];
-	const char mainPic[128];
-	bool cancelstatus;
-}SpaceInfo;
+
 
 typedef struct {
-	const char* maintext;
-	bool cancelstatus;
+	const char *maintext;
+//	bool cancelstatus;
 }DeviceInfo;
+
+enum {
+	AllMachine,
+	LifeSmallMachine,
+	BigMachine,
+	KitcheenMachine,
+	HomeMachine
+}DeviceList_t;
+
+
 
 /*register activity*/
 REGISTER_ACTIVITY(EnvSettingActivity);
@@ -91,6 +97,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_ENVSETTING_ButtonInput, onButtonClick_ButtonInput,
     ID_ENVSETTING_ButtonDelete1, onButtonClick_ButtonDelete1,
     ID_ENVSETTING_ButtonBack2, onButtonClick_ButtonBack2,
     ID_ENVSETTING_ButtonBack1, onButtonClick_ButtonBack1,
@@ -122,6 +129,7 @@ typedef struct {
 }S_ListViewFunctionsCallback;
 /*TAG:ListViewFunctionsCallback*/
 static S_ListViewFunctionsCallback SListViewFunctionsCallbackTab[] = {
+    ID_ENVSETTING_ListView3, getListItemCount_ListView3, obtainListItemData_ListView3, onListItemClick_ListView3,
     ID_ENVSETTING_ListView1, getListItemCount_ListView1, obtainListItemData_ListView1, onListItemClick_ListView1,
     ID_ENVSETTING_ListView2, getListItemCount_ListView2, obtainListItemData_ListView2, onListItemClick_ListView2,
 };
@@ -189,6 +197,9 @@ const char* EnvSettingActivity::getAppName() const{
 //TAG:onCreate
 void EnvSettingActivity::onCreate() {
 	Activity::onCreate();
+    mTextViewPicShowPtr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextViewPicShow);
+    mListView3Ptr = (ZKListView*)findControlByID(ID_ENVSETTING_ListView3);if(mListView3Ptr!= NULL){mListView3Ptr->setListAdapter(this);mListView3Ptr->setItemClickListener(this);}
+    mButtonInputPtr = (ZKButton*)findControlByID(ID_ENVSETTING_ButtonInput);
     mButtonDelete1Ptr = (ZKButton*)findControlByID(ID_ENVSETTING_ButtonDelete1);
     mListView1Ptr = (ZKListView*)findControlByID(ID_ENVSETTING_ListView1);if(mListView1Ptr!= NULL){mListView1Ptr->setListAdapter(this);mListView1Ptr->setItemClickListener(this);}
     mButtonBack2Ptr = (ZKButton*)findControlByID(ID_ENVSETTING_ButtonBack2);
@@ -209,9 +220,6 @@ void EnvSettingActivity::onCreate() {
     mTextView6Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextView6);
     mTextView5Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextView5);
     mWindowSmallMachinePtr = (ZKWindow*)findControlByID(ID_ENVSETTING_WindowSmallMachine);
-    mTextView4Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextView4);
-    mTextView3Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextView3);
-    mTextView1Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextView1);
     mWindowAllPtr = (ZKWindow*)findControlByID(ID_ENVSETTING_WindowAll);
     mRadioGroup1Ptr = (ZKRadioGroup*)findControlByID(ID_ENVSETTING_RadioGroup1);if(mRadioGroup1Ptr!= NULL){mRadioGroup1Ptr->setCheckedChangeListener(this);}
     mWindow3Ptr = (ZKWindow*)findControlByID(ID_ENVSETTING_Window3);
