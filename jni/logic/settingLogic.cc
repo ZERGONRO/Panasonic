@@ -134,12 +134,6 @@ static bool onButtonClick_ButtonSensorCtl1(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonPressSet1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonPressSet1 !!!\n");
-    EASYUICONTEXT->openActivity("PressModeActivity", NULL);
-    return false;
-}
-
 static bool onButtonClick_ButtonTimesetting1(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonTimesetting1 !!!\n");
     EASYUICONTEXT->openActivity("TimeSettingActivity", NULL);
@@ -158,11 +152,6 @@ static bool onButtonClick_ButtonFilterSet1(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonDeviceSet1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonDeviceSet1 !!!\n");
-    EASYUICONTEXT->openActivity("DeviceSettingActivity", NULL);
-    return false;
-}
 
 static bool onButtonClick_ButtonFWUpdate1(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonFWUpdate1 !!!\n");
@@ -202,5 +191,16 @@ static bool onButtonClick_ButtonConfirm(ZKButton *pButton) {
 static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack !!!\n");
     EASYUICONTEXT->goBack();
+    return false;
+}
+static bool onButtonClick_ButtonVoiceSysSet1(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonVoiceSysSet1 !!!\n");
+    EASYUICONTEXT->openActivity("VoiceSystemsActivity", NULL);
+    return false;
+}
+
+static bool onButtonClick_ButtonMasterSlaverSet1(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonMasterSlaverSet1 !!!\n");
+    EASYUICONTEXT->openActivity("MainandSlaveActivity", NULL);
     return false;
 }

@@ -27,6 +27,31 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAIN_IconViewFrost    50076
+#define ID_MAIN_IconViewFilter    50075
+#define ID_MAIN_IconViewTiming    50074
+#define ID_MAIN_ButtonMusicAudio    20040
+#define ID_MAIN_ButtonMusicNext    20039
+#define ID_MAIN_ButtonMusicPlay    20029
+#define ID_MAIN_ButtonMusicPre    20028
+#define ID_MAIN_TextView56    50073
+#define ID_MAIN_TextView55    50072
+#define ID_MAIN_TextView54    50058
+#define ID_MAIN_WindowEmergencyCall    110029
+#define ID_MAIN_TextView53    50057
+#define ID_MAIN_TextView52    50056
+#define ID_MAIN_WindowImmediaCommunicate    110028
+#define ID_MAIN_WindowListView    110025
+#define ID_MAIN_TextView51    50055
+#define ID_MAIN_TextView46    50054
+#define ID_MAIN_TextView45    50053
+#define ID_MAIN_TextView44    50052
+#define ID_MAIN_WindowTVOC    110026
+#define ID_MAIN_ButtonMusicMode    20027
+#define ID_MAIN_ButtonMusicPic    20026
+#define ID_MAIN_WindowMusic    110027
+#define ID_MAIN_WindowTimeWeather    110008
+#define ID_MAIN_WindowInterval    110007
 #define ID_MAIN_SubItemTitle    20024
 #define ID_MAIN_ButtonOneKeyAdjust    20038
 #define ID_MAIN_ButtonEmergencyCall    20037
@@ -74,7 +99,6 @@
 #define ID_MAIN_ButtonDropDown    20030
 #define ID_MAIN_Button8    20023
 #define ID_MAIN_Button2    20022
-#define ID_MAIN_Window1    110025
 #define ID_MAIN_WindowModeSelect2    110024
 #define ID_MAIN_WindowMainStatus    110023
 #define ID_MAIN_WindowModeSelect1    110019
@@ -141,8 +165,6 @@
 #define ID_MAIN_TextView6    50006
 #define ID_MAIN_TextView5    50005
 #define ID_MAIN_Window5    110009
-#define ID_MAIN_Window4    110008
-#define ID_MAIN_Window3    110007
 #define ID_MAIN_TextView41    50041
 #define ID_MAIN_ButtonHistorty1    20008
 #define ID_MAIN_TextView4    50004

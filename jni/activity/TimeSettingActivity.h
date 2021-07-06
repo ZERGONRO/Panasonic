@@ -24,9 +24,45 @@
 #include "control/ZKEditText.h"
 #include "control/ZKVideoView.h"
 #include "window/ZKSlideWindow.h"
+#include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
-#define ID_TIMESETTING_TextViewmcu    50005
+#define ID_TIMESETTING_SubItemMinMini    20011
+#define ID_TIMESETTING_SubItemMinSmall    20010
+#define ID_TIMESETTING_SubItemMinMid    20009
+#define ID_TIMESETTING_SubItemMinLarge    20008
+#define ID_TIMESETTING_SubItemMinMax    20007
+#define ID_TIMESETTING_ListViewMinuete    80005
+#define ID_TIMESETTING_SubItemHourMini    20011
+#define ID_TIMESETTING_SubItemHourSmall    20010
+#define ID_TIMESETTING_SubItemHourMid    20009
+#define ID_TIMESETTING_SubItemHourLarge    20008
+#define ID_TIMESETTING_SubItemHourMax    20007
+#define ID_TIMESETTING_ListViewHour    80004
+#define ID_TIMESETTING_SubItemDayMini    20011
+#define ID_TIMESETTING_SubItemDaySmall    20010
+#define ID_TIMESETTING_SubItemDayMid    20009
+#define ID_TIMESETTING_SubItemDayLarge    20008
+#define ID_TIMESETTING_SubItemDayMax    20007
+#define ID_TIMESETTING_ListViewDay    80006
+#define ID_TIMESETTING_SubItemMonthMini    20011
+#define ID_TIMESETTING_SubItemMonthSmall    20010
+#define ID_TIMESETTING_SubItemMonthMid    20009
+#define ID_TIMESETTING_SubItemMonthLarge    20008
+#define ID_TIMESETTING_SubItemMonthMax    20007
+#define ID_TIMESETTING_ListViewMonth    80003
+#define ID_TIMESETTING_SubItemYearMini    20011
+#define ID_TIMESETTING_SubItemYearSmall    20010
+#define ID_TIMESETTING_SubItemYearMid    20009
+#define ID_TIMESETTING_SubItemYearLarge    20008
+#define ID_TIMESETTING_SubItemYearMax    20007
+#define ID_TIMESETTING_ListViewYear    80002
+#define ID_TIMESETTING_SubItemMin    20006
+#define ID_TIMESETTING_SubItemHour    20005
+#define ID_TIMESETTING_SubItemDay    20004
+#define ID_TIMESETTING_SubItemMonth    20003
+#define ID_TIMESETTING_SubItemYear    20002
+#define ID_TIMESETTING_ListView1    80001
 #define ID_TIMESETTING_TextViewDesc    50004
 #define ID_TIMESETTING_ButtonBack    20001
 #define ID_TIMESETTING_TextViewDatesetting    50003
@@ -43,12 +79,13 @@ class TimeSettingActivity : public Activity,
                      public ZKSlideWindow::ISlideItemClickListener,
                      public EasyUIContext::ITouchListener,
                      public ZKEditText::ITextChangeListener,
+					 public MyNetWorkingListener::MyNetWorkListener,
                      public ZKVideoView::IVideoPlayerMessageListener
 {
 public:
     TimeSettingActivity();
     virtual ~TimeSettingActivity();
-
+    virtual void MyNetworkNotify(int type , void *data);
     /**
      * 注册定时器
      */

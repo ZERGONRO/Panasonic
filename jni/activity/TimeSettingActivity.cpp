@@ -2,9 +2,17 @@
 /gen auto by zuitools
 ***********************************************/
 #include "TimeSettingActivity.h"
+#include "util/MachineStatus.h"
+#include "util/MyNetWorkingListener.h"
+
 
 /*TAG:GlobalVariable全局变量*/
-static ZKTextView* mTextViewmcuPtr;
+static ZKListView* mListViewMinuetePtr;
+static ZKListView* mListViewHourPtr;
+static ZKListView* mListViewDayPtr;
+static ZKListView* mListViewMonthPtr;
+static ZKListView* mListViewYearPtr;
+static ZKListView* mListView1Ptr;
 static ZKTextView* mTextViewDescPtr;
 static ZKButton* mButtonBackPtr;
 static ZKTextView* mTextViewDatesettingPtr;
@@ -14,7 +22,10 @@ static ZKWindow* mWindowTimeSettingPtr;
 static ZKTextView* mTextView6Ptr;
 static TimeSettingActivity* mActivityPtr;
 
+
+extern MyNetWorkingListener *nwlistener;
 /*register activity*/
+//REGISTER_ACTIVITY(TimeSettingActivity);
 REGISTER_ACTIVITY(TimeSettingActivity);
 
 typedef struct {
@@ -75,6 +86,12 @@ typedef struct {
 }S_ListViewFunctionsCallback;
 /*TAG:ListViewFunctionsCallback*/
 static S_ListViewFunctionsCallback SListViewFunctionsCallbackTab[] = {
+    ID_TIMESETTING_ListViewMinuete, getListItemCount_ListViewMinuete, obtainListItemData_ListViewMinuete, onListItemClick_ListViewMinuete,
+    ID_TIMESETTING_ListViewHour, getListItemCount_ListViewHour, obtainListItemData_ListViewHour, onListItemClick_ListViewHour,
+    ID_TIMESETTING_ListViewDay, getListItemCount_ListViewDay, obtainListItemData_ListViewDay, onListItemClick_ListViewDay,
+    ID_TIMESETTING_ListViewMonth, getListItemCount_ListViewMonth, obtainListItemData_ListViewMonth, onListItemClick_ListViewMonth,
+    ID_TIMESETTING_ListViewYear, getListItemCount_ListViewYear, obtainListItemData_ListViewYear, onListItemClick_ListViewYear,
+//    ID_TIMESETTING_ListView1, getListItemCount_ListView1, obtainListItemData_ListView1, onListItemClick_ListView1,
 };
 
 
@@ -120,7 +137,9 @@ TimeSettingActivity::~TimeSettingActivity() {
   // 退出应用时需要反注册
     EASYUICONTEXT->unregisterGlobalTouchListener(this);
     onUI_quit();
+//    nwlistener->removeNetWorkListener(this);
     unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
+    nwlistener->removeNetWorkListener(this);
 }
 
 const char* TimeSettingActivity::getAppName() const{
@@ -130,7 +149,12 @@ const char* TimeSettingActivity::getAppName() const{
 //TAG:onCreate
 void TimeSettingActivity::onCreate() {
 	Activity::onCreate();
-    mTextViewmcuPtr = (ZKTextView*)findControlByID(ID_TIMESETTING_TextViewmcu);
+    mListViewMinuetePtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewMinuete);if(mListViewMinuetePtr!= NULL){mListViewMinuetePtr->setListAdapter(this);mListViewMinuetePtr->setItemClickListener(this);}
+    mListViewHourPtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewHour);if(mListViewHourPtr!= NULL){mListViewHourPtr->setListAdapter(this);mListViewHourPtr->setItemClickListener(this);}
+    mListViewDayPtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewDay);if(mListViewDayPtr!= NULL){mListViewDayPtr->setListAdapter(this);mListViewDayPtr->setItemClickListener(this);}
+    mListViewMonthPtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewMonth);if(mListViewMonthPtr!= NULL){mListViewMonthPtr->setListAdapter(this);mListViewMonthPtr->setItemClickListener(this);}
+    mListViewYearPtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewYear);if(mListViewYearPtr!= NULL){mListViewYearPtr->setListAdapter(this);mListViewYearPtr->setItemClickListener(this);}
+    mListView1Ptr = (ZKListView*)findControlByID(ID_TIMESETTING_ListView1);if(mListView1Ptr!= NULL){mListView1Ptr->setListAdapter(this);mListView1Ptr->setItemClickListener(this);}
     mTextViewDescPtr = (ZKTextView*)findControlByID(ID_TIMESETTING_TextViewDesc);
     mButtonBackPtr = (ZKButton*)findControlByID(ID_TIMESETTING_ButtonBack);
     mTextViewDatesettingPtr = (ZKTextView*)findControlByID(ID_TIMESETTING_TextViewDatesetting);
@@ -140,8 +164,10 @@ void TimeSettingActivity::onCreate() {
     mTextView6Ptr = (ZKTextView*)findControlByID(ID_TIMESETTING_TextView6);
 	mActivityPtr = this;
 	onUI_init();
+	nwlistener->setNetWorkListener(this);
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 
     rigesterActivityTimer();
+//    nwlistener->setNetWorkListener(this);
 }
 
 void TimeSettingActivity::onClick(ZKBase *pBase) {
@@ -395,6 +421,10 @@ int TimeSettingActivity::removeCharFromString(string& nString, char c) {
         }
     }
     return (int)nString.size();
+}
+
+void TimeSettingActivity::MyNetworkNotify(int type , void *data){
+
 }
 
 void TimeSettingActivity::registerUserTimer(int id, int time) {

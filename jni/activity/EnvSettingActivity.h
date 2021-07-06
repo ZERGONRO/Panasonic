@@ -27,6 +27,7 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_ENVSETTING_TextViewPic1    50003
 #define ID_ENVSETTING_TextViewPicShow    50001
 #define ID_ENVSETTING_SubItemDevName    20008
 #define ID_ENVSETTING_SubItemDevPic    20007
@@ -91,6 +92,10 @@ typedef struct {
 	const char mainPic[128];
 }IOTDevInfo;
 
+typedef struct {
+	const char *maintext;
+	bool cancelstatus;
+}DeviceInfo;
 /*TAG:Macro宏ID END*/
 
 class EnvSettingActivity : public Activity, 

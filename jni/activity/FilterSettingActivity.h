@@ -53,7 +53,6 @@
 #define ID_FILTERSETTING_ButtonStdFilter    20006
 #define ID_FILTERSETTING_Window1    110001
 #define ID_FILTERSETTING_ButtonBack    20011
-#define ID_FILTERSETTING_TextView12    50012
 #define ID_FILTERSETTING_TextView2    50002
 #define ID_FILTERSETTING_TextView3    50003
 #define ID_FILTERSETTING_TextView8    50008

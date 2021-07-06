@@ -4,6 +4,7 @@
 #include "EnvSettingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewPic1Ptr;
 static ZKTextView* mTextViewPicShowPtr;
 static ZKListView* mListView3Ptr;
 static ZKButton* mButtonInputPtr;
@@ -47,10 +48,7 @@ static EnvSettingActivity* mActivityPtr;
 
 
 
-typedef struct {
-	const char *maintext;
-//	bool cancelstatus;
-}DeviceInfo;
+
 
 enum {
 	AllMachine,
@@ -197,6 +195,7 @@ const char* EnvSettingActivity::getAppName() const{
 //TAG:onCreate
 void EnvSettingActivity::onCreate() {
 	Activity::onCreate();
+    mTextViewPic1Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextViewPic1);
     mTextViewPicShowPtr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextViewPicShow);
     mListView3Ptr = (ZKListView*)findControlByID(ID_ENVSETTING_ListView3);if(mListView3Ptr!= NULL){mListView3Ptr->setListAdapter(this);mListView3Ptr->setItemClickListener(this);}
     mButtonInputPtr = (ZKButton*)findControlByID(ID_ENVSETTING_ButtonInput);

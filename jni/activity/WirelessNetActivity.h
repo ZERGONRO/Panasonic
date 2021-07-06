@@ -38,7 +38,6 @@
 #define ID_WIRELESSNET_Window1    110001
 #define ID_WIRELESSNET_TextView8    50008
 #define ID_WIRELESSNET_TextView3    50003
-#define ID_WIRELESSNET_TextView12    50012
 #define ID_WIRELESSNET_ButtonBack    20011
 /*TAG:Macro宏ID END*/
 

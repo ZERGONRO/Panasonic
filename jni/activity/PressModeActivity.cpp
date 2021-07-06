@@ -25,7 +25,6 @@ static ZKWindow* mWindowModeSelectPtr;
 static ZKWindow* mWindow1Ptr;
 static ZKTextView* mTextView3Ptr;
 static ZKTextView* mTextView8Ptr;
-static ZKTextView* mTextView12Ptr;
 static PressModeActivity* mActivityPtr;
 
 /*register activity*/
@@ -173,7 +172,6 @@ void PressModeActivity::onCreate() {
     mWindow1Ptr = (ZKWindow*)findControlByID(ID_PRESSMODE_Window1);
     mTextView3Ptr = (ZKTextView*)findControlByID(ID_PRESSMODE_TextView3);
     mTextView8Ptr = (ZKTextView*)findControlByID(ID_PRESSMODE_TextView8);
-    mTextView12Ptr = (ZKTextView*)findControlByID(ID_PRESSMODE_TextView12);
 	mActivityPtr = this;
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 

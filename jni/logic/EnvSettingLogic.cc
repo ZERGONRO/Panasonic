@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 #include <pthread.h>
 /*
 *此文件由GUI工具生成
@@ -46,12 +47,14 @@ static std::vector<IOTDevInfo *> AllDevListVector, LifeSmallDevListVector, BigDe
 static bool pushback_flag = true;
 
 static SpaceInfo SpaceInfoList[] = {
-		{"卧室", "./ui/图标-天气-大雪-56.png", false},
-		{"客厅", "./ui/图标-天气-晴-32.png", false},
-		{"次卧", "./ui/图标-天气-大雪-56.png", false},
-		{"厨房", "./ui/图标-天气-晴-32.png", false},
-		{"浴室", "./ui/图标-天气-大雪-56.png", false},
-		{"书房", "./ui/图标-天气-晴-32.png", false},
+		{"卧室", "./ui/首页-图标-主卧室1.png", false},
+		{"客厅", "./ui/首页-图标-客厅.png", false},
+		{"次卧", "./ui/首页-图标-次卧室1.png", false},
+		{"厨房", "./ui/首页-图标-厨房.png", false},
+		{"浴室", "./ui/首页-图标-浴室1.png", false},
+		{"餐厅", "./ui/首页-图标-餐厅1.png", false},
+		{"儿童房", "./ui/首页-图标-儿童房.png", false},
+		{"阳台", "./ui/首页-图标-阳台1.png", false},
 		{"自定义", "", false}
 };
 
@@ -67,12 +70,12 @@ static IOTDevInfo IOTDevInfoList[] = {
 };
 
 static DeviceInfo DeviceInfoDataList[] = {
-		"全热交换器",
-		"空   调",
-		"浴   霸",
-		"空气净化器",
+		{"全热交换器", false},
+		{"空   调", false},
+		{"浴   霸", false},
+		{"空气净化器", false},
 //		{"./ui/智能模式-按钮-+-dis.png", false}
-		"+"
+		{"+", false}
 };
 
 static IOTDevInfo LifeSmallDevInfoList[] = {
@@ -101,52 +104,6 @@ static IOTDevInfo HomecheenDevInfoList[] = {
 //	struct Link *next;
 //}Link_t;
 
-/*
-void setDeviceVector(int index)
-{
-
-//	DevSettingVector.clear();
-	if(index == 0)
-	{
-//		DevSettingVector.clear();
-		DevSettingVector.push_back("全热交换器");
-		DevSettingVector.push_back("空调");
-		DevSettingVector.push_back("除湿器");
-		DevSettingVector.push_back("空气净化器");
-	}
-	else if(index == 1)
-	{
-//		DevSettingVector.clear();
-		DevSettingVector.push_back("扫地机器人");
-		DevSettingVector.push_back("空调");
-		DevSettingVector.push_back("除湿器");
-		DevSettingVector.push_back("吊灯");
-	}
-	else if(index == 2)
-	{
-//		DevSettingVector.clear();
-		DevSettingVector.push_back("洗衣机");
-		DevSettingVector.push_back("空气净化器");
-		DevSettingVector.push_back("全热交换器");
-		DevSettingVector.push_back("油烟机");
-	}
-	else if(index == 3)
-	{
-//		DevSettingVector.clear();
-		DevSettingVector.push_back("空调");
-		DevSettingVector.push_back("空气净化器");
-		DevSettingVector.push_back("全热交换器");
-		DevSettingVector.push_back("除湿器");
-	}
-	else
-	{
-		DevSettingVector.push_back("空调");
-		DevSettingVector.push_back("空气净化器");
-		DevSettingVector.push_back("全热交换器");
-		DevSettingVector.push_back("除湿器");
-	}
-}
-*/
 
 
 /*
@@ -346,20 +303,6 @@ static void onUI_init(){
 
 	}
 
-//	if(!DevSettingVectorList)
-//	{
-//		LOGD("DevSettingVectorList is NULL\n");
-//		DevSettingVectorList = new std::vector<DeviceInfo *>[20];
-//		DevSettingVectorList->clear();
-//
-//		for(int i = 0;i < (sizeof(DeviceInfoDataList) / sizeof(DeviceInfo));i++)
-//		{
-//			DeviceInfo *DevInfo = (DeviceInfo*)malloc(sizeof(DeviceInfo));
-//			memcpy(DevInfo, &DeviceInfoDataList[i], sizeof(DeviceInfo));
-//			DevSettingVectorList->push_back(DevInfo);
-//		}
-//
-//	}
 
 
 	InitDevVector();
@@ -467,6 +410,7 @@ static bool onEnvSettingActivityTouchEvent(const MotionEvent &ev) {
 }
 static bool onButtonClick_Button9(ZKButton *pButton) {
     LOGD(" ButtonClick Button9 !!!\n");
+    IOTDevSettingVectorList = &AllDevListVector;
     EASYUICONTEXT->goBack();
     return false;
 }
@@ -477,6 +421,7 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     {
     	mButton10Ptr->setSelected(false);
     }
+    IOTDevSettingVectorList = &AllDevListVector;
     EASYUICONTEXT->goBack();
     return false;
 }
@@ -492,18 +437,18 @@ static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKLis
 	ZKListView::ZKListSubItem* psubText = pListItem->findSubItemByID(ID_ENVSETTING_SubItemTitle);
 	ZKListView::ZKListSubItem* psubPic  = pListItem->findSubItemByID(ID_ENVSETTING_SubItemPic);
 	ZKListView::ZKListSubItem* psubButton = pListItem->findSubItemByID(ID_ENVSETTING_SubItemCancel);
-//	int Len = sizeof(SpaceInfoList) / sizeof(SpaceInfo);
+//	SpaceInfo *tmp1 = EnvSettingVectorList->at(0);
+//	mTextViewPic1Ptr->setBackgroundPic(tmp1->mainPic);
+//	mTextView45Ptr->setText(tmp1->maintext);
 	SpaceInfo *tmp = EnvSettingVectorList->at(index);
 	psubPic->setBackgroundPic(tmp->mainPic);
 	psubText->setText(tmp->maintext);
 
 	if(mButton10Ptr->isSelected())
 	{
-//		psubButton->setVisible(true);
 		if(EnvSettingVectorList->size() - 1 != index)
 		{
 			psubButton->setVisible(true);
-//			setDeviceVector(index);
 		}
 		else
 		{
@@ -514,7 +459,7 @@ static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKLis
 	{
 		psubButton->setVisible(false);
 	}
-	mListView2Ptr->refreshListView();
+//	mListView2Ptr->refreshListView();
 }
 
 static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) {
@@ -535,7 +480,7 @@ static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) 
 			}
 			if((*it) == EnvSettingVectorList->at(index))
 			{
-//				delete EnvSettingVector[index];
+//				delete EnvSettingVector[index];			//need modify
 //				EnvSettingVector[index] = NULL;
 				SpaceInfo *tmp = (*it);
 				it = EnvSettingVectorList->erase(it);
@@ -564,6 +509,7 @@ static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) 
 			mWindow4Ptr->setVisible(true);
 		}
 	}
+	mListView2Ptr->refreshListView();
 }
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
@@ -576,6 +522,7 @@ static bool onButtonClick_Button10(ZKButton *pButton) {
     {
     	pButton->setSelected(true);
     }
+    mListView2Ptr->refreshListView();
     return false;
 }
 static bool onButtonClick_Button1(ZKButton *pButton) {
@@ -646,6 +593,7 @@ static bool onButtonClick_ButtonBack2(ZKButton *pButton) {
 
 static int getListItemCount_ListView1(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView1 !\n");
+	MACHINESTATUS->setEnvSpaceInfo(DevSettingVectorList);
     return DevSettingVectorList->size();
 }
 
@@ -657,6 +605,7 @@ static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKLis
 	ZKListView::ZKListItem *psubCancelClick = pListItem->findSubItemByID(ID_ENVSETTING_SubItemDelete);
 //	int Len = sizeof(DeviceInfoDataList) / sizeof(DeviceInfo);
 	DeviceInfo *tmp = DevSettingVectorList->at(index);
+//	MACHINESTATUS->setEnvSpaceInfo(tmp);
 	psubText->setText(tmp->maintext);
 	if(mButtonDelete1Ptr->isSelected())
 	{
@@ -675,7 +624,7 @@ static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKLis
 		psubCancelClick->setVisible(false);
 	}
 
-	mListView1Ptr->refreshListView();
+//	mListView1Ptr->refreshListView();
 }
 
 static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) {
@@ -707,6 +656,7 @@ static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) 
 	{
 		if(DevSettingVectorList->size() - 1 == index)
 		{
+
 			mListView1Ptr->setVisible(false);
 			mWindow1Ptr->setVisible(true);
 			mWindow4Ptr->setVisible(false);
@@ -714,6 +664,7 @@ static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) 
 //			onCheckedChanged_RadioGroup1(mRadioGroup1Ptr, ID_ENVSETTING_RadioButtonAll);
 		}
 	}
+	mListView1Ptr->refreshListView();
 }
 
 static bool onButtonClick_ButtonDelete1(ZKButton *pButton) {
@@ -726,6 +677,7 @@ static bool onButtonClick_ButtonDelete1(ZKButton *pButton) {
     {
     	pButton->setSelected(true);
     }
+    mListView1Ptr->refreshListView();
     return false;
 }
 static bool onButtonClick_ButtonInput(ZKButton *pButton) {
@@ -766,9 +718,11 @@ static void onListItemClick_ListView3(ZKListView *pListView, int index, int id) 
 			DeviceInfo *tmp = (DeviceInfo*)malloc(sizeof(DeviceInfo));
 //			DeviceInfo *tmp = (DeviceInfo *)(*it);
 			tmp->maintext = (*it)->maintext;
+			tmp->cancelstatus = false;
 			DevSettingVectorList->insert(DevSettingVectorList->end()-1, tmp);
 //			EnvSettingVector[EnvDevSetting_index]->insert(EnvSettingVector[EnvDevSetting_index]->end()-1, tmp);
 		}
 
 	}
+	mListView3Ptr->refreshListView();
 }

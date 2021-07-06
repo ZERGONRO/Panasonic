@@ -45,7 +45,6 @@
 #define ID_DEVICESETTING_Window1    110001
 #define ID_DEVICESETTING_TextView3    50003
 #define ID_DEVICESETTING_TextView8    50008
-#define ID_DEVICESETTING_TextView12    50012
 /*TAG:Macro宏ID END*/
 
 class DeviceSettingActivity : public Activity, 

@@ -21,6 +21,13 @@ typedef struct _PanasonicServe_t{
 	char passwd[128];
 }PanasonicServe_t;
 
+typedef struct MachineTime_t {
+	int year;
+	int month;
+	int days;
+	int hour;
+	int min;
+}MachineTime;
 
 typedef struct _EnvironmentDate_t{
 	int Temp;
@@ -32,6 +39,7 @@ typedef struct _EnvironmentDate_t{
 	int bl;
 	int vol;
 	int envindex;
+//	std::vector<DeviceInfo *> envmode;
 }EnvironmentDate_t;
 enum {
 	STANDARD_MODE,
@@ -67,7 +75,9 @@ public:
 	void setsmartmode(int type);
 	int getmanualmode();
 	void setmanualmode(int type);
-
+	void setMachineTime(struct tm *time);
+	MachineTime getMachineTime();
+	//获取和设置环境数据
 	int gettempdate();
 	void settempdate(int data);
 	int gethumddate();
@@ -80,12 +90,13 @@ public:
 	void setformvdate(float data);
 	float gettvocdate();
 	void settvocdate(float data);
-
+	//
 	int getenvmode();
 	void setenvmode();
 	int getenvironmentindex();
 	void setenvironmentindex(int index);
 
+	//获取和设置wifi相关
 	void setwifissid(std::string ssid);
 	void setwifipasswd(std::string ssid_passwd);
 	int getwifistatus();
@@ -94,15 +105,18 @@ public:
 	char *getwifipasswd();
 
 
-	std::vector<SpaceInfo *> getEnvSpaceInfo();
+	std::vector<DeviceInfo *> getEnvSpaceInfo();
+	void setEnvSpaceInfo(std::vector<DeviceInfo *> *EnvDevSettingVector);
 protected:
 
 private:
 	int mode;
 	int smartprograme_type;
 	int manualprograme_type;
+	MachineTime MachineTime;
 	PanasonicServe_t* config;
 	EnvironmentDate_t* EnvDate;
+	std::vector<DeviceInfo *> EnvInfo;
 
 };
 

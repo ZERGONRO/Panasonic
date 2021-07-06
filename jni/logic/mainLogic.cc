@@ -45,7 +45,7 @@ static bool NtpDateFlag = false;
 static bool ButtonModeSelectStatus = false;
 static pthread_t g_MovePicPosThread = 0;
 static std::vector<WifiInfo_t *> *WifiInfo;
-static std::vector<std::string > EnvInfoVector;
+static std::vector<DeviceInfo *> *EnvInfoVector;
 
 
 static Mutex pLock;
@@ -57,6 +57,7 @@ extern void hidestatusbars();
 
 //extern MyNetWorkingListener *nwlistener;
 
+/*
 static EnvInfo EnvInfoData[] = {
 		{"全热交换", false},
 		{"新风换气", false},
@@ -68,7 +69,7 @@ static EnvInfo EnvInfoData[] = {
 		{"浴霸", false},
 		{"除湿", false}
 };
-
+*/
 
 /**
  * 注册定时器
@@ -77,10 +78,11 @@ static EnvInfo EnvInfoData[] = {
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 //	{0,  6000}, //定时器id=0, 时间间隔6秒
-//	{1,  1000},
+	{1,  1000},
 	{2,  1000},
 };
 
+/*
 void SetEnvInfoListliew()
 {
 	EnvInfoVector.push_back("全热交换");
@@ -91,6 +93,7 @@ void SetEnvInfoListliew()
 	EnvInfoVector.push_back("除味");
 	EnvInfoVector.push_back("空调");
 }
+*/
 
 void SetEnvName(std::string focusindex)
 {
@@ -120,7 +123,8 @@ static void updateTime()
 	sprintf(timeStr, "%02d:%02d", t->tm_hour,t->tm_min);
 	mTextView42Ptr->setText(timeStr);
 
-//	sprintf(timeStr, "%d年%02d月%02d日", 1900 + t->tm_year, t->tm_mon + 1, t->tm_mday);
+//	sprintf(timeStr, "%d-%02d-%02d", 1900 + t->tm_year, t->tm_mon + 1, t->tm_mday);
+	MACHINESTATUS->setMachineTime(t);
 //	mTextView5Ptr->setText(timeStr);
 	if((t->tm_mon == 1) || (t->tm_mon == 3) || (t->tm_mon == 5) || (t->tm_mon == 7) || (t->tm_mon == 8)
 			|| (t->tm_mon == 10) || (t->tm_mon == 12))
@@ -316,6 +320,8 @@ static void onUI_init(){
 		//EASYUICONTEXT->openActivity("mainActivity", NULL);
 //		setStatusBarBarrelNotice(true);
 	}
+
+
 }
 
 /**
@@ -344,6 +350,33 @@ static void onUI_intent(const Intent *intentPtr) {
     {
     	mWindow24Ptr->setVisible(true);
     	mWindow5Ptr->setVisible(false);
+    }
+
+    if(!EnvInfoVector)
+    {
+		EnvInfoVector = new std::vector<DeviceInfo *>[10];
+		EnvInfoVector->clear();
+
+    }
+    else
+    {
+    	EnvInfoVector->clear();
+    	std::vector<DeviceInfo *> tmp = MACHINESTATUS->getEnvSpaceInfo();
+//    	LOGD("tmp.size is %d \n", tmp.size());
+		if(tmp.size() > 1)
+		{
+			for(int i = 0;i < tmp.size() - 1;i++)
+			{
+				DeviceInfo *tmp1 = tmp.at(i);
+				EnvInfoVector->push_back(tmp1);
+
+			}
+		}
+		else
+		{
+
+		}
+//		LOGD("EnvInfoVector.size is %d\n", EnvInfoVector->size());
     }
 
 
@@ -415,11 +448,13 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  */
 static bool onUI_Timer(int id){
 	static int DispTimeCount = 0;
+	static int EnvTimeCount = 0;
 	switch (id) {
 	case 0:
 		break;
 	case 1:
 	{
+
 
 	}
 		break;
@@ -509,47 +544,6 @@ static bool onmainActivityTouchEvent(const MotionEvent &ev) {
 	}
 	return false;
 }
-static bool onButtonClick_ButtonHomepage(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHomepage !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonHomepage1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHomepage1 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonSmart(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonSmart !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonSmart1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonSmart1 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonManual(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonManual !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonManual1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonManual1 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonHistorty(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHistorty !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonHistorty1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHistorty1 !!!\n");
-    return false;
-}
-
-
 
 static bool onButtonClick_ButtonON(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonON !!!\n");
@@ -1207,7 +1201,7 @@ static bool onButtonClick_ButtonSelect2(ZKButton *pButton) {
     LOGD("i : %d", i);
     ButtonModeSelectStatus = true;
 //    g_MovePicPosThread = 1;
-    ModePicSelectFunc(false, 1, i);
+//    ModePicSelectFunc(false, 1, i);
     return false;
 }
 
@@ -1228,7 +1222,7 @@ static bool onButtonClick_ButtonSelect3(ZKButton *pButton) {
 	LOGD("i : %d", i);
 	ButtonModeSelectStatus = true;
 //	g_MovePicPosThread = 1;
-	ModePicSelectFunc(false, 2, i);
+//	ModePicSelectFunc(false, 2, i);
 //    ModePicSelectFunc(false, 2);
     return false;
 }
@@ -1250,7 +1244,7 @@ static bool onButtonClick_ButtonSelect5(ZKButton *pButton) {
 	LOGD("i : %d", i);
 	ButtonModeSelectStatus = true;
 //	g_MovePicPosThread = 1;
-	ModePicSelectFunc(true, 1, i);
+//	ModePicSelectFunc(true, 1, i);
 //    ModePicSelectFunc(true, 2);
     return false;
 }
@@ -1272,7 +1266,7 @@ static bool onButtonClick_ButtonSelect4(ZKButton *pButton) {
 	LOGD("i : %d", i);
 	ButtonModeSelectStatus = true;
 //	g_MovePicPosThread = 1;
-	ModePicSelectFunc(true, 2, i);
+//	ModePicSelectFunc(true, 2, i);
 //    ModePicSelectFunc(true, 1);
     return false;
 }
@@ -1288,20 +1282,25 @@ static bool onButtonClick_Button16(ZKButton *pButton) {
 
 static int getListItemCount_ListView1(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView1 !\n");
-    return sizeof(EnvInfoData) / sizeof(EnvInfo);
+//    return sizeof(EnvInfoData) / sizeof(EnvInfo);
+	return EnvInfoVector->size();
 }
 
 static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
     //LOGD(" obtainListItemData_ ListView1  !!!\n");
 	ZKListView::ZKListSubItem* psubText = pListItem->findSubItemByID(ID_MAIN_SubItemTitle);
 	ZKListView::ZKListSubItem* psubButton = pListItem->findSubItemByID(ID_MAIN_SubItemButton);
-	psubText->setText(EnvInfoData[index].maintext);
-	psubButton->setSelected(EnvInfoData[index].buttonstatus);
+	DeviceInfo *tmp = EnvInfoVector->at(index);
+	psubText->setText(tmp->maintext);
+	psubButton->setSelected(tmp->cancelstatus);
 }
 
 static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) {
     //LOGD(" onListItemClick_ ListView1  !!!\n");
-	EnvInfoData[index].buttonstatus = !EnvInfoData[index].buttonstatus;
+//	EnvInfoData[index].buttonstatus = !EnvInfoData[index].buttonstatus;
+	DeviceInfo *tmp1 = EnvInfoVector->at(index);
+	tmp1->cancelstatus = !tmp1->cancelstatus;
+//	tmp1[index].cancelstatus = !tmp1[index].cancelstatus;
 	mListView1Ptr->refreshListView();
 }
 
@@ -1345,5 +1344,82 @@ static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) 
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
+    return false;
+}
+static bool onButtonClick_ButtonMusicPic(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonMusicPic !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonMusicMode(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonMusicMode !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button11(ZKButton *pButton) {
+    LOGD(" ButtonClick Button11 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button12(ZKButton *pButton) {
+    LOGD(" ButtonClick Button12 !!!\n");
+    return false;
+}
+static bool onButtonClick_ButtonMusicPre(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonMusicPre !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonMusicPlay(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonMusicPlay !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonMusicNext(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonMusicNext !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonMusicAudio(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonMusicAudio !!!\n");
+    return false;
+}
+static bool onButtonClick_ButtonHomepage(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHomepage !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHomepage1(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHomepage1 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonSmart(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonSmart !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonSmart1(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonSmart1 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonManual(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonManual !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonManual1(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonManual1 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHistorty(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHistorty !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHistorty1(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHistorty1 !!!\n");
     return false;
 }

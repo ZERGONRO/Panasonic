@@ -27,6 +27,7 @@ MachineStatusListener::MachineStatusListener()
 	config = new PanasonicServe_t;
 	EnvDate = new EnvironmentDate_t;
 	config->wifistatus = 1;
+	EnvInfo.clear();
 //	EnvDate->bl = 51;
 //	EnvDate->vol = 51;
 }
@@ -313,15 +314,38 @@ void MachineStatusListener::setenvironmentindex(int index)
 	EnvDate->envindex = index;
 }
 
-std::vector<SpaceInfo *> MachineStatusListener::getEnvSpaceInfo()
+std::vector<DeviceInfo *> MachineStatusListener::getEnvSpaceInfo()
 {
-	std::vector<SpaceInfo *> Vector;
-	Vector.clear();
-//	std::vector<SpaceInfo *>::iterator it = EnvSettingVector
+	return EnvInfo;
+}
+
+void MachineStatusListener::setEnvSpaceInfo(std::vector<DeviceInfo *> *EnvDevSettingVector)
+{
+	if(!EnvDevSettingVector)
+		return;
+
+	EnvInfo.clear();
+//	DeviceInfo *info = (DeviceInfo *)malloc(sizeof(DeviceInfo));
+	for(std::vector<DeviceInfo *>::iterator it = EnvDevSettingVector->begin(); it != EnvDevSettingVector->end();it++)
+	{
+		DeviceInfo *info = (*it);
+		EnvInfo.push_back(info);
+	}
 
 
+}
 
-	return Vector;
+void MachineStatusListener::setMachineTime(struct tm *time)
+{
+	MachineTime.year = time->tm_year;
+	MachineTime.month = time->tm_mon;
+	MachineTime.days = time->tm_mday;
+	MachineTime.hour = time->tm_hour;
+	MachineTime.min = time->tm_min;
+}
+MachineTime MachineStatusListener::getMachineTime()
+{
+	return MachineTime;
 }
 
 

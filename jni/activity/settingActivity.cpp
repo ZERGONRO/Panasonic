@@ -4,6 +4,8 @@
 #include "settingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButtonMasterSlaverSet1Ptr;
+static ZKButton* mButtonVoiceSysSet1Ptr;
 static ZKButton* mButtonBackPtr;
 static ZKTextView* mTextView22Ptr;
 static ZKTextView* mTextView21Ptr;
@@ -31,7 +33,6 @@ static ZKButton* mButtonFWUpdate1Ptr;
 static ZKTextView* mTextView37Ptr;
 static ZKTextView* mTextView36Ptr;
 static ZKWindow* mWindowFWUpdate1Ptr;
-static ZKButton* mButtonDeviceSet1Ptr;
 static ZKTextView* mTextView35Ptr;
 static ZKTextView* mTextView34Ptr;
 static ZKWindow* mWindowDeviceSet1Ptr;
@@ -47,7 +48,6 @@ static ZKButton* mButtonTimesetting1Ptr;
 static ZKTextView* mTextView29Ptr;
 static ZKTextView* mTextView28Ptr;
 static ZKWindow* mWindowTimeSetting1Ptr;
-static ZKButton* mButtonPressSet1Ptr;
 static ZKTextView* mTextView27Ptr;
 static ZKTextView* mTextView26Ptr;
 static ZKWindow* mWindowPressSet1Ptr;
@@ -93,6 +93,8 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_SETTING_ButtonMasterSlaverSet1, onButtonClick_ButtonMasterSlaverSet1,
+    ID_SETTING_ButtonVoiceSysSet1, onButtonClick_ButtonVoiceSysSet1,
     ID_SETTING_ButtonBack, onButtonClick_ButtonBack,
     ID_SETTING_ButtonConfirm, onButtonClick_ButtonConfirm,
     ID_SETTING_ButtonCancel, onButtonClick_ButtonCancel,
@@ -100,11 +102,9 @@ static S_ButtonCallback sButtonCallbackTab[] = {
     ID_SETTING_ButtonReset1, onButtonClick_ButtonReset1,
     ID_SETTING_ButtonWifiSetting1, onButtonClick_ButtonWifiSetting1,
     ID_SETTING_ButtonFWUpdate1, onButtonClick_ButtonFWUpdate1,
-    ID_SETTING_ButtonDeviceSet1, onButtonClick_ButtonDeviceSet1,
     ID_SETTING_ButtonFilterSet1, onButtonClick_ButtonFilterSet1,
     ID_SETTING_ButtonBodySensor1, onButtonClick_ButtonBodySensor1,
     ID_SETTING_ButtonTimesetting1, onButtonClick_ButtonTimesetting1,
-    ID_SETTING_ButtonPressSet1, onButtonClick_ButtonPressSet1,
     ID_SETTING_ButtonSensorCtl1, onButtonClick_ButtonSensorCtl1,
 };
 /***************/
@@ -186,6 +186,8 @@ const char* settingActivity::getAppName() const{
 //TAG:onCreate
 void settingActivity::onCreate() {
 	Activity::onCreate();
+    mButtonMasterSlaverSet1Ptr = (ZKButton*)findControlByID(ID_SETTING_ButtonMasterSlaverSet1);
+    mButtonVoiceSysSet1Ptr = (ZKButton*)findControlByID(ID_SETTING_ButtonVoiceSysSet1);
     mButtonBackPtr = (ZKButton*)findControlByID(ID_SETTING_ButtonBack);
     mTextView22Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView22);
     mTextView21Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView21);
@@ -213,7 +215,6 @@ void settingActivity::onCreate() {
     mTextView37Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView37);
     mTextView36Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView36);
     mWindowFWUpdate1Ptr = (ZKWindow*)findControlByID(ID_SETTING_WindowFWUpdate1);
-    mButtonDeviceSet1Ptr = (ZKButton*)findControlByID(ID_SETTING_ButtonDeviceSet1);
     mTextView35Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView35);
     mTextView34Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView34);
     mWindowDeviceSet1Ptr = (ZKWindow*)findControlByID(ID_SETTING_WindowDeviceSet1);
@@ -229,7 +230,6 @@ void settingActivity::onCreate() {
     mTextView29Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView29);
     mTextView28Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView28);
     mWindowTimeSetting1Ptr = (ZKWindow*)findControlByID(ID_SETTING_WindowTimeSetting1);
-    mButtonPressSet1Ptr = (ZKButton*)findControlByID(ID_SETTING_ButtonPressSet1);
     mTextView27Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView27);
     mTextView26Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView26);
     mWindowPressSet1Ptr = (ZKWindow*)findControlByID(ID_SETTING_WindowPressSet1);

@@ -5,6 +5,31 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mIconViewFrostPtr;
+static ZKTextView* mIconViewFilterPtr;
+static ZKTextView* mIconViewTimingPtr;
+static ZKButton* mButtonMusicAudioPtr;
+static ZKButton* mButtonMusicNextPtr;
+static ZKButton* mButtonMusicPlayPtr;
+static ZKButton* mButtonMusicPrePtr;
+static ZKTextView* mTextView56Ptr;
+static ZKTextView* mTextView55Ptr;
+static ZKTextView* mTextView54Ptr;
+static ZKWindow* mWindowEmergencyCallPtr;
+static ZKTextView* mTextView53Ptr;
+static ZKTextView* mTextView52Ptr;
+static ZKWindow* mWindowImmediaCommunicatePtr;
+static ZKWindow* mWindowListViewPtr;
+static ZKTextView* mTextView51Ptr;
+static ZKTextView* mTextView46Ptr;
+static ZKTextView* mTextView45Ptr;
+static ZKTextView* mTextView44Ptr;
+static ZKWindow* mWindowTVOCPtr;
+static ZKButton* mButtonMusicModePtr;
+static ZKButton* mButtonMusicPicPtr;
+static ZKWindow* mWindowMusicPtr;
+static ZKWindow* mWindowTimeWeatherPtr;
+static ZKWindow* mWindowIntervalPtr;
 static ZKButton* mButtonOneKeyAdjustPtr;
 static ZKButton* mButtonEmergencyCallPtr;
 static ZKButton* mButtonImmediaCommunicatePtr;
@@ -116,8 +141,6 @@ static ZKWindow* mWindow6Ptr;
 static ZKTextView* mTextView6Ptr;
 static ZKTextView* mTextView5Ptr;
 static ZKWindow* mWindow5Ptr;
-static ZKWindow* mWindow4Ptr;
-static ZKWindow* mWindow3Ptr;
 static ZKTextView* mTextView41Ptr;
 static ZKButton* mButtonHistorty1Ptr;
 static ZKTextView* mTextView4Ptr;
@@ -136,7 +159,6 @@ static ZKTextView* mTextView1Ptr;
 static ZKButton* mButtonHomepagePtr;
 static ZKWindow* mWindowHomepagePtr;
 static ZKWindow* mWindow2Ptr;
-static ZKWindow* mWindow1Ptr;
 static mainActivity* mActivityPtr;
 
 static ZKWindow* mWindowSelectModePtr[5];
@@ -153,6 +175,7 @@ MyNetWorkingListener *nwlistener = NULL;
 //static ZKButton* mButtonModeSelect[5] = {mButtonSelect1Ptr, mButtonSelect2Ptr, mButtonSelect3Ptr, mButtonSelect4Ptr, mButtonSelect5Ptr};
 typedef struct {
 	const char* maintext;
+	const char* mainpic;
 	bool buttonstatus;
 }EnvInfo;
 
@@ -193,6 +216,12 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_MAIN_ButtonMusicAudio, onButtonClick_ButtonMusicAudio,
+    ID_MAIN_ButtonMusicNext, onButtonClick_ButtonMusicNext,
+    ID_MAIN_ButtonMusicPlay, onButtonClick_ButtonMusicPlay,
+    ID_MAIN_ButtonMusicPre, onButtonClick_ButtonMusicPre,
+    ID_MAIN_ButtonMusicMode, onButtonClick_ButtonMusicMode,
+    ID_MAIN_ButtonMusicPic, onButtonClick_ButtonMusicPic,
     ID_MAIN_ButtonOneKeyAdjust, onButtonClick_ButtonOneKeyAdjust,
     ID_MAIN_ButtonEmergencyCall, onButtonClick_ButtonEmergencyCall,
     ID_MAIN_ButtonImmediaCommunicate, onButtonClick_ButtonImmediaCommunicate,
@@ -295,13 +324,13 @@ mainActivity::~mainActivity() {
   //todo add init file here
   // 退出应用时需要反注册
     EASYUICONTEXT->unregisterGlobalTouchListener(this);
-    nwlistener->removeNetWorkListener(this);
-	if(nwlistener)
-	{
-		nwlistener->requestExitAndWait();
-		delete nwlistener;
-		nwlistener = NULL;
-	}
+//    nwlistener->removeNetWorkListener(this);
+//	if(nwlistener)
+//	{
+//		nwlistener->requestExitAndWait();
+//		delete nwlistener;
+//		nwlistener = NULL;
+//	}
     onUI_quit();
     unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
 }
@@ -313,6 +342,31 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mIconViewFrostPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewFrost);
+    mIconViewFilterPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewFilter);
+    mIconViewTimingPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewTiming);
+    mButtonMusicAudioPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonMusicAudio);
+    mButtonMusicNextPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonMusicNext);
+    mButtonMusicPlayPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonMusicPlay);
+    mButtonMusicPrePtr = (ZKButton*)findControlByID(ID_MAIN_ButtonMusicPre);
+    mTextView56Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView56);
+    mTextView55Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView55);
+    mTextView54Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView54);
+    mWindowEmergencyCallPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowEmergencyCall);
+    mTextView53Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView53);
+    mTextView52Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView52);
+    mWindowImmediaCommunicatePtr = (ZKWindow*)findControlByID(ID_MAIN_WindowImmediaCommunicate);
+    mWindowListViewPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowListView);
+    mTextView51Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView51);
+    mTextView46Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView46);
+    mTextView45Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView45);
+    mTextView44Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView44);
+    mWindowTVOCPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowTVOC);
+    mButtonMusicModePtr = (ZKButton*)findControlByID(ID_MAIN_ButtonMusicMode);
+    mButtonMusicPicPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonMusicPic);
+    mWindowMusicPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowMusic);
+    mWindowTimeWeatherPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowTimeWeather);
+    mWindowIntervalPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowInterval);
     mButtonOneKeyAdjustPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonOneKeyAdjust);
     mButtonEmergencyCallPtr = (ZKButton*)findControlByID(ID_MAIN_ButtonEmergencyCall);
     mButtonImmediaCommunicatePtr = (ZKButton*)findControlByID(ID_MAIN_ButtonImmediaCommunicate);
@@ -424,8 +478,6 @@ void mainActivity::onCreate() {
     mTextView6Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView6);
     mTextView5Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView5);
     mWindow5Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window5);
-    mWindow4Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window4);
-    mWindow3Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window3);
     mTextView41Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView41);
     mButtonHistorty1Ptr = (ZKButton*)findControlByID(ID_MAIN_ButtonHistorty1);
     mTextView4Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView4);
@@ -444,7 +496,6 @@ void mainActivity::onCreate() {
     mButtonHomepagePtr = (ZKButton*)findControlByID(ID_MAIN_ButtonHomepage);
     mWindowHomepagePtr = (ZKWindow*)findControlByID(ID_MAIN_WindowHomepage);
     mWindow2Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window2);
-    mWindow1Ptr = (ZKWindow*)findControlByID(ID_MAIN_Window1);
 
     mWindowSelectModePtr[0] = mWindowHumidityPtr;
     mWindowSelectModePtr[1] = mWindowPM25Ptr;

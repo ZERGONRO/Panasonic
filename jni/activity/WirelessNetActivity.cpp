@@ -16,7 +16,6 @@ static ZKTextView* mTextView1Ptr;
 static ZKWindow* mWindow1Ptr;
 static ZKTextView* mTextView8Ptr;
 static ZKTextView* mTextView3Ptr;
-static ZKTextView* mTextView12Ptr;
 static ZKButton* mButtonBackPtr;
 static WirelessNetActivity* mActivityPtr;
 
@@ -152,7 +151,6 @@ void WirelessNetActivity::onCreate() {
     mWindow1Ptr = (ZKWindow*)findControlByID(ID_WIRELESSNET_Window1);
     mTextView8Ptr = (ZKTextView*)findControlByID(ID_WIRELESSNET_TextView8);
     mTextView3Ptr = (ZKTextView*)findControlByID(ID_WIRELESSNET_TextView3);
-    mTextView12Ptr = (ZKTextView*)findControlByID(ID_WIRELESSNET_TextView12);
     mButtonBackPtr = (ZKButton*)findControlByID(ID_WIRELESSNET_ButtonBack);
 	mActivityPtr = this;
 	onUI_init();

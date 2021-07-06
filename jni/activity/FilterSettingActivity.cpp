@@ -31,7 +31,6 @@ static ZKButton* mButtonCFilterPtr;
 static ZKButton* mButtonStrengthFilterPtr;
 static ZKButton* mButtonWindFilterPtr;
 static ZKButton* mButtonStdFilterPtr;
-static ZKTextView* mTextView12Ptr;
 static ZKTextView* mTextView2Ptr;
 static ZKTextView* mTextView3Ptr;
 static ZKTextView* mTextView8Ptr;
@@ -191,7 +190,6 @@ void FilterSettingActivity::onCreate() {
     mButtonStrengthFilterPtr = (ZKButton*)findControlByID(ID_FILTERSETTING_ButtonStrengthFilter);
     mButtonWindFilterPtr = (ZKButton*)findControlByID(ID_FILTERSETTING_ButtonWindFilter);
     mButtonStdFilterPtr = (ZKButton*)findControlByID(ID_FILTERSETTING_ButtonStdFilter);
-    mTextView12Ptr = (ZKTextView*)findControlByID(ID_FILTERSETTING_TextView12);
     mTextView2Ptr = (ZKTextView*)findControlByID(ID_FILTERSETTING_TextView2);
     mTextView3Ptr = (ZKTextView*)findControlByID(ID_FILTERSETTING_TextView3);
     mTextView8Ptr = (ZKTextView*)findControlByID(ID_FILTERSETTING_TextView8);

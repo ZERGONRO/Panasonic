@@ -571,41 +571,13 @@ static bool onButtonClick_ButtonYuBa(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonAirPFOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonAirPFOpen !!!\n");
-    if(pButton->isSelected())
-    {
-    	pButton->setSelected(false);
-    }
-    else
-    {
-    	pButton->setSelected(true);
-    }
-    return false;
-}
 
 static bool onButtonClick_ButtonAirPFSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFSelect !!!\n");
     return false;
 }
 
-static bool onButtonClick_ButtonAirPFPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonAirPFPicTime !!!\n");
-    if(mButtonAirPFOpenPtr->isSelected())
-    {
-    	EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-    }
-    return false;
-}
 
-static bool onButtonClick_ButtonAirPFPicTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonAirPFPicTimeOpen !!!\n");
-    if(mButtonAirPFOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonAirPFAutoWind(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFAutoWind !!!\n");
@@ -677,41 +649,12 @@ static bool onButtonClick_ButtonAirPFChildLock(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonAirSwitchOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonAirSwitchOpen !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonAirSwitchSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchSelect !!!\n");
     return false;
 }
 
-static bool onButtonClick_ButtonAirSwitchPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonAirSwitchPicTime !!!\n");
-    if(mButtonAirSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
-
-static bool onButtonClick_ButtonAirSwitchPicTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonAirSwitchPicTimeOpen !!!\n");
-    if(mButtonAirSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonAirSwitchAutoWind(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchAutoWind !!!\n");
@@ -788,41 +731,12 @@ static bool onButtonClick_ButtonAirSwitchTempSettingAdd(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonHotChangeSwitchOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHotChangeSwitchOpen !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonHotChangeSwitchSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchSelect !!!\n");
     return false;
 }
 
-static bool onButtonClick_ButtonHotChangeSwitchPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHotChangeSwitchPicTime !!!\n");
-    if(mButtonHotChangeSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
-
-static bool onButtonClick_ButtonHotChangeSwitchPicTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHotChangeSwitchPicTimeOpen !!!\n");
-    if(mButtonHotChangeSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonHotChangeSwitchAutoWind(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchAutoWind !!!\n");
@@ -864,41 +778,12 @@ static bool onButtonClick_ButtonHotChangeSwitchModeCycle(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonHumdSwitchOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHumdSwitchOpen !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonHumdSwitchSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchSelect !!!\n");
     return false;
 }
 
-static bool onButtonClick_ButtonHumdSwitchPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHumdSwitchPicTime !!!\n");
-    if(mButtonHumdSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
-
-static bool onButtonClick_ButtonHumdSwitchPicTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHumdSwitchPicTimeOpen !!!\n");
-    if(mButtonHumdSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonHumdSwitchAutoWind(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchAutoWind !!!\n");
@@ -985,41 +870,11 @@ static bool onButtonClick_ButtonHumdSwitchWindClassDiff(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonWindSwitchOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonWindSwitchOpen !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
-
 static bool onButtonClick_ButtonWindSwitchSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindSwitchSelect !!!\n");
     return false;
 }
 
-static bool onButtonClick_ButtonWindSwitchPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonWindSwitchPicTime !!!\n");
-    if(mButtonWindSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
-
-static bool onButtonClick_ButtonWindSwitchPicTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonWindSwitchPicTimeOpen !!!\n");
-    if(mButtonWindSwitchOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonWindSwitchAutoWind(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindSwitchAutoWind !!!\n");
@@ -1041,41 +896,13 @@ static bool onButtonClick_ButtonWindSwitchNANOEX(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonSterilizationOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonSterilizationOpen !!!\n");
-    if(pButton->isSelected())
-	{
-		pButton->setSelected(false);
-	}
-	else
-	{
-		pButton->setSelected(true);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonSterilizationSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonSterilizationSelect !!!\n");
     return false;
 }
 
-static bool onButtonClick_ButtonSterilizationPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonSterilizationPicTime !!!\n");
-    if(mButtonSterilizationOpenPtr->isSelected())
-   	{
-   		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-   	}
-    return false;
-}
 
-static bool onButtonClick_ButtonSterilizationPicTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonSterilizationPicTimeOpen !!!\n");
-    if(mButtonSterilizationOpenPtr->isSelected())
-   	{
-   		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-   	}
-    return false;
-}
 
 static bool onButtonClick_ButtonYuBaOpen(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaOpen !!!\n");
@@ -1095,23 +922,7 @@ static bool onButtonClick_ButtonYuBaSelect(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_ButtonYuBaPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonYuBaPicTime !!!\n");
-    if(mButtonYuBaOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
 
-static bool onButtonClick_ButtonYuBaTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonYuBaTimeOpen !!!\n");
-    if(mButtonYuBaOpenPtr->isSelected())
-	{
-		EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-	}
-    return false;
-}
 
 static bool onButtonClick_ButtonYuBaHeating(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaHeating !!!\n");
@@ -1300,5 +1111,243 @@ static bool onButtonClick_ButtonHistorty2(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonDropDown(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDropDown !!!\n");
+    return false;
+}
+static bool onButtonClick_Button1(ZKButton *pButton) {
+    LOGD(" ButtonClick Button1 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button2(ZKButton *pButton) {
+    LOGD(" ButtonClick Button2 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button3(ZKButton *pButton) {
+    LOGD(" ButtonClick Button3 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button4(ZKButton *pButton) {
+    LOGD(" ButtonClick Button4 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button5(ZKButton *pButton) {
+    LOGD(" ButtonClick Button5 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button6(ZKButton *pButton) {
+    LOGD(" ButtonClick Button6 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button7(ZKButton *pButton) {
+    LOGD(" ButtonClick Button7 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button8(ZKButton *pButton) {
+    LOGD(" ButtonClick Button8 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button9(ZKButton *pButton) {
+    LOGD(" ButtonClick Button9 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button10(ZKButton *pButton) {
+    LOGD(" ButtonClick Button10 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button11(ZKButton *pButton) {
+    LOGD(" ButtonClick Button11 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button12(ZKButton *pButton) {
+    LOGD(" ButtonClick Button12 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button13(ZKButton *pButton) {
+    LOGD(" ButtonClick Button13 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button14(ZKButton *pButton) {
+    LOGD(" ButtonClick Button14 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button15(ZKButton *pButton) {
+    LOGD(" ButtonClick Button15 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button16(ZKButton *pButton) {
+    LOGD(" ButtonClick Button16 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button17(ZKButton *pButton) {
+    LOGD(" ButtonClick Button17 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button18(ZKButton *pButton) {
+    LOGD(" ButtonClick Button18 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button19(ZKButton *pButton) {
+    LOGD(" ButtonClick Button19 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button20(ZKButton *pButton) {
+    LOGD(" ButtonClick Button20 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button21(ZKButton *pButton) {
+    LOGD(" ButtonClick Button21 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button22(ZKButton *pButton) {
+    LOGD(" ButtonClick Button22 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button23(ZKButton *pButton) {
+    LOGD(" ButtonClick Button23 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button24(ZKButton *pButton) {
+    LOGD(" ButtonClick Button24 !!!\n");
+    return false;
+}
+static bool onButtonClick_ButtonAirPFSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonAirPFSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonAirPFTimeSwitchPic(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonAirPFTimeSwitchPic !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonAirPFTimeSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonAirPFTimeSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonAirSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonAirSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonAirTimeSwitchPic(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonAirTimeSwitchPic !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonAirTimeSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonAirTimeSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotChangeSwitchOpen(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotChangeSwitchOpen !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotChangeSwitchPicTime(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotChangeSwitchPicTime !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotChangeSwitchPicTimeOpen(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotChangeSwitchPicTimeOpen !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotCSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotCSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotCTimeSwitchPic(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotCTimeSwitchPic !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotCTimeSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotCTimeSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHumdSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHumdSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHumdTimeSwitchPic(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHumdTimeSwitchPic !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHumdTimeSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHumdTimeSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonWindSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonWindSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonWindTimeSwitchPic(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonWindTimeSwitchPic !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonWindTimeSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonWindTimeSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonSterilizationSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonSterilizationSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonSteriTimeSwitchPic(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonSteriTimeSwitchPic !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonSteriTimeSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonSteriTimeSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonYubaSwitch(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonYubaSwitch !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonPicTime(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonPicTime !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonTiming(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonTiming !!!\n");
     return false;
 }

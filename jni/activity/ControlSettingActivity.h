@@ -35,7 +35,6 @@
 #define ID_CONTROLSETTING_Window1    110001
 #define ID_CONTROLSETTING_TextView8    50008
 #define ID_CONTROLSETTING_TextView3    50003
-#define ID_CONTROLSETTING_TextView12    50012
 /*TAG:Macro宏ID END*/
 
 class ControlSettingActivity : public Activity, 

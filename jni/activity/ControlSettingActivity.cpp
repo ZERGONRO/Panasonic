@@ -13,7 +13,6 @@ static ZKTextView* mTextViewBodySwitchPtr;
 static ZKWindow* mWindow1Ptr;
 static ZKTextView* mTextView8Ptr;
 static ZKTextView* mTextView3Ptr;
-static ZKTextView* mTextView12Ptr;
 static ControlSettingActivity* mActivityPtr;
 
 /*register activity*/
@@ -143,7 +142,6 @@ void ControlSettingActivity::onCreate() {
     mWindow1Ptr = (ZKWindow*)findControlByID(ID_CONTROLSETTING_Window1);
     mTextView8Ptr = (ZKTextView*)findControlByID(ID_CONTROLSETTING_TextView8);
     mTextView3Ptr = (ZKTextView*)findControlByID(ID_CONTROLSETTING_TextView3);
-    mTextView12Ptr = (ZKTextView*)findControlByID(ID_CONTROLSETTING_TextView12);
 	mActivityPtr = this;
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 

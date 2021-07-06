@@ -26,6 +26,8 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_SETTING_ButtonMasterSlaverSet1    20006
+#define ID_SETTING_ButtonVoiceSysSet1    20002
 #define ID_SETTING_ButtonBack    20011
 #define ID_SETTING_TextView22    50022
 #define ID_SETTING_TextView21    50021
@@ -53,7 +55,6 @@
 #define ID_SETTING_TextView37    50037
 #define ID_SETTING_TextView36    50036
 #define ID_SETTING_WindowFWUpdate1    110018
-#define ID_SETTING_ButtonDeviceSet1    20006
 #define ID_SETTING_TextView35    50035
 #define ID_SETTING_TextView34    50034
 #define ID_SETTING_WindowDeviceSet1    110017
@@ -69,7 +70,6 @@
 #define ID_SETTING_TextView29    50029
 #define ID_SETTING_TextView28    50028
 #define ID_SETTING_WindowTimeSetting1    110014
-#define ID_SETTING_ButtonPressSet1    20002
 #define ID_SETTING_TextView27    50027
 #define ID_SETTING_TextView26    50026
 #define ID_SETTING_WindowPressSet1    110013
