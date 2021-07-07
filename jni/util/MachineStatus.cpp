@@ -16,7 +16,7 @@
 #include "util/MyNetWorkingListener.h"
 
 //extern MyNetWorkingListener *nwlistener;
-
+#define		InitialPassword		"123456"
 //namespace std{
 
 MachineStatusListener::MachineStatusListener()
@@ -28,6 +28,8 @@ MachineStatusListener::MachineStatusListener()
 	EnvDate = new EnvironmentDate_t;
 	config->wifistatus = 1;
 	EnvInfo.clear();
+	strcpy(MasterSlaverKey, InitialPassword);
+//	MasterSlaverKey[10] = "123456";
 //	EnvDate->bl = 51;
 //	EnvDate->vol = 51;
 }
@@ -337,18 +339,30 @@ void MachineStatusListener::setEnvSpaceInfo(std::vector<DeviceInfo *> *EnvDevSet
 
 void MachineStatusListener::setMachineTime(struct tm *time)
 {
-	MachineTime.year = time->tm_year;
-	MachineTime.month = time->tm_mon;
-	MachineTime.days = time->tm_mday;
-	MachineTime.hour = time->tm_hour;
-	MachineTime.min = time->tm_min;
+	Machinetime.year = time->tm_year;
+	Machinetime.month = time->tm_mon;
+	Machinetime.days = time->tm_mday;
+	Machinetime.hour = time->tm_hour;
+	Machinetime.min = time->tm_min;
 }
 MachineTime MachineStatusListener::getMachineTime()
 {
-	return MachineTime;
+	return Machinetime;
 }
 
+void MachineStatusListener::setMasterSlaverKey(char *keyword)
+{
 
+	strcpy(MasterSlaverKey, keyword);
+	LOGD("The MasterSlaverKey is %s\n", &MasterSlaverKey);
+
+}
+
+char* MachineStatusListener::getMasterSlaverKey()
+{
+	char *buf = MasterSlaverKey;
+	return buf;
+}
 
 
 

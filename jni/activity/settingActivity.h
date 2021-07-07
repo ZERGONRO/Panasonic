@@ -31,7 +31,6 @@
 #define ID_SETTING_ButtonBack    20011
 #define ID_SETTING_TextView22    50022
 #define ID_SETTING_TextView21    50021
-#define ID_SETTING_TextView23    50023
 #define ID_SETTING_TextView4    50004
 #define ID_SETTING_TextView3    50003
 #define ID_SETTING_ButtonConfirm    20013

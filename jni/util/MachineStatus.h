@@ -77,6 +77,8 @@ public:
 	void setmanualmode(int type);
 	void setMachineTime(struct tm *time);
 	MachineTime getMachineTime();
+	void setMasterSlaverKey(char *keyword);
+	char *getMasterSlaverKey();
 	//获取和设置环境数据
 	int gettempdate();
 	void settempdate(int data);
@@ -113,7 +115,8 @@ private:
 	int mode;
 	int smartprograme_type;
 	int manualprograme_type;
-	MachineTime MachineTime;
+	MachineTime Machinetime;
+	char MasterSlaverKey[10];
 	PanasonicServe_t* config;
 	EnvironmentDate_t* EnvDate;
 	std::vector<DeviceInfo *> EnvInfo;

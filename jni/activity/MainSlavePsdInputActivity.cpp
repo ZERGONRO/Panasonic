@@ -4,6 +4,8 @@
 #include "MainSlavePsdInputActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButtonComfirmPtr;
+static ZKTextView* mTextView2Ptr;
 static ZKButton* mButtonNumCancelPtr;
 static ZKButton* mButtonNum9Ptr;
 static ZKButton* mButtonNum6Ptr;
@@ -68,6 +70,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_MAINSLAVEPSDINPUT_ButtonComfirm, onButtonClick_ButtonComfirm,
     ID_MAINSLAVEPSDINPUT_ButtonNumCancel, onButtonClick_ButtonNumCancel,
     ID_MAINSLAVEPSDINPUT_ButtonNum9, onButtonClick_ButtonNum9,
     ID_MAINSLAVEPSDINPUT_ButtonNum6, onButtonClick_ButtonNum6,
@@ -163,6 +166,8 @@ const char* MainSlavePsdInputActivity::getAppName() const{
 //TAG:onCreate
 void MainSlavePsdInputActivity::onCreate() {
 	Activity::onCreate();
+    mButtonComfirmPtr = (ZKButton*)findControlByID(ID_MAINSLAVEPSDINPUT_ButtonComfirm);
+    mTextView2Ptr = (ZKTextView*)findControlByID(ID_MAINSLAVEPSDINPUT_TextView2);
     mButtonNumCancelPtr = (ZKButton*)findControlByID(ID_MAINSLAVEPSDINPUT_ButtonNumCancel);
     mButtonNum9Ptr = (ZKButton*)findControlByID(ID_MAINSLAVEPSDINPUT_ButtonNum9);
     mButtonNum6Ptr = (ZKButton*)findControlByID(ID_MAINSLAVEPSDINPUT_ButtonNum6);

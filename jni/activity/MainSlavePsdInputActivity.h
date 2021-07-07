@@ -26,6 +26,8 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAINSLAVEPSDINPUT_ButtonComfirm    20016
+#define ID_MAINSLAVEPSDINPUT_TextView2    50008
 #define ID_MAINSLAVEPSDINPUT_ButtonNumCancel    20015
 #define ID_MAINSLAVEPSDINPUT_ButtonNum9    20014
 #define ID_MAINSLAVEPSDINPUT_ButtonNum6    20013

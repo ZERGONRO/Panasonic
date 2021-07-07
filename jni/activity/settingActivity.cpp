@@ -9,7 +9,6 @@ static ZKButton* mButtonVoiceSysSet1Ptr;
 static ZKButton* mButtonBackPtr;
 static ZKTextView* mTextView22Ptr;
 static ZKTextView* mTextView21Ptr;
-static ZKTextView* mTextView23Ptr;
 static ZKTextView* mTextView4Ptr;
 static ZKTextView* mTextView3Ptr;
 static ZKButton* mButtonConfirmPtr;
@@ -191,7 +190,6 @@ void settingActivity::onCreate() {
     mButtonBackPtr = (ZKButton*)findControlByID(ID_SETTING_ButtonBack);
     mTextView22Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView22);
     mTextView21Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView21);
-    mTextView23Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView23);
     mTextView4Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView4);
     mTextView3Ptr = (ZKTextView*)findControlByID(ID_SETTING_TextView3);
     mButtonConfirmPtr = (ZKButton*)findControlByID(ID_SETTING_ButtonConfirm);

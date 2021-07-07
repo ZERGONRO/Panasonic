@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -32,6 +33,10 @@
 
 static int TextKeyCount = 0;
 static bool TextKeyFlag = false;
+static std::vector<std::string > KeyVector;
+static char keybuf[6];
+static bool IsModifyKey = false;
+//static std::vector<char *> KeyVector;
 
 /**
  * 注册定时器
@@ -100,13 +105,38 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  *             停止运行当前定时器
  */
 static bool onUI_Timer(int id){
+//	char keys[10];
+	char *keys;
+	bool keyflag = false;
 	switch (id) {
 	case 1:
 	{
 		if (TextKeyFlag){
 			TextKeyFlag = false;
-			for (int i = 0;i < 6;i++){
-				mTextViewKeyPtr[i]->setText("");
+			if (!IsModifyKey){
+//				char *tmpkeys = MACHINESTATUS->getMasterSlaverKey();
+//				strcpy(keys, tmpkeys);
+				keys = MACHINESTATUS->getMasterSlaverKey();
+				LOGD("The key is : %s and key buf is %s\n", keys, &keybuf);
+	//			LOGD("key buf is %c\n", keybuf);
+				for (int i = 0;i < 6;i++){
+					if (keybuf[i] != keys[i]){
+						LOGD("Key error\n");
+						keyflag = false;
+						break;
+					}
+					keyflag = true;
+				}
+				if (!keyflag){
+					TextKeyCount = 0;
+					for (int i = 0;i < 6;i++){
+						mTextViewKeyPtr[i]->setText("");
+					}
+				}else{
+					EASYUICONTEXT->goBack();
+				}
+			}else{
+
 			}
 		}
 	}
@@ -146,75 +176,7 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button2(ZKButton *pButton) {
-    LOGD(" ButtonClick Button2 !!!\n");
-    return false;
-}
 
-static bool onButtonClick_Button3(ZKButton *pButton) {
-    LOGD(" ButtonClick Button3 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button4(ZKButton *pButton) {
-    LOGD(" ButtonClick Button4 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button5(ZKButton *pButton) {
-    LOGD(" ButtonClick Button5 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button6(ZKButton *pButton) {
-    LOGD(" ButtonClick Button6 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button7(ZKButton *pButton) {
-    LOGD(" ButtonClick Button7 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button8(ZKButton *pButton) {
-    LOGD(" ButtonClick Button8 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button9(ZKButton *pButton) {
-    LOGD(" ButtonClick Button9 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button10(ZKButton *pButton) {
-    LOGD(" ButtonClick Button10 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button11(ZKButton *pButton) {
-    LOGD(" ButtonClick Button11 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button12(ZKButton *pButton) {
-    LOGD(" ButtonClick Button12 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button13(ZKButton *pButton) {
-    LOGD(" ButtonClick Button13 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button14(ZKButton *pButton) {
-    LOGD(" ButtonClick Button14 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button15(ZKButton *pButton) {
-    LOGD(" ButtonClick Button15 !!!\n");
-    return false;
-}
 static bool onButtonClick_ButtonForgetKey(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonForgetKey !!!\n");
     return false;
@@ -222,15 +184,24 @@ static bool onButtonClick_ButtonForgetKey(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonModifyKey(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonModifyKey !!!\n");
+    IsModifyKey = true;
+    TextKeyCount = 0;
+    mTextView2Ptr->setVisible(true);
+    mTextView1Ptr->setVisible(false);
+    mButtonNumDelPtr->setVisible(false);
+    mButtonComfirmPtr->setVisible(true);
     return false;
 }
 
 static bool onButtonClick_ButtonNum1(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum1 !!!\n");
-    pButton->getText().c_str();
+    if (TextKeyCount >= 6)
+    	return false;
+    keybuf[TextKeyCount] = '1';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
-    	TextKeyCount = 0;
+//    	TextKeyCount = 0;
     	TextKeyFlag = true;
 	}
     return false;
@@ -238,40 +209,56 @@ static bool onButtonClick_ButtonNum1(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonNum2(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum2 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '2';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
 		TextKeyFlag = true;
-		TextKeyCount = 0;
+//		TextKeyCount = 0;
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNum3(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum3 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '3';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+//      	TextKeyCount = 0;
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNum4(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum4 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '4';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+//      	TextKeyCount = 0;
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNum7(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum7 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '7';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+//      	TextKeyCount = 0;
   	}
     return false;
 }
@@ -279,6 +266,8 @@ static bool onButtonClick_ButtonNum7(ZKButton *pButton) {
 static bool onButtonClick_ButtonNumDel(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNumDel !!!\n");
     mTextViewKeyPtr[TextKeyCount]->setText("");
+
+    keybuf[TextKeyCount] = '\0';
 	TextKeyCount--;
 	if (TextKeyCount < 0){
 		TextKeyCount = 0;
@@ -290,56 +279,103 @@ static bool onButtonClick_ButtonNumDel(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonNum5(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum5 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '5';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+//      	TextKeyCount = 0;
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNum8(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum8 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '8';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+//      	TextKeyCount = 0;
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNum0(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum0 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '0';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(0);
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+//      	TextKeyCount = 0;
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNum6(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum6 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '6';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+//      	TextKeyCount = 0;
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNum9(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNum9 !!!\n");
+    if (TextKeyCount >= 6)
+       	return false;
+    keybuf[TextKeyCount] = '9';
     mTextViewKeyPtr[TextKeyCount++]->setText("●");
+    KeyVector.push_back(pButton->getText().c_str());
     if (TextKeyCount == 6){
       	TextKeyFlag = true;
-      	TextKeyCount = 0;
+
   	}
     return false;
 }
 
 static bool onButtonClick_ButtonNumCancel(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonNumCancel !!!\n");
-    EASYUICONTEXT->goBack();
+    if (!IsModifyKey){
+    	EASYUICONTEXT->goBack();
+    }else{
+    	for (int i = 0;i < 6;i++){
+			mTextViewKeyPtr[i]->setText("");
+		}
+    	TextKeyCount = 0;
+    	IsModifyKey = false;
+		mTextView2Ptr->setVisible(false);
+		mTextView1Ptr->setVisible(true);
+		mButtonNumDelPtr->setVisible(true);
+		mButtonComfirmPtr->setVisible(false);
+    }
+
+    return false;
+}
+static bool onButtonClick_ButtonComfirm(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonComfirm !!!\n");
+//    char *keys;
+//    LOGD("The keybuf size is %d\n", sizeof(keybuf));
+    if (IsModifyKey && TextKeyCount == 6){
+
+    	TextKeyCount = 0;
+    	IsModifyKey = false;
+		MACHINESTATUS->setMasterSlaverKey(keybuf);
+		EASYUICONTEXT->goBack();
+    }
+
     return false;
 }
