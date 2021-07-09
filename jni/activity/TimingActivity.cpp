@@ -4,6 +4,18 @@
 #include "TimingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewPics2Ptr;
+static ZKTextView* mTextViewPics1Ptr;
+static ZKTextView* mTextViewHumidityPtr;
+static ZKTextView* mTextView85Ptr;
+static ZKWindow* mWindow23Ptr;
+static ZKTextView* mTextViewFreshairPtr;
+static ZKTextView* mTextView84Ptr;
+static ZKWindow* mWindowFreshAirPtr;
+static ZKTextView* mTextViewAirPtr;
+static ZKTextView* mTextView81Ptr;
+static ZKWindow* mWindowAirconditionPtr;
+static ZKWindow* mWindowNavibar2Ptr;
 static ZKTextView* mTextView83Ptr;
 static ZKTextView* mTextView82Ptr;
 static ZKTextView* mTextView74Ptr;
@@ -231,6 +243,18 @@ const char* TimingActivity::getAppName() const{
 //TAG:onCreate
 void TimingActivity::onCreate() {
 	Activity::onCreate();
+    mTextViewPics2Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextViewPics2);
+    mTextViewPics1Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextViewPics1);
+    mTextViewHumidityPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewHumidity);
+    mTextView85Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextView85);
+    mWindow23Ptr = (ZKWindow*)findControlByID(ID_TIMING_Window23);
+    mTextViewFreshairPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewFreshair);
+    mTextView84Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextView84);
+    mWindowFreshAirPtr = (ZKWindow*)findControlByID(ID_TIMING_WindowFreshAir);
+    mTextViewAirPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewAir);
+    mTextView81Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextView81);
+    mWindowAirconditionPtr = (ZKWindow*)findControlByID(ID_TIMING_WindowAircondition);
+    mWindowNavibar2Ptr = (ZKWindow*)findControlByID(ID_TIMING_WindowNavibar2);
     mTextView83Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextView83);
     mTextView82Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextView82);
     mTextView74Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextView74);

@@ -1324,6 +1324,9 @@ static bool onButtonClick_ButtonAirPFSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirPFTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFTimeSwitchPic !!!\n");
+    Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonPurifyPtr->getText());
+    EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -1339,6 +1342,9 @@ static bool onButtonClick_ButtonAirSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirTimeSwitchPic !!!\n");
+    Intent* intent = new Intent();
+   	intent->putExtra("DeviceName", mButtonAirPtr->getText());
+   	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -1369,6 +1375,9 @@ static bool onButtonClick_ButtonHotCSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHotCTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotCTimeSwitchPic !!!\n");
+    Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonHotChangePtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -1384,6 +1393,9 @@ static bool onButtonClick_ButtonHumdSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHumdTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdTimeSwitchPic !!!\n");
+    Intent* intent = new Intent();
+  	intent->putExtra("DeviceName", mButtonModHumdPtr->getText());
+  	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -1399,6 +1411,9 @@ static bool onButtonClick_ButtonWindSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonWindTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindTimeSwitchPic !!!\n");
+    Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonChangeWindPtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -1414,6 +1429,9 @@ static bool onButtonClick_ButtonSterilizationSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonSteriTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonSteriTimeSwitchPic !!!\n");
+    Intent* intent = new Intent();
+   	intent->putExtra("DeviceName", mButtonSterilizationPtr->getText());
+   	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -1429,6 +1447,9 @@ static bool onButtonClick_ButtonYubaSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonPicTime(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonPicTime !!!\n");
+    Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonYuBaPtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 

@@ -41,6 +41,103 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{1,  1000},
 };
 
+void ResetTimeTextPos(){
+	int StartLeft = 0;
+	LayoutPosition lp;
+	if (mTextView9Ptr->isVisible()){
+		lp = mTextView9Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+//		StartLeft += 66;
+		mTextView9Ptr->setPosition(lp);
+		return;
+	}
+
+	if (mTextView2Ptr->isVisible()){
+		lp = mTextView2Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView2Ptr->setPosition(lp);
+	}else{
+		lp = mTextView2Ptr->getPosition();
+		lp.mTop = -50;
+		mTextView2Ptr->setPosition(lp);
+	}
+
+	if (mTextView3Ptr->isVisible()){
+		lp = mTextView3Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView3Ptr->setPosition(lp);
+	}else{
+		lp = mTextView3Ptr->getPosition();
+		lp.mTop = -50;
+		mTextView3Ptr->setPosition(lp);
+	}
+
+	if (mTextView4Ptr->isVisible()){
+		lp = mTextView4Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView4Ptr->setPosition(lp);
+	}else{
+		lp = mTextView4Ptr->getPosition();
+		lp.mTop = -50;
+		mTextView4Ptr->setPosition(lp);
+	}
+
+	if (mTextView5Ptr->isVisible()){
+		lp = mTextView5Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView5Ptr->setPosition(lp);
+	}else{
+		lp = mTextView5Ptr->getPosition();
+		lp.mTop = -50;
+		mTextView5Ptr->setPosition(lp);
+	}
+
+	if (mTextView6Ptr->isVisible()){
+		lp = mTextView6Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView6Ptr->setPosition(lp);
+	}else{
+		lp = mTextView6Ptr->getPosition();
+		lp.mTop = -50;
+		mTextView6Ptr->setPosition(lp);
+	}
+
+	if (mTextView7Ptr->isVisible()){
+		lp = mTextView7Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView7Ptr->setPosition(lp);
+	}else{
+		lp = mTextView6Ptr->getPosition();
+		lp.mTop = -50;
+		mTextView7Ptr->setPosition(lp);
+	}
+
+	if (mTextView8Ptr->isVisible()){
+		lp = mTextView8Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView8Ptr->setPosition(lp);
+	}else{
+		lp = mTextView8Ptr->getPosition();
+		lp.mTop = -50;
+		mTextView8Ptr->setPosition(lp);
+	}
+}
+
 /**
  * 当界面构造时触发
  */
@@ -55,6 +152,9 @@ static void onUI_init(){
 static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
+    	std::string DeviceName = intentPtr->getExtra("DeviceName");
+    	mTextView1Ptr->setText(DeviceName.c_str());
+    	mTextViewAirPtr->setText(DeviceName.c_str());
     }
 }
 
@@ -62,7 +162,7 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-
+	ResetTimeTextPos();
 }
 
 /*
@@ -130,11 +230,23 @@ static bool onTimingActivityTouchEvent(const MotionEvent &ev) {
 }
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
+    if (mButton6Ptr->isSelected()){
+    	EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
+
+    }
+
+
+
     return false;
 }
 
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    }
     return false;
 }
 

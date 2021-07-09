@@ -364,7 +364,14 @@ char* MachineStatusListener::getMasterSlaverKey()
 	return buf;
 }
 
-
+EquipmentTiming MachineStatusListener::getEquipmentTimingFuc()
+{
+	return DevTimeParam;
+}
+void MachineStatusListener::setEquipmentTimingFunc(EquipmentTiming DevTimeParams)
+{
+	DevTimeParam = DevTimeParams;
+}
 
 
 

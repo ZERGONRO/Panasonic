@@ -203,7 +203,7 @@ static int GPIO_get_value()
 void ResetStatusIconPos()
 {
 	LayoutPosition lp;
-	int StartLeft = 176;
+	int StartLeft = 302;
 	if(mIconViewWifiPtr->isVisible())
 	{
 		lp = mIconViewWifiPtr->getPosition();
@@ -274,6 +274,49 @@ void ResetStatusIconPos()
 		lp.mTop = -30;
 		mIconViewSecurityPtr->setPosition(lp);
 	}
+	if(mIconViewTimingPtr->isVisible())
+	{
+		lp = mIconViewTimingPtr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 5;
+		StartLeft -= 42;
+		mIconViewTimingPtr->setPosition(lp);
+	}
+	else
+	{
+		lp = mIconViewTimingPtr->getPosition();
+		lp.mTop = -30;
+		mIconViewTimingPtr->setPosition(lp);
+	}
+	if(mIconViewFilterPtr->isVisible())
+	{
+		lp = mIconViewFilterPtr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 5;
+		StartLeft -= 42;
+		mIconViewFilterPtr->setPosition(lp);
+	}
+	else
+	{
+		lp = mIconViewFilterPtr->getPosition();
+		lp.mTop = -30;
+		mIconViewFilterPtr->setPosition(lp);
+	}
+	if(mIconViewFrostPtr->isVisible())
+	{
+		lp = mIconViewFrostPtr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 5;
+		StartLeft -= 42;
+		mIconViewFrostPtr->setPosition(lp);
+	}
+	else
+	{
+		lp = mIconViewFrostPtr->getPosition();
+		lp.mTop = -30;
+		mIconViewFrostPtr->setPosition(lp);
+	}
+
 }
 
 

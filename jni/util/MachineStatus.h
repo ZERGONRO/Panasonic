@@ -21,6 +21,16 @@ typedef struct _PanasonicServe_t{
 	char passwd[128];
 }PanasonicServe_t;
 
+typedef struct EquipmentTiming_t {
+	int DeviceID;
+	int Time1;
+	int Time2;
+	int Temp1;
+	int Temp2;
+	int Humd1;
+	int Humd2;
+}EquipmentTiming;
+
 typedef struct MachineTime_t {
 	int year;
 	int month;
@@ -56,7 +66,7 @@ enum {
 	MANAUAL_EXCHANGEWIND,
 	MANAUAL_STERILIZATION,
 	MANAUAL_YUBA,
-};
+}IOTDeviceID;
 
 class MachineStatusListener{
 
@@ -79,6 +89,8 @@ public:
 	MachineTime getMachineTime();
 	void setMasterSlaverKey(char *keyword);
 	char *getMasterSlaverKey();
+	EquipmentTiming getEquipmentTimingFuc();
+	void setEquipmentTimingFunc(EquipmentTiming DevTimeParam);
 	//获取和设置环境数据
 	int gettempdate();
 	void settempdate(int data);
@@ -116,6 +128,7 @@ private:
 	int smartprograme_type;
 	int manualprograme_type;
 	MachineTime Machinetime;
+	EquipmentTiming DevTimeParam;
 	char MasterSlaverKey[10];
 	PanasonicServe_t* config;
 	EnvironmentDate_t* EnvDate;

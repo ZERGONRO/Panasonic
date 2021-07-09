@@ -26,6 +26,20 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_TIMING_TextViewPics2    50010
+#define ID_TIMING_TextViewPics1    50009
+#define ID_TIMING_TextView9    50090
+#define ID_TIMING_TextView8    50089
+#define ID_TIMING_TextViewHumidity    50099
+#define ID_TIMING_TextView85    50098
+#define ID_TIMING_Window23    110039
+#define ID_TIMING_TextViewFreshair    50097
+#define ID_TIMING_TextView84    50096
+#define ID_TIMING_WindowFreshAir    110038
+#define ID_TIMING_TextViewAir    50095
+#define ID_TIMING_TextView81    50094
+#define ID_TIMING_WindowAircondition    110037
+#define ID_TIMING_WindowNavibar2    110032
 #define ID_TIMING_TextView83    50086
 #define ID_TIMING_TextView82    50085
 #define ID_TIMING_TextView74    50084
@@ -119,8 +133,6 @@
 #define ID_TIMING_TextView12    50013
 #define ID_TIMING_TextView11    50012
 #define ID_TIMING_TextView10    50011
-#define ID_TIMING_TextView9    50010
-#define ID_TIMING_TextView8    50009
 #define ID_TIMING_TextView7    50007
 #define ID_TIMING_TextView6    50006
 #define ID_TIMING_TextView5    50005
