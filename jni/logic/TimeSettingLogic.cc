@@ -88,7 +88,7 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 	char timebuf[100];
-	if (!nwlistener->getWifiStatus()){
+	if (nwlistener->getWifiConnectStatus() != 2){
 		mTextViewDescPtr->setVisible(true);
 		mListViewYearPtr->setVisible(false);
 		mListViewMonthPtr->setVisible(false);

@@ -33,6 +33,7 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
+static std::vector<std::string > AirPFListViewVector, AirListViewVector, HumdListViewVector, WindListViewVector, HotListViewVector, YuBaListViewVector,SterlListViewVector;
 static int ManualType = Manual_AirPF;
 
 /**
@@ -45,6 +46,40 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{1,  1000},
 };
 
+void VectorInit()
+{
+	AirPFListViewVector.push_back("F-PMX03XL");
+	AirPFListViewVector.push_back("F-PMX12XLL");
+	AirPFListViewVector.push_back("F-PMX23XXXL");
+	AirPFListViewVector.push_back("F-PMX06XXLL");
+	AirPFListViewVector.push_back("F-PMX15SXLM");
+
+	AirListViewVector.push_back("A-NEX3233");
+	AirListViewVector.push_back("A-NEX5499");
+	AirListViewVector.push_back("A-NEX8011");
+
+	HumdListViewVector.push_back("H-PLC5X3C");
+	HumdListViewVector.push_back("H-PLC5X60");
+	HumdListViewVector.push_back("H-PLC5X83");
+	HumdListViewVector.push_back("H-PLC5X61");
+
+	WindListViewVector.push_back("W-MDU873X");
+	WindListViewVector.push_back("W-MDU622X");
+	WindListViewVector.push_back("W-MDU105X");
+
+	HotListViewVector.push_back("HT-YL5023");
+	HotListViewVector.push_back("HT-YL4170");
+	HotListViewVector.push_back("HT-YL9096");
+
+	YuBaListViewVector.push_back("YB-LW6000");
+	YuBaListViewVector.push_back("YB-LW8550");
+	YuBaListViewVector.push_back("YB-LW9800");
+	YuBaListViewVector.push_back("YB-LW1200");
+
+	SterlListViewVector.push_back("S-VV3070");
+	SterlListViewVector.push_back("S-VV1660");
+	SterlListViewVector.push_back("S-VV2080");
+}
 
 void ManualMode11SelStatus(int index);
 /**
@@ -52,7 +87,7 @@ void ManualMode11SelStatus(int index);
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	VectorInit();
 
 }
 
@@ -574,6 +609,13 @@ static bool onButtonClick_ButtonYuBa(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirPFSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFSelect !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    	mListViewAirPFPtr->setVisible(false);
+    }else{
+    	pButton->setSelected(true);
+    	mListViewAirPFPtr->setVisible(true);
+    }
     return false;
 }
 
@@ -919,6 +961,7 @@ static bool onButtonClick_ButtonYuBaOpen(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonYuBaSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaSelect !!!\n");
+
     return false;
 }
 
@@ -1120,6 +1163,13 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
 
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
+    if (pButton->isSelected()){
+		pButton->setSelected(false);
+		mListViewAirPtr->setVisible(false);
+	}else{
+		pButton->setSelected(true);
+		mListViewAirPtr->setVisible(true);
+	}
     return false;
 }
 
@@ -1140,6 +1190,13 @@ static bool onButtonClick_Button5(ZKButton *pButton) {
 
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
+    if (pButton->isSelected()){
+   		pButton->setSelected(false);
+   		mListViewHotPtr->setVisible(false);
+   	}else{
+   		pButton->setSelected(true);
+   		mListViewHotPtr->setVisible(true);
+   	}
     return false;
 }
 
@@ -1160,6 +1217,13 @@ static bool onButtonClick_Button9(ZKButton *pButton) {
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
+    if (pButton->isSelected()){
+		pButton->setSelected(false);
+		mListViewHumdPtr->setVisible(false);
+	}else{
+		pButton->setSelected(true);
+		mListViewHumdPtr->setVisible(true);
+	}
     return false;
 }
 
@@ -1180,6 +1244,13 @@ static bool onButtonClick_Button13(ZKButton *pButton) {
 
 static bool onButtonClick_Button14(ZKButton *pButton) {
     LOGD(" ButtonClick Button14 !!!\n");
+    if (pButton->isSelected()){
+		pButton->setSelected(false);
+		mListViewWindPtr->setVisible(false);
+	}else{
+		pButton->setSelected(true);
+		mListViewWindPtr->setVisible(true);
+	}
     return false;
 }
 
@@ -1200,6 +1271,13 @@ static bool onButtonClick_Button17(ZKButton *pButton) {
 
 static bool onButtonClick_Button18(ZKButton *pButton) {
     LOGD(" ButtonClick Button18 !!!\n");
+    if (pButton->isSelected()){
+  		pButton->setSelected(false);
+  		mListViewSterlPtr->setVisible(false);
+  	}else{
+  		pButton->setSelected(true);
+  		mListViewSterlPtr->setVisible(true);
+  	}
     return false;
 }
 
@@ -1220,6 +1298,13 @@ static bool onButtonClick_Button21(ZKButton *pButton) {
 
 static bool onButtonClick_Button22(ZKButton *pButton) {
     LOGD(" ButtonClick Button22 !!!\n");
+    if (pButton->isSelected()){
+		pButton->setSelected(false);
+		mListViewYuBaPtr->setVisible(false);
+	}else{
+		pButton->setSelected(true);
+		mListViewYuBaPtr->setVisible(true);
+	}
     return false;
 }
 
@@ -1350,4 +1435,135 @@ static bool onButtonClick_ButtonPicTime(ZKButton *pButton) {
 static bool onButtonClick_ButtonTiming(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonTiming !!!\n");
     return false;
+}
+static int getListItemCount_ListViewAirPF(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewAirPF !\n");
+    return AirPFListViewVector.size();
+}
+
+static void obtainListItemData_ListViewAirPF(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewAirPF  !!!\n");
+	ZKListView::ZKListSubItem* psubButtonAirPFText = pListItem->findSubItemByID(ID_MANUALMODE11_SubItemAirPF);
+	std::string tmp = AirPFListViewVector.at(index);
+	psubButtonAirPFText->setText(tmp);
+}
+
+static void onListItemClick_ListViewAirPF(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewAirPF  !!!\n");
+	std::string tmp = AirPFListViewVector.at(index);
+	mTextView37Ptr->setText(tmp);
+	mListViewAirPFPtr->setVisible(false);
+}
+static int getListItemCount_ListViewAir(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewAir !\n");
+    return AirListViewVector.size();
+}
+
+static void obtainListItemData_ListViewAir(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewAir  !!!\n");
+	ZKListView::ZKListSubItem* psubButtonAirText = pListItem->findSubItemByID(ID_MANUALMODE11_SubItemAir);
+	std::string tmp = AirListViewVector.at(index);
+	psubButtonAirText->setText(tmp);
+}
+
+static void onListItemClick_ListViewAir(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewAir  !!!\n");
+	std::string tmp = AirListViewVector.at(index);
+	mTextView38Ptr->setText(tmp);
+	mListViewAirPtr->setVisible(false);
+}
+
+static int getListItemCount_ListViewHot(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewHot !\n");
+    return HotListViewVector.size();
+}
+
+static void obtainListItemData_ListViewHot(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewHot  !!!\n");
+	ZKListView::ZKListSubItem* psubButtonHotText = pListItem->findSubItemByID(ID_MANUALMODE11_SubItemHot);
+	std::string tmp = HotListViewVector.at(index);
+	psubButtonHotText->setText(tmp);
+}
+
+static void onListItemClick_ListViewHot(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewHot  !!!\n");
+	std::string tmp = HotListViewVector.at(index);
+	mTextView39Ptr->setText(tmp);
+	mListViewHotPtr->setVisible(false);
+}
+
+static int getListItemCount_ListViewHumd(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewHumd !\n");
+    return HumdListViewVector.size();
+}
+
+static void obtainListItemData_ListViewHumd(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewHumd  !!!\n");
+	ZKListView::ZKListSubItem* psubButtonHumdText = pListItem->findSubItemByID(ID_MANUALMODE11_SubItemHumd);
+	std::string tmp = HumdListViewVector.at(index);
+	psubButtonHumdText->setText(tmp);
+}
+
+static void onListItemClick_ListViewHumd(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewHumd  !!!\n");
+	std::string tmp = HumdListViewVector.at(index);
+	mTextView90Ptr->setText(tmp);
+	mListViewHumdPtr->setVisible(false);
+}
+
+static int getListItemCount_ListViewWind(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewWind !\n");
+    return WindListViewVector.size();
+}
+
+static void obtainListItemData_ListViewWind(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewWind  !!!\n");
+	ZKListView::ZKListSubItem* psubButtonWindText = pListItem->findSubItemByID(ID_MANUALMODE11_SubItemWind);
+	std::string tmp = WindListViewVector.at(index);
+	psubButtonWindText->setText(tmp);
+}
+
+static void onListItemClick_ListViewWind(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewWind  !!!\n");
+	std::string tmp = WindListViewVector.at(index);
+	mTextView91Ptr->setText(tmp);
+	mListViewWindPtr->setVisible(false);
+}
+
+static int getListItemCount_ListViewSterl(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewSterl !\n");
+    return SterlListViewVector.size();
+}
+
+static void obtainListItemData_ListViewSterl(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewSterl  !!!\n");
+	ZKListView::ZKListSubItem* psubButtonSterlText = pListItem->findSubItemByID(ID_MANUALMODE11_SubItemSterl);
+	std::string tmp = SterlListViewVector.at(index);
+	psubButtonSterlText->setText(tmp);
+}
+
+static void onListItemClick_ListViewSterl(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewSterl  !!!\n");
+	std::string tmp = SterlListViewVector.at(index);
+	mTextView92Ptr->setText(tmp);
+	mListViewSterlPtr->setVisible(false);
+}
+
+static int getListItemCount_ListViewYuBa(const ZKListView *pListView) {
+    //LOGD("getListItemCount_ListViewYuBa !\n");
+    return YuBaListViewVector.size();
+}
+
+static void obtainListItemData_ListViewYuBa(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
+    //LOGD(" obtainListItemData_ ListViewYuBa  !!!\n");
+	ZKListView::ZKListSubItem* psubButtonYuBaText = pListItem->findSubItemByID(ID_MANUALMODE11_SubItemYuBa);
+	std::string tmp = YuBaListViewVector.at(index);
+	psubButtonYuBaText->setText(tmp);
+}
+
+static void onListItemClick_ListViewYuBa(ZKListView *pListView, int index, int id) {
+    //LOGD(" onListItemClick_ ListViewYuBa  !!!\n");
+	std::string tmp = YuBaListViewVector.at(index);
+	mTextView93Ptr->setText(tmp);
+	mListViewYuBaPtr->setVisible(false);
 }

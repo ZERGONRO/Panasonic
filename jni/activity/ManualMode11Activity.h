@@ -26,6 +26,27 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MANUALMODE11_SubItemYuBa    20089
+#define ID_MANUALMODE11_ListViewYuBa    80007
+#define ID_MANUALMODE11_TextView93    50102
+#define ID_MANUALMODE11_SubItemSterl    20089
+#define ID_MANUALMODE11_ListViewSterl    80006
+#define ID_MANUALMODE11_TextView92    50101
+#define ID_MANUALMODE11_SubItemWind    20089
+#define ID_MANUALMODE11_ListViewWind    80005
+#define ID_MANUALMODE11_TextView91    50100
+#define ID_MANUALMODE11_SubItemHumd    20089
+#define ID_MANUALMODE11_ListViewHumd    80004
+#define ID_MANUALMODE11_TextView90    50099
+#define ID_MANUALMODE11_SubItemHot    20089
+#define ID_MANUALMODE11_ListViewHot    80003
+#define ID_MANUALMODE11_TextView39    50039
+#define ID_MANUALMODE11_SubItemAir    20089
+#define ID_MANUALMODE11_ListViewAir    80002
+#define ID_MANUALMODE11_TextView38    50038
+#define ID_MANUALMODE11_TextView37    50037
+#define ID_MANUALMODE11_SubItemAirPF    20089
+#define ID_MANUALMODE11_ListViewAirPF    80001
 #define ID_MANUALMODE11_ButtonTiming    20088
 #define ID_MANUALMODE11_ButtonPicTime    20087
 #define ID_MANUALMODE11_ButtonYubaSwitch    20083

@@ -4,6 +4,20 @@
 #include "ManualMode11Activity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKListView* mListViewYuBaPtr;
+static ZKTextView* mTextView93Ptr;
+static ZKListView* mListViewSterlPtr;
+static ZKTextView* mTextView92Ptr;
+static ZKListView* mListViewWindPtr;
+static ZKTextView* mTextView91Ptr;
+static ZKListView* mListViewHumdPtr;
+static ZKTextView* mTextView90Ptr;
+static ZKListView* mListViewHotPtr;
+static ZKTextView* mTextView39Ptr;
+static ZKListView* mListViewAirPtr;
+static ZKTextView* mTextView38Ptr;
+static ZKTextView* mTextView37Ptr;
+static ZKListView* mListViewAirPFPtr;
 static ZKButton* mButtonTimingPtr;
 static ZKButton* mButtonPicTimePtr;
 static ZKButton* mButtonYubaSwitchPtr;
@@ -452,6 +466,13 @@ typedef struct {
 }S_ListViewFunctionsCallback;
 /*TAG:ListViewFunctionsCallback*/
 static S_ListViewFunctionsCallback SListViewFunctionsCallbackTab[] = {
+    ID_MANUALMODE11_ListViewYuBa, getListItemCount_ListViewYuBa, obtainListItemData_ListViewYuBa, onListItemClick_ListViewYuBa,
+    ID_MANUALMODE11_ListViewSterl, getListItemCount_ListViewSterl, obtainListItemData_ListViewSterl, onListItemClick_ListViewSterl,
+    ID_MANUALMODE11_ListViewWind, getListItemCount_ListViewWind, obtainListItemData_ListViewWind, onListItemClick_ListViewWind,
+    ID_MANUALMODE11_ListViewHumd, getListItemCount_ListViewHumd, obtainListItemData_ListViewHumd, onListItemClick_ListViewHumd,
+    ID_MANUALMODE11_ListViewHot, getListItemCount_ListViewHot, obtainListItemData_ListViewHot, onListItemClick_ListViewHot,
+    ID_MANUALMODE11_ListViewAir, getListItemCount_ListViewAir, obtainListItemData_ListViewAir, onListItemClick_ListViewAir,
+    ID_MANUALMODE11_ListViewAirPF, getListItemCount_ListViewAirPF, obtainListItemData_ListViewAirPF, onListItemClick_ListViewAirPF,
 };
 
 
@@ -507,6 +528,20 @@ const char* ManualMode11Activity::getAppName() const{
 //TAG:onCreate
 void ManualMode11Activity::onCreate() {
 	Activity::onCreate();
+    mListViewYuBaPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewYuBa);if(mListViewYuBaPtr!= NULL){mListViewYuBaPtr->setListAdapter(this);mListViewYuBaPtr->setItemClickListener(this);}
+    mTextView93Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView93);
+    mListViewSterlPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewSterl);if(mListViewSterlPtr!= NULL){mListViewSterlPtr->setListAdapter(this);mListViewSterlPtr->setItemClickListener(this);}
+    mTextView92Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView92);
+    mListViewWindPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewWind);if(mListViewWindPtr!= NULL){mListViewWindPtr->setListAdapter(this);mListViewWindPtr->setItemClickListener(this);}
+    mTextView91Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView91);
+    mListViewHumdPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewHumd);if(mListViewHumdPtr!= NULL){mListViewHumdPtr->setListAdapter(this);mListViewHumdPtr->setItemClickListener(this);}
+    mTextView90Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView90);
+    mListViewHotPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewHot);if(mListViewHotPtr!= NULL){mListViewHotPtr->setListAdapter(this);mListViewHotPtr->setItemClickListener(this);}
+    mTextView39Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView39);
+    mListViewAirPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewAir);if(mListViewAirPtr!= NULL){mListViewAirPtr->setListAdapter(this);mListViewAirPtr->setItemClickListener(this);}
+    mTextView38Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView38);
+    mTextView37Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView37);
+    mListViewAirPFPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewAirPF);if(mListViewAirPFPtr!= NULL){mListViewAirPFPtr->setListAdapter(this);mListViewAirPFPtr->setItemClickListener(this);}
     mButtonTimingPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonTiming);
     mButtonPicTimePtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonPicTime);
     mButtonYubaSwitchPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYubaSwitch);

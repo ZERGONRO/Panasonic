@@ -29,7 +29,7 @@
 *
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
-extern void hidestatusbars();
+
 
 /**
  * 注册定时器
@@ -62,7 +62,7 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-	hidestatusbars();
+
 }
 
 /*
@@ -114,7 +114,7 @@ static bool onUI_Timer(int id){
  *         false
  *            触摸事件将继续传递到控件上
  */
-static bool onsettingActivityTouchEvent(const MotionEvent &ev) {
+static bool onFwUpdateActivityTouchEvent(const MotionEvent &ev) {
     switch (ev.mActionStatus) {
 		case MotionEvent::E_ACTION_DOWN://触摸按下
 			//LOGD("时刻 = %ld 坐标  x = %d, y = %d", ev.mEventTime, ev.mX, ev.mY);
@@ -128,79 +128,14 @@ static bool onsettingActivityTouchEvent(const MotionEvent &ev) {
 	}
 	return false;
 }
-static bool onButtonClick_ButtonSensorCtl1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonSensorCtl1 !!!\n");
-    EASYUICONTEXT->openActivity("SensorthresholdActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_ButtonTimesetting1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonTimesetting1 !!!\n");
-    EASYUICONTEXT->openActivity("TimeSettingActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_ButtonBodySensor1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonBodySensor1 !!!\n");
-   // EASYUICONTEXT->openActivity("SensorthresholdActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_ButtonFilterSet1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonFilterSet1 !!!\n");
-    EASYUICONTEXT->openActivity("FilterSettingActivity", NULL);
-    return false;
-}
-
-
-static bool onButtonClick_ButtonFWUpdate1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonFWUpdate1 !!!\n");
-    EASYUICONTEXT->openActivity("FwUpdateActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_ButtonWifiSetting1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonWifiSetting1 !!!\n");
-    EASYUICONTEXT->openActivity("WirelessNetActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_ButtonReset1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonReset1 !!!\n");
-    //EASYUICONTEXT->openActivity("SensorthresholdActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_ButtonCtlSet1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonCtlSet1 !!!\n");
-    EASYUICONTEXT->openActivity("ControlSettingActivity", NULL);
-    return false;
-}
-
-static bool onButtonClick_ButtonCancel(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonCancel !!!\n");
-
-    return false;
-}
-
-static bool onButtonClick_ButtonConfirm(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonConfirm !!!\n");
-    return false;
-}
-
 static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack !!!\n");
     EASYUICONTEXT->goBack();
     return false;
 }
-static bool onButtonClick_ButtonVoiceSysSet1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonVoiceSysSet1 !!!\n");
-    EASYUICONTEXT->openActivity("VoiceSystemsActivity", NULL);
-    return false;
-}
 
-static bool onButtonClick_ButtonMasterSlaverSet1(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonMasterSlaverSet1 !!!\n");
-    EASYUICONTEXT->openActivity("MainandSlaveActivity", NULL);
+static bool onButtonClick_Button1(ZKButton *pButton) {
+    LOGD(" ButtonClick Button1 !!!\n");
+//    EASYUICONTEXT->goBack();
     return false;
 }
