@@ -4,6 +4,7 @@
 #include "VoiceSystemsActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton2Ptr;
 static ZKButton* mButtonVoiceSysSwitchPtr;
 static ZKTextView* mTextView5Ptr;
 static ZKTextView* mTextView4Ptr;
@@ -49,6 +50,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_VOICESYSTEMS_Button2, onButtonClick_Button2,
     ID_VOICESYSTEMS_ButtonVoiceSysSwitch, onButtonClick_ButtonVoiceSysSwitch,
     ID_VOICESYSTEMS_ButtonBack, onButtonClick_ButtonBack,
 };
@@ -131,6 +133,7 @@ const char* VoiceSystemsActivity::getAppName() const{
 //TAG:onCreate
 void VoiceSystemsActivity::onCreate() {
 	Activity::onCreate();
+    mButton2Ptr = (ZKButton*)findControlByID(ID_VOICESYSTEMS_Button2);
     mButtonVoiceSysSwitchPtr = (ZKButton*)findControlByID(ID_VOICESYSTEMS_ButtonVoiceSysSwitch);
     mTextView5Ptr = (ZKTextView*)findControlByID(ID_VOICESYSTEMS_TextView5);
     mTextView4Ptr = (ZKTextView*)findControlByID(ID_VOICESYSTEMS_TextView4);

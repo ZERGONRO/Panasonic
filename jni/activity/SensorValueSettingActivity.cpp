@@ -4,6 +4,7 @@
 #include "SensorValueSettingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton13Ptr;
 static ZKButton* mButton12Ptr;
 static ZKButton* mButton11Ptr;
 static ZKButton* mButton10Ptr;
@@ -68,6 +69,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_SENSORVALUESETTING_Button13, onButtonClick_Button13,
     ID_SENSORVALUESETTING_Button12, onButtonClick_Button12,
     ID_SENSORVALUESETTING_Button11, onButtonClick_Button11,
     ID_SENSORVALUESETTING_Button10, onButtonClick_Button10,
@@ -161,6 +163,7 @@ const char* SensorValueSettingActivity::getAppName() const{
 //TAG:onCreate
 void SensorValueSettingActivity::onCreate() {
 	Activity::onCreate();
+    mButton13Ptr = (ZKButton*)findControlByID(ID_SENSORVALUESETTING_Button13);
     mButton12Ptr = (ZKButton*)findControlByID(ID_SENSORVALUESETTING_Button12);
     mButton11Ptr = (ZKButton*)findControlByID(ID_SENSORVALUESETTING_Button11);
     mButton10Ptr = (ZKButton*)findControlByID(ID_SENSORVALUESETTING_Button10);

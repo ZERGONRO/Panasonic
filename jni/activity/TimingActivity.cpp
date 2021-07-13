@@ -4,6 +4,7 @@
 #include "TimingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton1Ptr;
 static ZKTextView* mTextViewPics2Ptr;
 static ZKTextView* mTextViewPics1Ptr;
 static ZKTextView* mTextViewHumidityPtr;
@@ -158,6 +159,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_TIMING_Button1, onButtonClick_Button1,
     ID_TIMING_ButtonReturn, onButtonClick_ButtonReturn,
     ID_TIMING_ButtonBack, onButtonClick_ButtonBack,
     ID_TIMING_ButtonDropDown, onButtonClick_ButtonDropDown,
@@ -243,6 +245,7 @@ const char* TimingActivity::getAppName() const{
 //TAG:onCreate
 void TimingActivity::onCreate() {
 	Activity::onCreate();
+    mButton1Ptr = (ZKButton*)findControlByID(ID_TIMING_Button1);
     mTextViewPics2Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextViewPics2);
     mTextViewPics1Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextViewPics1);
     mTextViewHumidityPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewHumidity);

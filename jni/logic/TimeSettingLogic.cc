@@ -513,3 +513,8 @@ static void onListItemClick_ListViewMinuete(ZKListView *pListView, int index, in
 static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) {
     //LOGD(" onListItemClick_ ListView1  !!!\n");
 }
+static bool onButtonClick_Button2(ZKButton *pButton) {
+    LOGD(" ButtonClick Button2 !!!\n");
+    EASYUICONTEXT->goBack();
+    return false;
+}

@@ -134,8 +134,35 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button1(ZKButton *pButton) {
-    LOGD(" ButtonClick Button1 !!!\n");
-//    EASYUICONTEXT->goBack();
+static bool onButtonClick_Button2(ZKButton *pButton) {
+    LOGD(" ButtonClick Button2 !!!\n");
+    EASYUICONTEXT->goBack();
+    return false;
+}
+static bool onButtonClick_ButtonGUIUpdate(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonGUIUpdate !!!\n");
+    if (pButton->getText().c_str() == "检查更新"){
+
+	}else if (pButton->getText().c_str() == "更新"){
+		pButton->setText("更新中...");
+		mTextViewGUIDescripPtr->setText("");
+		//更新gui版本
+	}else if (pButton->getText().c_str() == "更新中..."){
+
+	}
+    return false;
+}
+
+static bool onButtonClick_ButtonWifiUpdate(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonWifiUpdate !!!\n");
+    if (pButton->getText().c_str() == "检查更新"){
+
+    }else if (pButton->getText().c_str() == "更新"){
+    	pButton->setText("更新中...");
+    	mTextViewWifiDescripPtr->setText("");
+		//更新wifi版本
+    }else if (pButton->getText().c_str() == "更新中..."){
+
+    }
     return false;
 }

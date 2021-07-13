@@ -26,6 +26,7 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_WIRELESSNET_Button4    20004
 #define ID_WIRELESSNET_Button3    20003
 #define ID_WIRELESSNET_TextView5    50005
 #define ID_WIRELESSNET_Window2    110002

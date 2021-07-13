@@ -26,6 +26,7 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAINANDSLAVE_Button1    20006
 #define ID_MAINANDSLAVE_ButtonSlaveMode    20005
 #define ID_MAINANDSLAVE_ButtonMasterMode    20003
 #define ID_MAINANDSLAVE_ButtonHelp    20001

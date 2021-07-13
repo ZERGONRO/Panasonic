@@ -5,6 +5,7 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton37Ptr;
 static ZKButton* mButton36Ptr;
 static ZKButton* mButton10Ptr;
 static ZKButton* mButton35Ptr;
@@ -149,6 +150,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_WIFIINPUTUI_Button37, onButtonClick_Button37,
     ID_WIFIINPUTUI_Button36, onButtonClick_Button36,
     ID_WIFIINPUTUI_Button10, onButtonClick_Button10,
     ID_WIFIINPUTUI_Button35, onButtonClick_Button35,
@@ -307,6 +309,7 @@ const char* WifiInputUIActivity::getAppName() const{
 //TAG:onCreate
 void WifiInputUIActivity::onCreate() {
 	Activity::onCreate();
+    mButton37Ptr = (ZKButton*)findControlByID(ID_WIFIINPUTUI_Button37);
     mButton36Ptr = (ZKButton*)findControlByID(ID_WIFIINPUTUI_Button36);
     mButton10Ptr = (ZKButton*)findControlByID(ID_WIFIINPUTUI_Button10);
     mButton35Ptr = (ZKButton*)findControlByID(ID_WIFIINPUTUI_Button35);
@@ -788,4 +791,3 @@ void WifiInputUIActivity::onLongClick(ZKBase *pBase) {
 		mWindow1Ptr->setBackgroundPic("./ui/输入框-确认dn.png");
 	}
 }
-

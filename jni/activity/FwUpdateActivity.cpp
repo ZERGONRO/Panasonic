@@ -4,8 +4,11 @@
 #include "FwUpdateActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
-static ZKButton* mButton1Ptr;
-static ZKTextView* mTextView7Ptr;
+static ZKTextView* mTextViewWifiDescripPtr;
+static ZKButton* mButtonWifiUpdatePtr;
+static ZKTextView* mTextViewGUIDescripPtr;
+static ZKButton* mButtonGUIUpdatePtr;
+static ZKButton* mButton2Ptr;
 static ZKTextView* mTextView6Ptr;
 static ZKTextView* mTextView5Ptr;
 static ZKTextView* mTextView4Ptr;
@@ -51,7 +54,9 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
-    ID_FWUPDATE_Button1, onButtonClick_Button1,
+    ID_FWUPDATE_ButtonWifiUpdate, onButtonClick_ButtonWifiUpdate,
+    ID_FWUPDATE_ButtonGUIUpdate, onButtonClick_ButtonGUIUpdate,
+    ID_FWUPDATE_Button2, onButtonClick_Button2,
     ID_FWUPDATE_ButtonBack, onButtonClick_ButtonBack,
 };
 /***************/
@@ -133,8 +138,11 @@ const char* FwUpdateActivity::getAppName() const{
 //TAG:onCreate
 void FwUpdateActivity::onCreate() {
 	Activity::onCreate();
-    mButton1Ptr = (ZKButton*)findControlByID(ID_FWUPDATE_Button1);
-    mTextView7Ptr = (ZKTextView*)findControlByID(ID_FWUPDATE_TextView7);
+    mTextViewWifiDescripPtr = (ZKTextView*)findControlByID(ID_FWUPDATE_TextViewWifiDescrip);
+    mButtonWifiUpdatePtr = (ZKButton*)findControlByID(ID_FWUPDATE_ButtonWifiUpdate);
+    mTextViewGUIDescripPtr = (ZKTextView*)findControlByID(ID_FWUPDATE_TextViewGUIDescrip);
+    mButtonGUIUpdatePtr = (ZKButton*)findControlByID(ID_FWUPDATE_ButtonGUIUpdate);
+    mButton2Ptr = (ZKButton*)findControlByID(ID_FWUPDATE_Button2);
     mTextView6Ptr = (ZKTextView*)findControlByID(ID_FWUPDATE_TextView6);
     mTextView5Ptr = (ZKTextView*)findControlByID(ID_FWUPDATE_TextView5);
     mTextView4Ptr = (ZKTextView*)findControlByID(ID_FWUPDATE_TextView4);

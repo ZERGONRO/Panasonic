@@ -4,6 +4,11 @@
 #include "ManualMode11Activity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextView121Ptr;
+static ZKTextView* mTextView120Ptr;
+static ZKTextView* mTextView122Ptr;
+static ZKTextView* mTextView119Ptr;
+static ZKTextView* mTextView118Ptr;
 static ZKTextView* mTextView100Ptr;
 static ZKTextView* mTextView99Ptr;
 static ZKTextView* mTextView98Ptr;
@@ -536,6 +541,11 @@ const char* ManualMode11Activity::getAppName() const{
 //TAG:onCreate
 void ManualMode11Activity::onCreate() {
 	Activity::onCreate();
+    mTextView121Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView121);
+    mTextView120Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView120);
+    mTextView122Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView122);
+    mTextView119Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView119);
+    mTextView118Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView118);
     mTextView100Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView100);
     mTextView99Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView99);
     mTextView98Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView98);

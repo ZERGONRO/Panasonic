@@ -27,6 +27,7 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_TIMESETTING_Button2    20012
 #define ID_TIMESETTING_SubItemMinMini    20011
 #define ID_TIMESETTING_SubItemMinSmall    20010
 #define ID_TIMESETTING_SubItemMinMid    20009

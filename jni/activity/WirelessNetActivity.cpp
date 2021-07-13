@@ -4,6 +4,7 @@
 #include "WirelessNetActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton4Ptr;
 static ZKButton* mButton3Ptr;
 static ZKTextView* mTextView5Ptr;
 static ZKWindow* mWindow2Ptr;
@@ -54,6 +55,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_WIRELESSNET_Button4, onButtonClick_Button4,
     ID_WIRELESSNET_Button3, onButtonClick_Button3,
     ID_WIRELESSNET_Button6, onButtonClick_Button6,
     ID_WIRELESSNET_Button2, onButtonClick_Button2,
@@ -139,6 +141,7 @@ const char* WirelessNetActivity::getAppName() const{
 //TAG:onCreate
 void WirelessNetActivity::onCreate() {
 	Activity::onCreate();
+    mButton4Ptr = (ZKButton*)findControlByID(ID_WIRELESSNET_Button4);
     mButton3Ptr = (ZKButton*)findControlByID(ID_WIRELESSNET_Button3);
     mTextView5Ptr = (ZKTextView*)findControlByID(ID_WIRELESSNET_TextView5);
     mWindow2Ptr = (ZKWindow*)findControlByID(ID_WIRELESSNET_Window2);

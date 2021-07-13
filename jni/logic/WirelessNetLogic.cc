@@ -192,3 +192,8 @@ static bool onButtonClick_Button3(ZKButton *pButton) {
    }
     return false;
 }
+static bool onButtonClick_Button4(ZKButton *pButton) {
+    LOGD(" ButtonClick Button4 !!!\n");
+    EASYUICONTEXT->goBack();
+    return false;
+}

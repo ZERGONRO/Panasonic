@@ -26,6 +26,7 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_SENSORVALUESETTING_Button13    20013
 #define ID_SENSORVALUESETTING_Button12    20012
 #define ID_SENSORVALUESETTING_Button11    20011
 #define ID_SENSORVALUESETTING_Button10    20010

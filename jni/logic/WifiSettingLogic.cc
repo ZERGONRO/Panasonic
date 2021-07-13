@@ -265,3 +265,8 @@ static bool onButtonClick_ButtonKnow(ZKButton *pButton) {
     mWindowConnectFailPtr->setVisible(false);
     return false;
 }
+static bool onButtonClick_Button2(ZKButton *pButton) {
+    LOGD(" ButtonClick Button2 !!!\n");
+    EASYUICONTEXT->goBack();
+    return false;
+}

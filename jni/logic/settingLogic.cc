@@ -204,3 +204,8 @@ static bool onButtonClick_ButtonMasterSlaverSet1(ZKButton *pButton) {
     EASYUICONTEXT->openActivity("MainandSlaveActivity", NULL);
     return false;
 }
+static bool onButtonClick_Button2(ZKButton *pButton) {
+    LOGD(" ButtonClick Button2 !!!\n");
+    EASYUICONTEXT->goBack();
+    return false;
+}

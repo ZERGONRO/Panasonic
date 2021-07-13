@@ -27,6 +27,7 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_WIFIINPUTUI_Button37    20077
 #define ID_WIFIINPUTUI_Button36    20076
 #define ID_WIFIINPUTUI_Button10    20075
 #define ID_WIFIINPUTUI_Button35    20074

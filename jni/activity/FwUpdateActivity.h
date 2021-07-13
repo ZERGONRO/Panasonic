@@ -26,8 +26,11 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
-#define ID_FWUPDATE_Button1    20001
-#define ID_FWUPDATE_TextView7    50007
+#define ID_FWUPDATE_TextViewWifiDescrip    50007
+#define ID_FWUPDATE_ButtonWifiUpdate    20003
+#define ID_FWUPDATE_TextViewGUIDescrip    50008
+#define ID_FWUPDATE_ButtonGUIUpdate    20001
+#define ID_FWUPDATE_Button2    20002
 #define ID_FWUPDATE_TextView6    50006
 #define ID_FWUPDATE_TextView5    50005
 #define ID_FWUPDATE_TextView4    50004

@@ -130,65 +130,102 @@ static bool onSensorValueSettingActivityTouchEvent(const MotionEvent &ev) {
 }
 static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack !!!\n");
+    EASYUICONTEXT->goBack();
     return false;
 }
 
 static bool onButtonClick_Button1(ZKButton *pButton) {
     LOGD(" ButtonClick Button1 !!!\n");
+    int val = atoi(mTextView7Ptr->getText().c_str()) - 1;
+    mTextView7Ptr->setText(std::to_string(val) + "℃");
+
     return false;
 }
 
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
+    int val = atoi(mTextView7Ptr->getText().c_str()) + 1;
+    mTextView7Ptr->setText(std::to_string(val) + "℃");
     return false;
 }
 
 static bool onButtonClick_Button3(ZKButton *pButton) {
     LOGD(" ButtonClick Button3 !!!\n");
+    int val = atoi(mTextView8Ptr->getText().c_str()) - 1;
+    mTextView8Ptr->setText(std::to_string(val) + "%");
     return false;
 }
 
 static bool onButtonClick_Button4(ZKButton *pButton) {
     LOGD(" ButtonClick Button4 !!!\n");
+    int val = atoi(mTextView8Ptr->getText().c_str()) + 1;
+    mTextView8Ptr->setText(std::to_string(val) + "%");
     return false;
 }
 
 static bool onButtonClick_Button5(ZKButton *pButton) {
     LOGD(" ButtonClick Button5 !!!\n");
+    char buf[10];
+    sprintf(buf, "%2.2f", mTextView9Ptr->getText().c_str());
+    double val = (double)atoi(mTextView9Ptr->getText().c_str()) - 0.50;
+    LOGD("val is %f and buf is %s\n", val, buf);
+    mTextView9Ptr->setText(std::to_string(val) + "mg/m³");
     return false;
 }
 
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
+//    char buf[10];
+//    sprintf(buf, "%.2f", mTextView9Ptr->getText().c_str());
+//    float val1 = mTextView9Ptr->getText().c_str();
+    float val = (float)atoi(mTextView9Ptr->getText().c_str()) + 0.50;
+    mTextView9Ptr->setText(std::to_string(val) + "mg/m³");
     return false;
 }
 
 static bool onButtonClick_Button7(ZKButton *pButton) {
     LOGD(" ButtonClick Button7 !!!\n");
+    int val = atoi(mTextView10Ptr->getText().c_str()) - 1;
+    mTextView10Ptr->setText(std::to_string(val) + "ug/m³");
     return false;
 }
 
 static bool onButtonClick_Button8(ZKButton *pButton) {
     LOGD(" ButtonClick Button8 !!!\n");
+    int val = atoi(mTextView10Ptr->getText().c_str()) + 1;
+	mTextView10Ptr->setText(std::to_string(val) + "ug/m³");
     return false;
 }
 
 static bool onButtonClick_Button9(ZKButton *pButton) {
     LOGD(" ButtonClick Button9 !!!\n");
+    float val = (float)atoi(mTextView11Ptr->getText().c_str()) - 0.50;
+    mTextView11Ptr->setText(std::to_string(val) + "mg/m³");
     return false;
 }
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
+    float val = (float)atoi(mTextView11Ptr->getText().c_str()) + 0.50;
+    mTextView11Ptr->setText(std::to_string(val) + "mg/m³");
     return false;
 }
 
 static bool onButtonClick_Button11(ZKButton *pButton) {
     LOGD(" ButtonClick Button11 !!!\n");
+    int val = atoi(mTextView12Ptr->getText().c_str()) - 1;
+    mTextView12Ptr->setText(std::to_string(val) + "ppm");
     return false;
 }
 
 static bool onButtonClick_Button12(ZKButton *pButton) {
     LOGD(" ButtonClick Button12 !!!\n");
+    int val = atoi(mTextView12Ptr->getText().c_str()) + 1;
+    mTextView12Ptr->setText(std::to_string(val) + "ppm");
+    return false;
+}
+static bool onButtonClick_Button13(ZKButton *pButton) {
+    LOGD(" ButtonClick Button13 !!!\n");
+    EASYUICONTEXT->goBack();
     return false;
 }

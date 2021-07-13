@@ -5,6 +5,7 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton2Ptr;
 static ZKButton* mButtonKnowPtr;
 static ZKTextView* mTextViewConnectFailMsgPtr;
 static ZKWindow* mWindow5Ptr;
@@ -55,6 +56,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_WIFISETTING_Button2, onButtonClick_Button2,
     ID_WIFISETTING_ButtonKnow, onButtonClick_ButtonKnow,
     ID_WIFISETTING_ButtonWifiSwitch, onButtonClick_ButtonWifiSwitch,
     ID_WIFISETTING_ButtonBack, onButtonClick_ButtonBack,
@@ -140,6 +142,7 @@ const char* WifiSettingActivity::getAppName() const{
 //TAG:onCreate
 void WifiSettingActivity::onCreate() {
 	Activity::onCreate();
+    mButton2Ptr = (ZKButton*)findControlByID(ID_WIFISETTING_Button2);
     mButtonKnowPtr = (ZKButton*)findControlByID(ID_WIFISETTING_ButtonKnow);
     mTextViewConnectFailMsgPtr = (ZKTextView*)findControlByID(ID_WIFISETTING_TextViewConnectFailMsg);
     mWindow5Ptr = (ZKWindow*)findControlByID(ID_WIFISETTING_Window5);

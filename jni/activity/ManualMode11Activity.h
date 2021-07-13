@@ -26,6 +26,11 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MANUALMODE11_TextView121    50130
+#define ID_MANUALMODE11_TextView120    50129
+#define ID_MANUALMODE11_TextView122    50131
+#define ID_MANUALMODE11_TextView119    50128
+#define ID_MANUALMODE11_TextView118    50127
 #define ID_MANUALMODE11_TextView100    50109
 #define ID_MANUALMODE11_TextView99    50108
 #define ID_MANUALMODE11_TextView98    50107

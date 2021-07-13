@@ -4,6 +4,7 @@
 #include "MainandSlaveActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton1Ptr;
 static ZKButton* mButtonSlaveModePtr;
 static ZKButton* mButtonMasterModePtr;
 static ZKButton* mButtonHelpPtr;
@@ -50,6 +51,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_MAINANDSLAVE_Button1, onButtonClick_Button1,
     ID_MAINANDSLAVE_ButtonSlaveMode, onButtonClick_ButtonSlaveMode,
     ID_MAINANDSLAVE_ButtonMasterMode, onButtonClick_ButtonMasterMode,
     ID_MAINANDSLAVE_ButtonHelp, onButtonClick_ButtonHelp,
@@ -136,6 +138,7 @@ const char* MainandSlaveActivity::getAppName() const{
 //TAG:onCreate
 void MainandSlaveActivity::onCreate() {
 	Activity::onCreate();
+    mButton1Ptr = (ZKButton*)findControlByID(ID_MAINANDSLAVE_Button1);
     mButtonSlaveModePtr = (ZKButton*)findControlByID(ID_MAINANDSLAVE_ButtonSlaveMode);
     mButtonMasterModePtr = (ZKButton*)findControlByID(ID_MAINANDSLAVE_ButtonMasterMode);
     mButtonHelpPtr = (ZKButton*)findControlByID(ID_MAINANDSLAVE_ButtonHelp);

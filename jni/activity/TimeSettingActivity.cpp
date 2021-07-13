@@ -7,6 +7,7 @@
 
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton2Ptr;
 static ZKListView* mListViewMinuetePtr;
 static ZKListView* mListViewHourPtr;
 static ZKListView* mListViewDayPtr;
@@ -60,6 +61,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_TIMESETTING_Button2, onButtonClick_Button2,
     ID_TIMESETTING_ButtonBack, onButtonClick_ButtonBack,
 };
 /***************/
@@ -149,6 +151,7 @@ const char* TimeSettingActivity::getAppName() const{
 //TAG:onCreate
 void TimeSettingActivity::onCreate() {
 	Activity::onCreate();
+    mButton2Ptr = (ZKButton*)findControlByID(ID_TIMESETTING_Button2);
     mListViewMinuetePtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewMinuete);if(mListViewMinuetePtr!= NULL){mListViewMinuetePtr->setListAdapter(this);mListViewMinuetePtr->setItemClickListener(this);}
     mListViewHourPtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewHour);if(mListViewHourPtr!= NULL){mListViewHourPtr->setListAdapter(this);mListViewHourPtr->setItemClickListener(this);}
     mListViewDayPtr = (ZKListView*)findControlByID(ID_TIMESETTING_ListViewDay);if(mListViewDayPtr!= NULL){mListViewDayPtr->setListAdapter(this);mListViewDayPtr->setItemClickListener(this);}

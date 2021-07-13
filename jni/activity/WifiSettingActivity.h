@@ -27,6 +27,7 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_WIFISETTING_Button2    20006
 #define ID_WIFISETTING_ButtonKnow    20004
 #define ID_WIFISETTING_TextViewConnectFailMsg    50007
 #define ID_WIFISETTING_Window5    110005

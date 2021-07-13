@@ -1091,3 +1091,8 @@ static bool onButtonClick_Button36(ZKButton *pButton) {
    EASYUICONTEXT->goBack();
     return false;
 }
+static bool onButtonClick_Button37(ZKButton *pButton) {
+    LOGD(" ButtonClick Button37 !!!\n");
+    EASYUICONTEXT->goBack();
+    return false;
+}

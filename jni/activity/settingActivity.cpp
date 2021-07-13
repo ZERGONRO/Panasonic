@@ -4,6 +4,7 @@
 #include "settingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton2Ptr;
 static ZKButton* mButtonMasterSlaverSet1Ptr;
 static ZKButton* mButtonVoiceSysSet1Ptr;
 static ZKButton* mButtonBackPtr;
@@ -92,6 +93,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_SETTING_Button2, onButtonClick_Button2,
     ID_SETTING_ButtonMasterSlaverSet1, onButtonClick_ButtonMasterSlaverSet1,
     ID_SETTING_ButtonVoiceSysSet1, onButtonClick_ButtonVoiceSysSet1,
     ID_SETTING_ButtonBack, onButtonClick_ButtonBack,
@@ -185,6 +187,7 @@ const char* settingActivity::getAppName() const{
 //TAG:onCreate
 void settingActivity::onCreate() {
 	Activity::onCreate();
+    mButton2Ptr = (ZKButton*)findControlByID(ID_SETTING_Button2);
     mButtonMasterSlaverSet1Ptr = (ZKButton*)findControlByID(ID_SETTING_ButtonMasterSlaverSet1);
     mButtonVoiceSysSet1Ptr = (ZKButton*)findControlByID(ID_SETTING_ButtonVoiceSysSet1);
     mButtonBackPtr = (ZKButton*)findControlByID(ID_SETTING_ButtonBack);

@@ -142,3 +142,8 @@ static bool onButtonClick_ButtonVoiceSysSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonVoiceSysSwitch !!!\n");
     return false;
 }
+static bool onButtonClick_Button2(ZKButton *pButton) {
+    LOGD(" ButtonClick Button2 !!!\n");
+    EASYUICONTEXT->goBack();
+    return false;
+}
