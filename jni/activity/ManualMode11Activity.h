@@ -26,6 +26,30 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MANUALMODE11_TextView100    50109
+#define ID_MANUALMODE11_TextView99    50108
+#define ID_MANUALMODE11_TextView98    50107
+#define ID_MANUALMODE11_TextView97    50106
+#define ID_MANUALMODE11_TextView96    50105
+#define ID_MANUALMODE11_TextView95    50104
+#define ID_MANUALMODE11_TextView94    50103
+#define ID_MANUALMODE11_TextView101    50110
+#define ID_MANUALMODE11_TextView105    50114
+#define ID_MANUALMODE11_TextView104    50113
+#define ID_MANUALMODE11_TextView103    50112
+#define ID_MANUALMODE11_TextView102    50111
+#define ID_MANUALMODE11_TextView107    50116
+#define ID_MANUALMODE11_TextView106    50115
+#define ID_MANUALMODE11_TextView111    50120
+#define ID_MANUALMODE11_TextView110    50119
+#define ID_MANUALMODE11_TextView109    50118
+#define ID_MANUALMODE11_TextView108    50117
+#define ID_MANUALMODE11_TextView117    50126
+#define ID_MANUALMODE11_TextView116    50125
+#define ID_MANUALMODE11_TextView115    50124
+#define ID_MANUALMODE11_TextView114    50123
+#define ID_MANUALMODE11_TextView113    50122
+#define ID_MANUALMODE11_TextView112    50121
 #define ID_MANUALMODE11_SubItemYuBa    20089
 #define ID_MANUALMODE11_ListViewYuBa    80007
 #define ID_MANUALMODE11_TextView93    50102
@@ -155,11 +179,8 @@
 #define ID_MANUALMODE11_WindowNavibar4    110032
 #define ID_MANUALMODE11_ButtonYuBaChangAirWeak    20118
 #define ID_MANUALMODE11_ButtonYuBaChangAirStr    20117
-#define ID_MANUALMODE11_ButtonYuBaChangAirFast    20116
 #define ID_MANUALMODE11_ButtonYuBaLightClose    20115
 #define ID_MANUALMODE11_ButtonYuBaLightNight    20114
-#define ID_MANUALMODE11_ButtonYuBaLightWeak    20113
-#define ID_MANUALMODE11_ButtonYuBaLightStr    20112
 #define ID_MANUALMODE11_ButtonYuBaColdHotWeak    20111
 #define ID_MANUALMODE11_ButtonYuBaWindClassdiffusion    20110
 #define ID_MANUALMODE11_ButtonYuBaColdHotStr    20109
@@ -191,13 +212,9 @@
 #define ID_MANUALMODE11_TextView32    50032
 #define ID_MANUALMODE11_TextView31    50031
 #define ID_MANUALMODE11_WindowWindSwitch    110013
-#define ID_MANUALMODE11_ButtonHumdSwitchWindClassDiff    20077
-#define ID_MANUALMODE11_ButtonHumdSwitchWindClassConcen    20076
 #define ID_MANUALMODE11_ButtonHumdSwitchFuncSelSend    20075
-#define ID_MANUALMODE11_ButtonHumdSwitchFuncSelKeep    20074
 #define ID_MANUALMODE11_ButtonHumdSwitchFuncSelCont    20073
 #define ID_MANUALMODE11_ButtonHumdSwitchFuncSelAuto    20072
-#define ID_MANUALMODE11_ButtonHumdSwitchWindClass    20071
 #define ID_MANUALMODE11_ButtonHumdSwitchFuncSel    20070
 #define ID_MANUALMODE11_TextView30    50030
 #define ID_MANUALMODE11_TextView29    50029
@@ -240,7 +257,6 @@
 #define ID_MANUALMODE11_ButtonAirSwitchModeAuto    20037
 #define ID_MANUALMODE11_ButtonAirSwitchWindDirectLeftRight    20036
 #define ID_MANUALMODE11_ButtonAirSwitchTempSetting    20043
-#define ID_MANUALMODE11_ButtonAirSwitchNANOEX    20042
 #define ID_MANUALMODE11_ButtonAirSwitchWindDirectUpDown    20035
 #define ID_MANUALMODE11_ButtonAirSwitchAutoWindAdd    20034
 #define ID_MANUALMODE11_ButtonAirSwitchAutoWindLess    20033

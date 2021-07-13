@@ -130,7 +130,7 @@ static bool onsettingActivityTouchEvent(const MotionEvent &ev) {
 }
 static bool onButtonClick_ButtonSensorCtl1(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonSensorCtl1 !!!\n");
-    EASYUICONTEXT->openActivity("SensorthresholdActivity", NULL);
+    EASYUICONTEXT->openActivity("SensorValueSettingActivity", NULL);
     return false;
 }
 

@@ -242,7 +242,7 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 		}
 
 		mTextView22Ptr->setText(data.AirConditionData.TempSettingValue + '℃');
-		mButtonAirSwitchNANOEXPtr->setSelected(data.AirConditionData.NanoeX);
+//		mButtonAirSwitchNANOEXPtr->setSelected(data.AirConditionData.NanoeX);
 	}
 
 	if(data.HeatChangeData.Swtich)							//热交换
@@ -279,28 +279,28 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 		{
 			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
 			mButtonHumdSwitchFuncSelContPtr->setSelected(true);
-			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
+//			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
 			mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
 		}
 		else if(data.AdjustHumdData.FunctionSelectSetting == 2)
 		{
 			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
 			mButtonHumdSwitchFuncSelContPtr->setSelected(false);
-			mButtonHumdSwitchFuncSelKeepPtr->setSelected(true);
+//			mButtonHumdSwitchFuncSelKeepPtr->setSelected(true);
 			mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
 		}
 		else if(data.AdjustHumdData.FunctionSelectSetting == 3)
 		{
 			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
 			mButtonHumdSwitchFuncSelContPtr->setSelected(false);
-			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
+//			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
 			mButtonHumdSwitchFuncSelSendPtr->setSelected(true);
 		}
 		else
 		{
 			mButtonHumdSwitchFuncSelAutoPtr->setSelected(true);
 			mButtonHumdSwitchFuncSelContPtr->setSelected(false);
-			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
+//			mButtonHumdSwitchFuncSelKeepPtr->setSelected(false);
 			mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
 		}
 
@@ -374,19 +374,19 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 
 		if(data.YuBaData.AirChangeSetting == 1)
 		{
-			mButtonYuBaChangAirFastPtr->setSelected(false);
+//			mButtonYuBaChangAirFastPtr->setSelected(false);
 			mButtonYuBaChangAirStrPtr->setSelected(true);
 			mButtonYuBaChangAirWeakPtr->setSelected(false);
 		}
 		else if(data.YuBaData.AirChangeSetting == 2)
 		{
-			mButtonYuBaChangAirFastPtr->setSelected(false);
+//			mButtonYuBaChangAirFastPtr->setSelected(false);
 			mButtonYuBaChangAirStrPtr->setSelected(false);
 			mButtonYuBaChangAirWeakPtr->setSelected(true);
 		}
 		else
 		{
-			mButtonYuBaChangAirFastPtr->setSelected(true);
+//			mButtonYuBaChangAirFastPtr->setSelected(true);
 			mButtonYuBaChangAirStrPtr->setSelected(false);
 			mButtonYuBaChangAirWeakPtr->setSelected(false);
 		}
@@ -609,6 +609,9 @@ static bool onButtonClick_ButtonYuBa(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirPFSelect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFSelect !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+    	return false;
+    }
     if (pButton->isSelected()){
     	pButton->setSelected(false);
     	mListViewAirPFPtr->setVisible(false);
@@ -638,56 +641,109 @@ static bool onButtonClick_ButtonAirPFHumdSetting(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirPFAutoWindLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFAutoWindLess !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFAutoWindAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFAutoWindAdd !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFWindDirectLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFWindDirectLess !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFWindDirectAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFWindDirectAdd !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFHumdSettingLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFHumdSettingLess !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFHumdSettingAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFHumdSettingAdd !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFNANOEX(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFNANOEX !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFLight(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFLight !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
+    if (pButton->isSelected()){
+       	pButton->setSelected(false);
+    }else{
+       	pButton->setSelected(true);
+    }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFHumd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFHumd !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFFilterReset(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFFilterReset !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
+    if (pButton->isSelected()){
+       	pButton->setSelected(false);
+   }else{
+       	pButton->setSelected(true);
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFChildLock(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFChildLock !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
+    if (pButton->isSelected()){
+       	pButton->setSelected(false);
+   }else{
+       	pButton->setSelected(true);
+   }
     return false;
 }
 
@@ -715,16 +771,25 @@ static bool onButtonClick_ButtonAirSwitchMode(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirSwitchAutoWindLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchAutoWindLess !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchAutoWindAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchAutoWindAdd !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchWindDirectUpDown(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchWindDirectUpDown !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
@@ -740,36 +805,57 @@ static bool onButtonClick_ButtonAirSwitchTempSetting(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirSwitchWindDirectLeftRight(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchWindDirectLeftRight !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchModeAuto(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchModeAuto !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchModeHot(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchModeHot !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchModeCold(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchModeCold !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchModeHumd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchModeHumd !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchTempSettingLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchTempSettingLess !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAirSwitchTempSettingAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchTempSettingAdd !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
@@ -802,21 +888,38 @@ static bool onButtonClick_ButtonHotChangeSwitchAutoWindAdd(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHotChangeSwitchModeAuto(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchModeAuto !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonHotChangeSwitchNANOEX(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchNANOEX !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+       	return false;
+   }
+    if (pButton->isSelected()){
+       	pButton->setSelected(false);
+   }else{
+       	pButton->setSelected(true);
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonHotChangeSwitchModeHotChange(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchModeHotChange !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
 static bool onButtonClick_ButtonHotChangeSwitchModeCycle(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchModeCycle !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+       	return false;
+   }
     return false;
 }
 
@@ -844,56 +947,89 @@ static bool onButtonClick_ButtonHumdSwitchHumdSetting(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHumdSwitchAutoWindLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchAutoWindLess !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchAutoWindAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchAutoWindAdd !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchWindDirectLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchWindDirectLess !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchWindDirectAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchWindDirectAdd !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchHumdSettingLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchHumdSettingLess !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchHumdSettingAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchHumdSettingAdd !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchFuncSel(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchFuncSel !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchWindClass(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchWindClass !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchFuncSelAuto(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchFuncSelAuto !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchFuncSelCont(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchFuncSelCont !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonHumdSwitchFuncSelKeep(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitchFuncSelKeep !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
@@ -925,16 +1061,30 @@ static bool onButtonClick_ButtonWindSwitchAutoWind(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonWindSwitchAutoWindLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindSwitchAutoWindLess !!!\n");
+    if (!mButtonWindSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonWindSwitchAutoWindAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindSwitchAutoWindAdd !!!\n");
+    if (!mButtonWindSwitchPtr->isSelected()){
+        	return false;
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonWindSwitchNANOEX(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindSwitchNANOEX !!!\n");
+    if (!mButtonWindSwitchPtr->isSelected()){
+        	return false;
+	}
+    if (pButton->isSelected()){
+       	pButton->setSelected(false);
+   }else{
+       	pButton->setSelected(true);
+   }
     return false;
 }
 
@@ -969,21 +1119,38 @@ static bool onButtonClick_ButtonYuBaSelect(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonYuBaHeating(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaHeating !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaWindDirect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaWindDirect !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaHotting(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaHotting !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaNANOEX(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaNANOEX !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
+    if (pButton->isSelected()){
+       	pButton->setSelected(false);
+   }else{
+       	pButton->setSelected(true);
+   }
     return false;
 }
 
@@ -1009,71 +1176,113 @@ static bool onButtonClick_ButtonYuBaLight(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonYuBaHeatingStr(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaHeatingStr !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaHeatingWeak(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaHeatingWeak !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaWindDirectManual(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaWindDirectManual !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaWindDirectAuto(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaWindDirectAuto !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaHottingStr(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaHottingStr !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaHottingWeak(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaHottingWeak !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaWindClassConcen(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaWindClassConcen !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaColdHotStr(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaColdHotStr !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaWindClassdiffusion(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaWindClassdiffusion !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaColdHotWeak(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaColdHotWeak !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaLightStr(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaLightStr !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaLightWeak(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaLightWeak !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaLightNight(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaLightNight !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaLightClose(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaLightClose !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
@@ -1084,11 +1293,17 @@ static bool onButtonClick_ButtonYuBaChangAirFast(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonYuBaChangAirStr(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaChangAirStr !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 
 static bool onButtonClick_ButtonYuBaChangAirWeak(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYuBaChangAirWeak !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+        }
     return false;
 }
 static bool onButtonClick_ButtonHomepage2(ZKButton *pButton) {
@@ -1163,6 +1378,9 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
 
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+    	return false;
+    }
     if (pButton->isSelected()){
 		pButton->setSelected(false);
 		mListViewAirPtr->setVisible(false);
@@ -1190,6 +1408,9 @@ static bool onButtonClick_Button5(ZKButton *pButton) {
 
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+    	return false;
+    }
     if (pButton->isSelected()){
    		pButton->setSelected(false);
    		mListViewHotPtr->setVisible(false);
@@ -1217,6 +1438,9 @@ static bool onButtonClick_Button9(ZKButton *pButton) {
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+    	return false;
+    }
     if (pButton->isSelected()){
 		pButton->setSelected(false);
 		mListViewHumdPtr->setVisible(false);
@@ -1244,6 +1468,9 @@ static bool onButtonClick_Button13(ZKButton *pButton) {
 
 static bool onButtonClick_Button14(ZKButton *pButton) {
     LOGD(" ButtonClick Button14 !!!\n");
+    if (!mButtonWindSwitchPtr->isSelected()){
+    	return false;
+    }
     if (pButton->isSelected()){
 		pButton->setSelected(false);
 		mListViewWindPtr->setVisible(false);
@@ -1254,20 +1481,6 @@ static bool onButtonClick_Button14(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button15(ZKButton *pButton) {
-    LOGD(" ButtonClick Button15 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button16(ZKButton *pButton) {
-    LOGD(" ButtonClick Button16 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button17(ZKButton *pButton) {
-    LOGD(" ButtonClick Button17 !!!\n");
-    return false;
-}
 
 static bool onButtonClick_Button18(ZKButton *pButton) {
     LOGD(" ButtonClick Button18 !!!\n");
@@ -1281,23 +1494,12 @@ static bool onButtonClick_Button18(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button19(ZKButton *pButton) {
-    LOGD(" ButtonClick Button19 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button20(ZKButton *pButton) {
-    LOGD(" ButtonClick Button20 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button21(ZKButton *pButton) {
-    LOGD(" ButtonClick Button21 !!!\n");
-    return false;
-}
 
 static bool onButtonClick_Button22(ZKButton *pButton) {
     LOGD(" ButtonClick Button22 !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+    	return false;
+    }
     if (pButton->isSelected()){
 		pButton->setSelected(false);
 		mListViewYuBaPtr->setVisible(false);
@@ -1308,22 +1510,45 @@ static bool onButtonClick_Button22(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button23(ZKButton *pButton) {
-    LOGD(" ButtonClick Button23 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button24(ZKButton *pButton) {
-    LOGD(" ButtonClick Button24 !!!\n");
-    return false;
-}
 static bool onButtonClick_ButtonAirPFSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFSwitch !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    	mTextView18Ptr->setBackgroundColor(0xFFC0C0C0);
+    	mTextView17Ptr->setBackgroundColor(0xFFC0C0C0);
+    	mButtonAirPFAutoWindLessPtr->setSelected(false);
+    	mButtonAirPFAutoWindAddPtr->setSelected(false);
+    	mButtonAirPFWindDirectLessPtr->setSelected(false);
+    	mButtonAirPFWindDirectAddPtr->setSelected(false);
+    	mButtonAirPFHumdSettingLessPtr->setSelected(false);
+    	mButtonAirPFHumdSettingAddPtr->setSelected(false);
+    	mButtonAirPFNANOEXPtr->setSelected(false);
+    	mButtonAirPFLightPtr->setSelected(false);
+    	mButtonAirPFFilterResetPtr->setSelected(false);
+    	mButtonAirPFChildLockPtr->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    	mTextView18Ptr->setBackgroundColor(0xFFFFFFFF);
+		mTextView17Ptr->setBackgroundColor(0xFFFFFFFF);
+		mButtonAirPFAutoWindLessPtr->setSelected(true);
+		mButtonAirPFAutoWindAddPtr->setSelected(true);
+		mButtonAirPFWindDirectLessPtr->setSelected(true);
+		mButtonAirPFWindDirectAddPtr->setSelected(true);
+		mButtonAirPFHumdSettingLessPtr->setSelected(true);
+		mButtonAirPFHumdSettingAddPtr->setSelected(true);
+		mButtonAirPFNANOEXPtr->setSelected(true);
+		mButtonAirPFLightPtr->setSelected(true);
+		mButtonAirPFFilterResetPtr->setSelected(true);
+		mButtonAirPFChildLockPtr->setSelected(true);
+    }
     return false;
 }
 
 static bool onButtonClick_ButtonAirPFTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFTimeSwitchPic !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+       	return false;
+   }
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonPurifyPtr->getText());
     EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -1337,11 +1562,29 @@ static bool onButtonClick_ButtonAirPFTimeSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitch !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    	mTextView22Ptr->setBackgroundColor(0xFFC0C0C0);
+    	mButtonAirSwitchAutoWindLessPtr->setSelected(false);
+    	mButtonAirSwitchAutoWindAddPtr->setSelected(false);
+    	mButtonAirSwitchTempSettingLessPtr->setSelected(false);
+    	mButtonAirSwitchTempSettingAddPtr->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    	mTextView22Ptr->setBackgroundColor(0xFFFFFFFF);
+    	mButtonAirSwitchAutoWindLessPtr->setSelected(true);
+		mButtonAirSwitchAutoWindAddPtr->setSelected(true);
+		mButtonAirSwitchTempSettingLessPtr->setSelected(true);
+		mButtonAirSwitchTempSettingAddPtr->setSelected(true);
+    }
     return false;
 }
 
 static bool onButtonClick_ButtonAirTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirTimeSwitchPic !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+        	return false;
+	}
     Intent* intent = new Intent();
    	intent->putExtra("DeviceName", mButtonAirPtr->getText());
    	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -1370,11 +1613,26 @@ static bool onButtonClick_ButtonHotChangeSwitchPicTimeOpen(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHotCSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotCSwitch !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    	mButtonHotChangeSwitchAutoWindLessPtr->setSelected(false);
+    	mButtonHotChangeSwitchAutoWindAddPtr->setSelected(false);
+    	mButtonHotChangeSwitchNANOEXPtr->setSelected(false);
+
+    }else{
+    	pButton->setSelected(true);
+    	mButtonHotChangeSwitchAutoWindLessPtr->setSelected(true);
+		mButtonHotChangeSwitchAutoWindAddPtr->setSelected(true);
+		mButtonHotChangeSwitchNANOEXPtr->setSelected(true);
+    }
     return false;
 }
 
 static bool onButtonClick_ButtonHotCTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotCTimeSwitchPic !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+       	return false;
+   }
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonHotChangePtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -1388,11 +1646,32 @@ static bool onButtonClick_ButtonHotCTimeSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHumdSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdSwitch !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    	mTextView29Ptr->setBackgroundColor(0xFFC0C0C0);
+    	mTextView30Ptr->setBackgroundColor(0xFFC0C0C0);
+    	mButtonHumdSwitchAutoWindLessPtr->setSelected(false);
+    	mButtonHumdSwitchAutoWindAddPtr->setSelected(false);
+    	mButtonHumdSwitchHumdSettingLessPtr->setSelected(false);
+    	mButtonHumdSwitchHumdSettingAddPtr->setSelected(false);
+//    	mButtonHumdSwitchAutoWindLessPtr->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    	mTextView29Ptr->setBackgroundColor(0xFFFFFFFF);
+		mTextView30Ptr->setBackgroundColor(0xFFFFFFFF);
+		mButtonHumdSwitchAutoWindLessPtr->setSelected(true);
+		mButtonHumdSwitchAutoWindAddPtr->setSelected(true);
+		mButtonHumdSwitchHumdSettingLessPtr->setSelected(true);
+		mButtonHumdSwitchHumdSettingAddPtr->setSelected(true);
+    }
     return false;
 }
 
 static bool onButtonClick_ButtonHumdTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdTimeSwitchPic !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+        	return false;
+	}
     Intent* intent = new Intent();
   	intent->putExtra("DeviceName", mButtonModHumdPtr->getText());
   	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -1406,11 +1685,24 @@ static bool onButtonClick_ButtonHumdTimeSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonWindSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindSwitch !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    	mButtonWindSwitchAutoWindLessPtr->setSelected(false);
+    	mButtonWindSwitchAutoWindAddPtr->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    	mButtonWindSwitchAutoWindLessPtr->setSelected(true);
+		mButtonWindSwitchAutoWindAddPtr->setSelected(true);
+    }
+
     return false;
 }
 
 static bool onButtonClick_ButtonWindTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindTimeSwitchPic !!!\n");
+    if (!mButtonWindSwitchPtr->isSelected()){
+        	return false;
+	}
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonChangeWindPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -1442,11 +1734,22 @@ static bool onButtonClick_ButtonSteriTimeSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonYubaSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonYubaSwitch !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+	}
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    }
     return false;
 }
 
 static bool onButtonClick_ButtonPicTime(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonPicTime !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+        	return false;
+	}
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonYuBaPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);

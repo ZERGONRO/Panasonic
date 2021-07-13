@@ -4,6 +4,30 @@
 #include "ManualMode11Activity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextView100Ptr;
+static ZKTextView* mTextView99Ptr;
+static ZKTextView* mTextView98Ptr;
+static ZKTextView* mTextView97Ptr;
+static ZKTextView* mTextView96Ptr;
+static ZKTextView* mTextView95Ptr;
+static ZKTextView* mTextView94Ptr;
+static ZKTextView* mTextView101Ptr;
+static ZKTextView* mTextView105Ptr;
+static ZKTextView* mTextView104Ptr;
+static ZKTextView* mTextView103Ptr;
+static ZKTextView* mTextView102Ptr;
+static ZKTextView* mTextView107Ptr;
+static ZKTextView* mTextView106Ptr;
+static ZKTextView* mTextView111Ptr;
+static ZKTextView* mTextView110Ptr;
+static ZKTextView* mTextView109Ptr;
+static ZKTextView* mTextView108Ptr;
+static ZKTextView* mTextView117Ptr;
+static ZKTextView* mTextView116Ptr;
+static ZKTextView* mTextView115Ptr;
+static ZKTextView* mTextView114Ptr;
+static ZKTextView* mTextView113Ptr;
+static ZKTextView* mTextView112Ptr;
 static ZKListView* mListViewYuBaPtr;
 static ZKTextView* mTextView93Ptr;
 static ZKListView* mListViewSterlPtr;
@@ -123,11 +147,8 @@ static ZKWindow* mWindow19Ptr;
 static ZKWindow* mWindowNavibar4Ptr;
 static ZKButton* mButtonYuBaChangAirWeakPtr;
 static ZKButton* mButtonYuBaChangAirStrPtr;
-static ZKButton* mButtonYuBaChangAirFastPtr;
 static ZKButton* mButtonYuBaLightClosePtr;
 static ZKButton* mButtonYuBaLightNightPtr;
-static ZKButton* mButtonYuBaLightWeakPtr;
-static ZKButton* mButtonYuBaLightStrPtr;
 static ZKButton* mButtonYuBaColdHotWeakPtr;
 static ZKButton* mButtonYuBaWindClassdiffusionPtr;
 static ZKButton* mButtonYuBaColdHotStrPtr;
@@ -160,13 +181,9 @@ static ZKTextView* mTextView32Ptr;
 static ZKTextView* mTextView31Ptr;
 static ZKWindow* mWindow9Ptr;
 static ZKWindow* mWindowWindSwitchPtr;
-static ZKButton* mButtonHumdSwitchWindClassDiffPtr;
-static ZKButton* mButtonHumdSwitchWindClassConcenPtr;
 static ZKButton* mButtonHumdSwitchFuncSelSendPtr;
-static ZKButton* mButtonHumdSwitchFuncSelKeepPtr;
 static ZKButton* mButtonHumdSwitchFuncSelContPtr;
 static ZKButton* mButtonHumdSwitchFuncSelAutoPtr;
-static ZKButton* mButtonHumdSwitchWindClassPtr;
 static ZKButton* mButtonHumdSwitchFuncSelPtr;
 static ZKTextView* mTextView30Ptr;
 static ZKTextView* mTextView29Ptr;
@@ -210,7 +227,6 @@ static ZKButton* mButtonAirSwitchModeHotPtr;
 static ZKButton* mButtonAirSwitchModeAutoPtr;
 static ZKButton* mButtonAirSwitchWindDirectLeftRightPtr;
 static ZKButton* mButtonAirSwitchTempSettingPtr;
-static ZKButton* mButtonAirSwitchNANOEXPtr;
 static ZKButton* mButtonAirSwitchWindDirectUpDownPtr;
 static ZKButton* mButtonAirSwitchAutoWindAddPtr;
 static ZKButton* mButtonAirSwitchAutoWindLessPtr;
@@ -349,11 +365,8 @@ static S_ButtonCallback sButtonCallbackTab[] = {
     ID_MANUALMODE11_ButtonHomepage2, onButtonClick_ButtonHomepage2,
     ID_MANUALMODE11_ButtonYuBaChangAirWeak, onButtonClick_ButtonYuBaChangAirWeak,
     ID_MANUALMODE11_ButtonYuBaChangAirStr, onButtonClick_ButtonYuBaChangAirStr,
-    ID_MANUALMODE11_ButtonYuBaChangAirFast, onButtonClick_ButtonYuBaChangAirFast,
     ID_MANUALMODE11_ButtonYuBaLightClose, onButtonClick_ButtonYuBaLightClose,
     ID_MANUALMODE11_ButtonYuBaLightNight, onButtonClick_ButtonYuBaLightNight,
-    ID_MANUALMODE11_ButtonYuBaLightWeak, onButtonClick_ButtonYuBaLightWeak,
-    ID_MANUALMODE11_ButtonYuBaLightStr, onButtonClick_ButtonYuBaLightStr,
     ID_MANUALMODE11_ButtonYuBaColdHotWeak, onButtonClick_ButtonYuBaColdHotWeak,
     ID_MANUALMODE11_ButtonYuBaWindClassdiffusion, onButtonClick_ButtonYuBaWindClassdiffusion,
     ID_MANUALMODE11_ButtonYuBaColdHotStr, onButtonClick_ButtonYuBaColdHotStr,
@@ -376,13 +389,9 @@ static S_ButtonCallback sButtonCallbackTab[] = {
     ID_MANUALMODE11_ButtonWindSwitchAutoWindAdd, onButtonClick_ButtonWindSwitchAutoWindAdd,
     ID_MANUALMODE11_ButtonWindSwitchAutoWindLess, onButtonClick_ButtonWindSwitchAutoWindLess,
     ID_MANUALMODE11_ButtonWindSwitchAutoWind, onButtonClick_ButtonWindSwitchAutoWind,
-    ID_MANUALMODE11_ButtonHumdSwitchWindClassDiff, onButtonClick_ButtonHumdSwitchWindClassDiff,
-    ID_MANUALMODE11_ButtonHumdSwitchWindClassConcen, onButtonClick_ButtonHumdSwitchWindClassConcen,
     ID_MANUALMODE11_ButtonHumdSwitchFuncSelSend, onButtonClick_ButtonHumdSwitchFuncSelSend,
-    ID_MANUALMODE11_ButtonHumdSwitchFuncSelKeep, onButtonClick_ButtonHumdSwitchFuncSelKeep,
     ID_MANUALMODE11_ButtonHumdSwitchFuncSelCont, onButtonClick_ButtonHumdSwitchFuncSelCont,
     ID_MANUALMODE11_ButtonHumdSwitchFuncSelAuto, onButtonClick_ButtonHumdSwitchFuncSelAuto,
-    ID_MANUALMODE11_ButtonHumdSwitchWindClass, onButtonClick_ButtonHumdSwitchWindClass,
     ID_MANUALMODE11_ButtonHumdSwitchFuncSel, onButtonClick_ButtonHumdSwitchFuncSel,
     ID_MANUALMODE11_ButtonHumdSwitchHumdSettingAdd, onButtonClick_ButtonHumdSwitchHumdSettingAdd,
     ID_MANUALMODE11_ButtonHumdSwitchHumdSettingLess, onButtonClick_ButtonHumdSwitchHumdSettingLess,
@@ -413,7 +422,6 @@ static S_ButtonCallback sButtonCallbackTab[] = {
     ID_MANUALMODE11_ButtonAirSwitchModeAuto, onButtonClick_ButtonAirSwitchModeAuto,
     ID_MANUALMODE11_ButtonAirSwitchWindDirectLeftRight, onButtonClick_ButtonAirSwitchWindDirectLeftRight,
     ID_MANUALMODE11_ButtonAirSwitchTempSetting, onButtonClick_ButtonAirSwitchTempSetting,
-    ID_MANUALMODE11_ButtonAirSwitchNANOEX, onButtonClick_ButtonAirSwitchNANOEX,
     ID_MANUALMODE11_ButtonAirSwitchWindDirectUpDown, onButtonClick_ButtonAirSwitchWindDirectUpDown,
     ID_MANUALMODE11_ButtonAirSwitchAutoWindAdd, onButtonClick_ButtonAirSwitchAutoWindAdd,
     ID_MANUALMODE11_ButtonAirSwitchAutoWindLess, onButtonClick_ButtonAirSwitchAutoWindLess,
@@ -528,6 +536,30 @@ const char* ManualMode11Activity::getAppName() const{
 //TAG:onCreate
 void ManualMode11Activity::onCreate() {
 	Activity::onCreate();
+    mTextView100Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView100);
+    mTextView99Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView99);
+    mTextView98Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView98);
+    mTextView97Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView97);
+    mTextView96Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView96);
+    mTextView95Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView95);
+    mTextView94Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView94);
+    mTextView101Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView101);
+    mTextView105Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView105);
+    mTextView104Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView104);
+    mTextView103Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView103);
+    mTextView102Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView102);
+    mTextView107Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView107);
+    mTextView106Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView106);
+    mTextView111Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView111);
+    mTextView110Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView110);
+    mTextView109Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView109);
+    mTextView108Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView108);
+    mTextView117Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView117);
+    mTextView116Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView116);
+    mTextView115Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView115);
+    mTextView114Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView114);
+    mTextView113Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView113);
+    mTextView112Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView112);
     mListViewYuBaPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewYuBa);if(mListViewYuBaPtr!= NULL){mListViewYuBaPtr->setListAdapter(this);mListViewYuBaPtr->setItemClickListener(this);}
     mTextView93Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView93);
     mListViewSterlPtr = (ZKListView*)findControlByID(ID_MANUALMODE11_ListViewSterl);if(mListViewSterlPtr!= NULL){mListViewSterlPtr->setListAdapter(this);mListViewSterlPtr->setItemClickListener(this);}
@@ -647,11 +679,8 @@ void ManualMode11Activity::onCreate() {
     mWindowNavibar4Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowNavibar4);
     mButtonYuBaChangAirWeakPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaChangAirWeak);
     mButtonYuBaChangAirStrPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaChangAirStr);
-    mButtonYuBaChangAirFastPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaChangAirFast);
     mButtonYuBaLightClosePtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaLightClose);
     mButtonYuBaLightNightPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaLightNight);
-    mButtonYuBaLightWeakPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaLightWeak);
-    mButtonYuBaLightStrPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaLightStr);
     mButtonYuBaColdHotWeakPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaColdHotWeak);
     mButtonYuBaWindClassdiffusionPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaWindClassdiffusion);
     mButtonYuBaColdHotStrPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonYuBaColdHotStr);
@@ -684,13 +713,9 @@ void ManualMode11Activity::onCreate() {
     mTextView31Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView31);
     mWindow9Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_Window9);
     mWindowWindSwitchPtr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowWindSwitch);
-    mButtonHumdSwitchWindClassDiffPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchWindClassDiff);
-    mButtonHumdSwitchWindClassConcenPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchWindClassConcen);
     mButtonHumdSwitchFuncSelSendPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchFuncSelSend);
-    mButtonHumdSwitchFuncSelKeepPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchFuncSelKeep);
     mButtonHumdSwitchFuncSelContPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchFuncSelCont);
     mButtonHumdSwitchFuncSelAutoPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchFuncSelAuto);
-    mButtonHumdSwitchWindClassPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchWindClass);
     mButtonHumdSwitchFuncSelPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonHumdSwitchFuncSel);
     mTextView30Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView30);
     mTextView29Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView29);
@@ -734,7 +759,6 @@ void ManualMode11Activity::onCreate() {
     mButtonAirSwitchModeAutoPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonAirSwitchModeAuto);
     mButtonAirSwitchWindDirectLeftRightPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonAirSwitchWindDirectLeftRight);
     mButtonAirSwitchTempSettingPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonAirSwitchTempSetting);
-    mButtonAirSwitchNANOEXPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonAirSwitchNANOEX);
     mButtonAirSwitchWindDirectUpDownPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonAirSwitchWindDirectUpDown);
     mButtonAirSwitchAutoWindAddPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonAirSwitchAutoWindAdd);
     mButtonAirSwitchAutoWindLessPtr = (ZKButton*)findControlByID(ID_MANUALMODE11_ButtonAirSwitchAutoWindLess);
