@@ -33,8 +33,11 @@
 
 
 static float scale = 0.0;
-static int TimeSet1 = 0, TimeSet2 = 0;
-static EquipmentTiming DeviceTimes;
+static int TimeSet1 = 0, TimeSet2 = 0, TimeSet3 = 0, TimeSet4 = 0;
+static EquipmentTiming EquipmentTimeSetting;
+static char weekbuf[64];
+
+void EquipmentTimeSettingFunc();
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -73,6 +76,17 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
+	EquipmentTiming *EqpTime = MACHINESTATUS->getEquipmentTimeSetting();
+	if (!EqpTime->Time1StageFlag){
+		mWindowAirTime1Ptr->setBackgroundColor(0x22252525);
+	}else{
+		mWindowAirTime1Ptr->setBackgroundColor(0);
+	}
+	if (!EqpTime->Time2StageFlag){
+		mWindowAirTime2Ptr->setBackgroundColor(0x22252525);
+	}else{
+		mWindowAirTime2Ptr->setBackgroundColor(0);
+	}
 
 }
 
@@ -87,7 +101,7 @@ static void onUI_hide() {
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-
+//	EquipmentTimeSettingFunc();
 }
 
 /**
@@ -199,6 +213,70 @@ static bool onAddTimeSettingActivityTouchEvent(const MotionEvent &ev) {
 	}
 	return false;
 }
+
+
+void EquipmentTimeSettingFunc(){
+//	EquipmentTimeSetting.DeviceID =
+	int index = 0;
+	if (mButtonEveryDayPtr->isSelected()){
+//		strcpy(weekbuf[index], mButtonEveryDayPtr->getText().c_str());
+		weekbuf[index] = mButtonEveryDayPtr->getText().c_str();
+	}else{
+		if (mButtonMonPtr->isSelected()){
+//			strcpy(weekbuf[index++], mButtonMonPtr->getText().c_str());
+			weekbuf[index++] = mButtonMonPtr->getText().c_str();
+		}
+		if (mButtonTuesPtr->isSelected()){
+//			strcpy(weekbuf[index++], mButtonTuesPtr->getText().c_str());
+			weekbuf[index++] = mButtonTuesPtr->getText().c_str();
+		}
+		if (mButtonWenPtr->isSelected()){
+//			strcpy(weekbuf[index++], mButtonWenPtr->getText().c_str());
+			weekbuf[index++] = mButtonWenPtr->getText().c_str();
+		}
+		if (mButtonThuePtr->isSelected()){
+//			strcpy(weekbuf[index++], mButtonThuePtr->getText().c_str());
+			weekbuf[index++] = mButtonThuePtr->getText().c_str();
+		}
+		if (mButtonFriPtr->isSelected()){
+//			strcpy(weekbuf[index++], mButtonFriPtr->getText().c_str());
+			weekbuf[index++] = mButtonFriPtr->getText().c_str();
+		}
+		if (mButtonSatPtr->isSelected()){
+//			strcpy(weekbuf[index++], mButtonSatPtr->getText().c_str());
+			weekbuf[index++] = mButtonSatPtr->getText().c_str();
+		}
+		if (mButtonSunPtr->isSelected()){
+//			strcpy(weekbuf[index++], mButtonSunPtr->getText().c_str());
+			weekbuf[index] = mButtonSunPtr->getText().c_str();
+		}
+
+		if (index == 7){
+			index = 0;
+			for (int i = 0;i < 7;i++){
+				weekbuf[i] = "";
+			}
+//			strcpy(weekbuf[index], mButtonEveryDayPtr->getText().c_str());
+			weekbuf[index] = mButtonEveryDayPtr->getText().c_str();
+		}
+	}
+
+
+//	EquipmentTimeSetting.WeekBuf = weekbuf;
+	strcpy(EquipmentTimeSetting.WeekBuf, weekbuf);
+//	EquipmentTimeSetting.Time1StageFlag = true;
+	EquipmentTimeSetting.TimeOpenValue1 = TimeSet1;
+	EquipmentTimeSetting.TimeCloseValue1 = TimeSet2;
+	EquipmentTimeSetting.TempSettingValue1 = atoi(mTextView8Ptr->getText().c_str());
+
+	EquipmentTimeSetting.TimeOpenValue2 = TimeSet3;
+	EquipmentTimeSetting.TimeCloseValue2 = TimeSet4;
+	EquipmentTimeSetting.TempSettingValue2 = atoi(mTextView16Ptr->getText().c_str());
+
+	MACHINESTATUS->setEquipmentTimeSetting(&EquipmentTimeSetting);
+}
+
+
 static bool onButtonClick_ButtonAddTime(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAddTime !!!\n");
     return false;
@@ -302,6 +380,9 @@ static bool onButtonClick_ButtonDel1(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDel1 !!!\n");
     int num1, num2;
 	char timebuf[10];
+	if (!mButtonStage1Ptr->isSelected()){
+		return false;
+	}
 	TimeSet1 -= 30;
 	if (TimeSet1 == -30){
 		TimeSet1 = 1410;
@@ -311,6 +392,7 @@ static bool onButtonClick_ButtonDel1(ZKButton *pButton) {
 
 	sprintf(timebuf, "%02d:%02d", num1, num2);
 	mTextView4Ptr->setText(timebuf);
+
     return false;
 }
 
@@ -319,6 +401,9 @@ static bool onButtonClick_ButtonAdd1(ZKButton *pButton) {
     LOGD(" %d\n",atoi(mTextView4Ptr->getText().c_str()));
     int num1, num2;
     char timebuf[10];
+    if (!mButtonStage1Ptr->isSelected()){
+		return false;
+	}
     TimeSet1 += 30;
     if (TimeSet1 == 1440)
        	TimeSet1 = 0;
@@ -327,6 +412,7 @@ static bool onButtonClick_ButtonAdd1(ZKButton *pButton) {
 
     sprintf(timebuf, "%02d:%02d", num1, num2);
     mTextView4Ptr->setText(timebuf);
+
     return false;
 }
 
@@ -334,6 +420,9 @@ static bool onButtonClick_ButtonDel2(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDel2 !!!\n");
     int num1, num2;
    	char timebuf[10];
+   	if (!mButtonStage1Ptr->isSelected()){
+		return false;
+	}
    	TimeSet2 -= 30;
    	if (TimeSet2 == -30){
    		TimeSet2 = 1410;
@@ -350,6 +439,9 @@ static bool onButtonClick_ButtonAdd2(ZKButton *pButton) {
     LOGD(" %d\n",atoi(mTextView6Ptr->getText().c_str()));
     int num1, num2;
 	char timebuf[10];
+	if (!mButtonStage1Ptr->isSelected()){
+		return false;
+	}
 	TimeSet2 += 30;
 	if (TimeSet2 == 1440){
 		TimeSet2 = 0;
@@ -363,6 +455,9 @@ static bool onButtonClick_ButtonAdd2(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonDel3(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDel3 !!!\n");
+    if (!mButtonStage1Ptr->isSelected()){
+		return false;
+	}
     mTextView8Ptr->setText(atoi(mTextView8Ptr->getText().c_str()) - 1);
     if (atoi(mTextView8Ptr->getText().c_str()) < 15){
     	mTextView8Ptr->setText("15");
@@ -372,6 +467,9 @@ static bool onButtonClick_ButtonDel3(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAdd3(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAdd3 !!!\n");
+    if (!mButtonStage1Ptr->isSelected()){
+		return false;
+	}
     mTextView8Ptr->setText(atoi(mTextView8Ptr->getText().c_str()) + 1);
     if (atoi(mTextView8Ptr->getText().c_str()) > 27){
 		mTextView8Ptr->setText("27");
@@ -381,31 +479,100 @@ static bool onButtonClick_ButtonAdd3(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonDel4(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDel4 !!!\n");
+    int num1, num2;
+   	char timebuf[10];
+   	if (!mButtonStage2Ptr->isSelected()){
+   		return false;
+   	}
+   	TimeSet3 -= 30;
+   	if (TimeSet3 == -30){
+   		TimeSet3 = 1410;
+   	}
+   	num1 = TimeSet3 / 60;
+   	num2 = TimeSet3 % 60;
+
+   	sprintf(timebuf, "%02d:%02d", num1, num2);
+   	mTextView12Ptr->setText(timebuf);
     return false;
 }
 
 static bool onButtonClick_ButtonAdd4(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAdd4 !!!\n");
+    int num1, num2;
+    char timebuf[10];
+    if (!mButtonStage2Ptr->isSelected()){
+		return false;
+	}
+    TimeSet3 += 30;
+   if (TimeSet3 == 1440)
+	   TimeSet3 = 0;
+   num1 = TimeSet3 / 60;
+   num2 = TimeSet3 % 60;
+
+   sprintf(timebuf, "%02d:%02d", num1, num2);
+   mTextView12Ptr->setText(timebuf);
     return false;
 }
 
 static bool onButtonClick_ButtonDel5(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDel5 !!!\n");
+    int num1, num2;
+	char timebuf[10];
+	if (!mButtonStage2Ptr->isSelected()){
+		return false;
+	}
+	TimeSet4 -= 30;
+	if (TimeSet4 == -30){
+		TimeSet4 = 1410;
+	}
+	num1 = TimeSet4 / 60;
+	num2 = TimeSet4 % 60;
+
+	sprintf(timebuf, "%02d:%02d", num1, num2);
+	mTextView14Ptr->setText(timebuf);
     return false;
 }
 
 static bool onButtonClick_ButtonAdd5(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAdd5 !!!\n");
+    int num1, num2;
+	char timebuf[10];
+	if (!mButtonStage2Ptr->isSelected()){
+		return false;
+	}
+	TimeSet4 += 30;
+	if (TimeSet4 == 1440)
+		TimeSet4 = 0;
+	num1 = TimeSet4 / 60;
+	num2 = TimeSet4 % 60;
+
+	sprintf(timebuf, "%02d:%02d", num1, num2);
+	mTextView14Ptr->setText(timebuf);
+
     return false;
 }
 
 static bool onButtonClick_ButtonDel6(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDel6 !!!\n");
+    if (!mButtonStage2Ptr->isSelected()){
+   		return false;
+   	}
+	mTextView16Ptr->setText(atoi(mTextView16Ptr->getText().c_str()) - 1);
+	if (atoi(mTextView16Ptr->getText().c_str()) < 15){
+		mTextView16Ptr->setText("15");
+	}
     return false;
 }
 
 static bool onButtonClick_ButtonAdd6(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAdd6 !!!\n");
+    if (!mButtonStage2Ptr->isSelected()){
+		return false;
+	}
+	mTextView16Ptr->setText(atoi(mTextView16Ptr->getText().c_str()) + 1);
+	if (atoi(mTextView16Ptr->getText().c_str()) > 27){
+		mTextView16Ptr->setText("27");
+	}
     return false;
 }
 
@@ -561,10 +728,38 @@ static bool onButtonClick_ButtonConfire(ZKButton *pButton) {
     	LOGD("Set Time Error\n");
     	return false;
     }
+    EquipmentTimeSettingFunc();
 //    DeviceTimes.Time1 = TimeSet1;
 //    DeviceTimes.Time2 = TimeSet2;
 //    DeviceTimes.Temp1 = atoi(mTextView8Ptr->getText().c_str());
 //    MACHINESTATUS->setEquipmentTimingFunc(DeviceTimes);
     EASYUICONTEXT->goBack();
+    return false;
+}
+static bool onButtonClick_ButtonStage1(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonStage1 !!!\n");
+    if (pButton->isSelected()){
+    	mWindowAirTime1Ptr->setBackgroundColor(0x22252525);
+    	EquipmentTimeSetting.Time1StageFlag = false;
+    	pButton->setSelected(false);
+    }else{
+    	mWindowAirTime1Ptr->setBackgroundColor(0);
+    	EquipmentTimeSetting.Time1StageFlag = true;
+    	pButton->setSelected(true);
+    }
+    return false;
+}
+
+static bool onButtonClick_ButtonStage2(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonStage2 !!!\n");
+    if (pButton->isSelected()){
+    	mWindowAirTime2Ptr->setBackgroundColor(0x22252525);
+    	EquipmentTimeSetting.Time2StageFlag = false;
+		pButton->setSelected(false);
+	}else{
+		mWindowAirTime2Ptr->setBackgroundColor(0);
+		EquipmentTimeSetting.Time2StageFlag = true;
+		pButton->setSelected(true);
+	}
     return false;
 }

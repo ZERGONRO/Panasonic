@@ -431,8 +431,7 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(false);
 			mWindowYubaSwitchPtr->setVisible(false);
 			mWindowSterilizationPtr->setVisible(false);
-
-
+//			std::string text;
 		}
 			break;
 		case Manual_Air:

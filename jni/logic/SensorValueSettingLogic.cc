@@ -168,7 +168,7 @@ static bool onButtonClick_Button5(ZKButton *pButton) {
     char buf[10];
     sprintf(buf, "%2.2f", mTextView9Ptr->getText().c_str());
     double val = (double)atoi(mTextView9Ptr->getText().c_str()) - 0.50;
-    LOGD("val is %f and buf is %s\n", val, buf);
+    LOGD("val is %f and buf is %s\n", val, buf);			//float和double输出精度超过2， buf输出0.00
     mTextView9Ptr->setText(std::to_string(val) + "mg/m³");
     return false;
 }
@@ -199,6 +199,11 @@ static bool onButtonClick_Button8(ZKButton *pButton) {
 
 static bool onButtonClick_Button9(ZKButton *pButton) {
     LOGD(" ButtonClick Button9 !!!\n");
+    std::string str = mTextView11Ptr->getText().substr(0, 4);
+    LOGD("str is %s\n", str);
+//    if (str == (int)str){
+//
+//    }
     float val = (float)atoi(mTextView11Ptr->getText().c_str()) - 0.50;
     mTextView11Ptr->setText(std::to_string(val) + "mg/m³");
     return false;

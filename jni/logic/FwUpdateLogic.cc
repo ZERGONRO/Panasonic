@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -29,7 +30,7 @@
 *
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
-
+static int GUIVersion_Status = -1;
 
 /**
  * 注册定时器
@@ -62,7 +63,9 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-
+	char *version = GUI_VerSion;
+	version++;
+	mTextView6Ptr->setText("Ver " + std::string(version));
 }
 
 /*
@@ -139,30 +142,44 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
     EASYUICONTEXT->goBack();
     return false;
 }
+
+void UpdateGUIVersion()
+{
+//	char *NewVersion = GUI_VerSion;
+}
 static bool onButtonClick_ButtonGUIUpdate(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonGUIUpdate !!!\n");
-    if (pButton->getText().c_str() == "检查更新"){
-
-	}else if (pButton->getText().c_str() == "更新"){
+    if (!strcmp(pButton->getText().c_str(), "检查更新")){
+    	GUIVersion_Status = MACHINESTATUS->getVersionStatus();
+    	if (GUIVersion_Status == 1){
+    		//有新版本
+    		pButton->setText("更新");
+    		mTextViewGUIDescripPtr->setText("发现新版本");
+    	}else{
+    		return false;
+    	}
+	}else if (!strcmp(pButton->getText().c_str(), "更新")){
 		pButton->setText("更新中...");
 		mTextViewGUIDescripPtr->setText("");
 		//更新gui版本
-	}else if (pButton->getText().c_str() == "更新中..."){
-
+		UpdateGUIVersion();
+	}else if (!strcmp(pButton->getText().c_str(), "更新中...")){
+		LOGD("Updating\n");
 	}
     return false;
 }
 
 static bool onButtonClick_ButtonWifiUpdate(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWifiUpdate !!!\n");
-    if (pButton->getText().c_str() == "检查更新"){
+    if (!strcmp(pButton->getText().c_str(), "检查更新")){
 
-    }else if (pButton->getText().c_str() == "更新"){
-    	pButton->setText("更新中...");
-    	mTextViewWifiDescripPtr->setText("");
-		//更新wifi版本
-    }else if (pButton->getText().c_str() == "更新中..."){
+   	}else if (!strcmp(pButton->getText().c_str(), "更新")){
+   		pButton->setText("更新中...");
+   		mTextViewWifiDescripPtr->setText("");
+   		//更新gui版本
+   	}else if (!strcmp(pButton->getText().c_str(), "更新中...")){
 
-    }
+   	}
+
     return false;
 }

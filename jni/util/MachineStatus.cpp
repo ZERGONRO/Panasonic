@@ -16,7 +16,7 @@
 #include "util/MyNetWorkingListener.h"
 
 //extern MyNetWorkingListener *nwlistener;
-#define		InitialPassword		"123456"
+
 //namespace std{
 
 MachineStatusListener::MachineStatusListener()
@@ -26,9 +26,14 @@ MachineStatusListener::MachineStatusListener()
 	manualprograme_type = 0;
 	config = new PanasonicServe_t;
 	EnvDate = new EnvironmentDate_t;
+	EquipmentTimeSetting = new EquipmentTiming;
 	config->wifistatus = 1;
 	EnvInfo.clear();
+	EnvDate->MasterorSlaver = false;
+	EquipmentTimeSetting->Time1StageFlag = false;
+	EquipmentTimeSetting->Time2StageFlag = false;
 	strcpy(MasterSlaverKey, InitialPassword);
+	initVersion();
 //	MasterSlaverKey[10] = "123456";
 //	EnvDate->bl = 51;
 //	EnvDate->vol = 51;
@@ -38,8 +43,169 @@ MachineStatusListener::~MachineStatusListener()
 {
 	delete config;
 	delete EnvDate;
+	delete EquipmentTimeSetting;
+	delete MachineVer;
+	MachineVer = NULL;
 	EnvDate = NULL;
 	config = NULL;
+	EquipmentTimeSetting = NULL;
+}
+
+void MachineStatusListener::initVersion()
+{
+	FILE *fp = fopen(Version_Path, "r+");
+	if (!MachineVer){
+		MachineVer = new MachineVersion;
+	}
+	memset(MachineVer, 0, sizeof(MachineVersion));
+
+	if (!fp){
+		strcpy(MachineVer->verbuf, GUI_VerSion);
+		MachineVer->ver_notice = 0;
+	}else{
+		int ret = fread(MachineVer, 1, sizeof(MachineVersion), fp);
+		if (ret != sizeof(MachineVersion)){
+			strcpy(MachineVer->verbuf, GUI_VerSion);
+			MachineVer->ver_notice = 0;
+		}else{
+			//更新为最新版本
+			if (getVersionStatus() == 2){
+				saveVersion(GUI_VerSion, 0);
+			}
+		}
+		fclose(fp);
+	}
+
+}
+
+void MachineStatusListener::saveVersion(char *newversion, int notice)
+{
+	FILE *fp = fopen(Version_Path, "w");
+	if (!fp){
+
+	}else{
+		if (strcmp(newversion, MachineVer->verbuf) || notice != MachineVer->ver_notice){
+			strcpy(MachineVer->verbuf, newversion);
+			if (notice != -1){
+				MachineVer->ver_notice = notice;
+			}
+			if (fwrite(MachineVer, 1, sizeof(MachineVersion), fp) < 0){
+				LOGD("write gui_version to path error\n");
+			}
+			fflush(fp);
+			fsync(fileno(fp));
+		}
+		fclose(fp);
+		system("sync");
+	}
+}
+
+bool MachineStatusListener::getVersionNotice(char *version_desc)
+{
+	char verbuf[128];
+	if (!version_desc){
+		return false;
+	}
+	strcpy(verbuf, version_desc);
+	int FirstVersion = 0, SecondVersion = 0, ThirdVersion = 0;
+	char *token;
+	char *ver = verbuf;
+	ver++;
+	token = strtok(ver, ".");
+	if (!token){
+		return false;
+	}
+	FirstVersion = atoi(token);
+
+	token = strtok(NULL, ".");
+	if (!token){
+		return false;
+	}
+	SecondVersion = atoi(token);
+
+	token = strtok(NULL, ".");
+	if (!token){
+		return false;
+	}
+	ThirdVersion = atoi(token);
+
+	if (FirstVersion > GUI_First_VerSion){
+		return true;
+	}else if (FirstVersion == GUI_First_VerSion){
+		if (SecondVersion > GUI_Second_VerSion){
+			return true;
+		}else if (SecondVersion == GUI_Second_VerSion){
+			if (ThirdVersion > GUI_Third_VerSion){
+				return true;
+			}
+		}
+	}
+	return false;
+
+}
+
+int MachineStatusListener::getVersionStatus()
+{
+	if (!strcmp(GUI_VerSion, MachineVer->verbuf)){
+		return 0;			//与当前版本号相同
+	}
+	if (strlen(MachineVer->verbuf) == 0){
+		return 1;			//服务器为新版本;
+	}
+
+
+	int FirstVersion = 0, SecondVersion = 0, ThirdVersion = 0;
+	char verbuf[64];
+	strcpy(verbuf, GUI_VerSion);
+	char *token;
+	char *ver = verbuf;
+	ver++;
+	token = strtok(ver, ".");
+	if (!token){
+		saveVersion(GUI_VerSion, 0);
+		return 0;
+	}
+	FirstVersion = atoi(token);
+
+	token = strtok(NULL, ".");
+	if (!token){
+		saveVersion(GUI_VerSion, 0);
+		return 0;
+	}
+	SecondVersion = atoi(token);
+
+	token = strtok(NULL, ".");
+	if (!token){
+		saveVersion(GUI_VerSion, 0);
+		return 0;
+	}
+	ThirdVersion = atoi(token);
+
+	if (FirstVersion > GUI_First_VerSion){
+		return 1;
+	}else if (FirstVersion == GUI_First_VerSion){
+		if (SecondVersion > GUI_Second_VerSion){
+			return 1;
+		}else if (SecondVersion == GUI_Second_VerSion){
+			if (ThirdVersion > GUI_Third_VerSion){
+				return 1;
+			}
+		}
+	}
+
+	if (FirstVersion < GUI_First_VerSion){
+		return 2;							//为旧版本，需要更新
+	}else if (FirstVersion == GUI_First_VerSion){
+		if (SecondVersion < GUI_Second_VerSion){
+			return 2;
+		}else if (SecondVersion == GUI_Second_VerSion){
+			if (ThirdVersion < GUI_Third_VerSion){
+				return 2;
+			}
+		}
+	}
+	return 0;
+
 }
 
 MachineStatusListener* MachineStatusListener::getInstance()
@@ -364,17 +530,44 @@ char* MachineStatusListener::getMasterSlaverKey()
 	return buf;
 }
 
-EquipmentTiming MachineStatusListener::getEquipmentTimingFuc()
+
+
+void MachineStatusListener::setMasterorSlaver(bool MasterorSlaverFlag)
 {
-	return DevTimeParam;
-}
-void MachineStatusListener::setEquipmentTimingFunc(EquipmentTiming DevTimeParams)
-{
-	DevTimeParam = DevTimeParams;
+	EnvDate->MasterorSlaver = MasterorSlaverFlag;
 }
 
+bool MachineStatusListener::getMasterorSlaver()
+{
+	return EnvDate->MasterorSlaver;
+}
 
+void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSetting)
+{
+	if (!EquTimeSetting){
+		return;
+	}
+	EquipmentTimeSetting->DeviceID = EquTimeSetting->DeviceID;
+	strcpy(EquipmentTimeSetting->WeekBuf, EquTimeSetting->WeekBuf);
+//	EquipmentTimeSetting->WeekBuf  = EquTimeSetting->WeekBuf;
+	if (EquTimeSetting->Time1StageFlag){
+		EquipmentTimeSetting->Time1StageFlag = true;
+		EquipmentTimeSetting->TimeOpenValue1 = EquTimeSetting->TimeOpenValue1;
+		EquipmentTimeSetting->TimeCloseValue1 = EquTimeSetting->TimeCloseValue1;
+		EquipmentTimeSetting->TempSettingValue1 = EquTimeSetting->TempSettingValue1;
+	}
+	if (EquTimeSetting->Time2StageFlag){
+		EquipmentTimeSetting->Time2StageFlag = true;
+		EquipmentTimeSetting->TimeOpenValue2 = EquTimeSetting->TimeOpenValue2;
+		EquipmentTimeSetting->TimeCloseValue2 = EquTimeSetting->TimeCloseValue2;
+		EquipmentTimeSetting->TempSettingValue2 = EquTimeSetting->TempSettingValue2;
+	}
+}
 
+EquipmentTiming* MachineStatusListener::getEquipmentTimeSetting()
+{
+	return EquipmentTimeSetting;
+}
 
 
 

@@ -443,6 +443,9 @@ static void onUI_show() {
 	mIconViewHumdDryPtr->setVisible(false);
 	mIconViewHumdColdPtr->setVisible(false);
 	mIconViewAirColdPtr->setVisible(false);
+	mIconViewTimingPtr->setVisible(false);
+	mIconViewFrostPtr->setVisible(false);
+	mIconViewFilterPtr->setVisible(false);
 
 	ResetStatusIconPos();
 //	MACHINESTATUS->setwifistatus(nwlistener->IsConnected());
@@ -1358,6 +1361,7 @@ static bool onButtonClick_ButtonEmergencyCall(ZKButton *pButton) {
 }
 static bool onButtonClick_ButtonOneKeyAdjust(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonOneKeyAdjust !!!\n");
+    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
     return false;
 }
 

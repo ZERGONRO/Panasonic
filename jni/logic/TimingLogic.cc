@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -30,6 +31,8 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
+static bool Flag_Settiming = false;
+
 
 /**
  * 注册定时器
@@ -38,8 +41,10 @@
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{0,  6000}, //定时器id=0, 时间间隔6秒
-	//{1,  1000},
+	{1,  1000},
 };
+
+void AddTimeSettingFunc();
 
 void ResetTimeTextPos(){
 	int StartLeft = 0;
@@ -177,6 +182,7 @@ static void onUI_hide() {
  */
 static void onUI_quit() {
 
+
 }
 
 /**
@@ -198,11 +204,139 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  */
 static bool onUI_Timer(int id){
 	switch (id) {
-
+		case 0:
+				break;
+		case 1:
+		{
+			if (Flag_Settiming){
+				Flag_Settiming = false;
+				AddTimeSettingFunc();
+//				mTextView13Ptr->setText(text)
+			}
+		}
+			break;
 		default:
 			break;
 	}
     return true;
+}
+
+void WeekPosReset()
+{
+	LayoutPosition lp;
+	int StartLeft = 0;
+	if (mTextView2Ptr->isSelected()){
+		lp = mTextView2Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView2Ptr->setPosition(lp);
+	}
+	if (mTextView3Ptr->isSelected()){
+		lp = mTextView3Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView3Ptr->setPosition(lp);
+	}
+	if (mTextView4Ptr->isSelected()){
+		lp = mTextView4Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView4Ptr->setPosition(lp);
+	}
+	if (mTextView5Ptr->isSelected()){
+		lp = mTextView5Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView5Ptr->setPosition(lp);
+	}
+	if (mTextView6Ptr->isSelected()){
+		lp = mTextView6Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView6Ptr->setPosition(lp);
+	}
+	if (mTextView7Ptr->isSelected()){
+		lp = mTextView7Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView7Ptr->setPosition(lp);
+	}
+	if (mTextView8Ptr->isSelected()){
+		mTextView8Ptr->setVisible(true);
+		lp = mTextView8Ptr->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		StartLeft += 66;
+		mTextView8Ptr->setPosition(lp);
+	}
+	if (StartLeft == 396 || mTextView9Ptr->isSelected()){
+		mTextView2Ptr->setVisible(false);
+		mTextView3Ptr->setVisible(false);
+		mTextView4Ptr->setVisible(false);
+		mTextView5Ptr->setVisible(false);
+		mTextView6Ptr->setVisible(false);
+		mTextView7Ptr->setVisible(false);
+		mTextView8Ptr->setVisible(false);
+
+		mTextView9Ptr->setVisible(true);
+		lp = mTextView9Ptr->getPosition();
+		lp.mLeft = 0;
+		lp.mTop = 10;
+//		StartLeft = 0;
+		mTextView9Ptr->setPosition(lp);
+	}
+
+
+}
+
+void AddTimeSettingFunc()
+{
+
+	int Timenum1, Timenum2;
+	char Timebuf[64];
+	EquipmentTiming *DevTimeSetting = MACHINESTATUS->getEquipmentTimeSetting();
+	if (DevTimeSetting->Time1StageFlag){
+		Timenum1 = DevTimeSetting->TimeOpenValue1 / 60;
+		Timenum2 = DevTimeSetting->TimeOpenValue1 % 60;
+		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
+		mTextView13Ptr->setText(Timebuf);
+
+		Timenum1 = DevTimeSetting->TimeCloseValue1 / 60;
+		Timenum2 = DevTimeSetting->TimeCloseValue1 % 60;
+		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
+		mTextView14Ptr->setText(Timebuf);
+
+		mTextView15Ptr->setText(std::to_string(DevTimeSetting->TempSettingValue1) + "℃");
+	}else{
+		mTextView13Ptr->setText("未设置");
+		mTextView14Ptr->setText("未设置");
+		mTextView15Ptr->setText("未设置");
+	}
+
+	if (DevTimeSetting->Time2StageFlag){
+		Timenum1 = DevTimeSetting->TimeOpenValue2 / 60;
+		Timenum2 = DevTimeSetting->TimeOpenValue2 % 60;
+		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
+		mTextView23Ptr->setText(Timebuf);
+
+		Timenum1 = DevTimeSetting->TimeCloseValue2 / 60;
+		Timenum2 = DevTimeSetting->TimeCloseValue2 % 60;
+		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
+		mTextView24Ptr->setText(Timebuf);
+
+		mTextView25Ptr->setText(std::to_string(DevTimeSetting->TempSettingValue2) + "℃");
+	}else{
+		mTextView23Ptr->setText("未设置");
+		mTextView24Ptr->setText("未设置");
+		mTextView25Ptr->setText("未设置");
+	}
+
 }
 
 /**
@@ -231,6 +365,7 @@ static bool onTimingActivityTouchEvent(const MotionEvent &ev) {
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
     if (mButton6Ptr->isSelected()){
+    	Flag_Settiming = true;
     	EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
 
     }
@@ -243,8 +378,10 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
     if (pButton->isSelected()){
+    	mButton2Ptr->setSelected(false);
     	pButton->setSelected(false);
     }else{
+    	mButton2Ptr->setSelected(true);
     	pButton->setSelected(true);
     }
     return false;
@@ -252,6 +389,7 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
 
 static bool onButtonClick_Button1(ZKButton *pButton) {
     LOGD(" ButtonClick Button1 !!!\n");
+    EASYUICONTEXT->goBack();
     return false;
 }
 
@@ -261,6 +399,7 @@ static bool onButtonClick_ButtonDropDown(ZKButton *pButton) {
 }
 static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack !!!\n");
+    EASYUICONTEXT->goBack();
     return false;
 }
 static bool onButtonClick_ButtonReturn(ZKButton *pButton) {

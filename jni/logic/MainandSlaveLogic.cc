@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -29,8 +30,9 @@
 *
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
-
-
+static bool Flag_MasSlv = false;
+int MasterPressed = -1;
+extern bool Password_Validation;
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -38,7 +40,7 @@
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{0,  6000}, //定时器id=0, 时间间隔6秒
-	//{1,  1000},
+	{1,  1000},
 };
 
 /**
@@ -62,7 +64,13 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-
+	if (!MACHINESTATUS->getMasterorSlaver()){
+		mButtonMasterModePtr->setSelected(false);
+		mButtonSlaveModePtr->setSelected(true);
+	}else{
+		mButtonMasterModePtr->setSelected(true);
+		mButtonSlaveModePtr->setSelected(false);
+	}
 }
 
 /*
@@ -98,6 +106,23 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  */
 static bool onUI_Timer(int id){
 	switch (id) {
+		case 0:
+			break;
+		case 1:
+		{
+			if (Flag_MasSlv){
+				Flag_MasSlv = false;
+				if (MACHINESTATUS->getMasterorSlaver()){
+					mButtonMasterModePtr->setSelected(true);
+					mButtonSlaveModePtr->setSelected(false);
+				}else{
+					mButtonMasterModePtr->setSelected(false);
+					mButtonSlaveModePtr->setSelected(true);
+				}
+			}
+
+		}
+		break;
 
 		default:
 			break;
@@ -168,12 +193,18 @@ static bool onButtonClick_ButtonHelp(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonMasterMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonMasterMode !!!\n");
+    MasterPressed = 0;
+    Flag_MasSlv = true;
     EASYUICONTEXT->openActivity("MainSlavePsdInputActivity", NULL);
+
     return false;
 }
 
 static bool onButtonClick_ButtonSlaveMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonSlaveMode !!!\n");
+    MasterPressed = 1;
+    Flag_MasSlv = true;
     EASYUICONTEXT->openActivity("MainSlavePsdInputActivity", NULL);
+
     return false;
 }

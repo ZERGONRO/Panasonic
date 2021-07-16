@@ -13,6 +13,16 @@
 #include "system/Thread.h"
 #include "activity/EnvSettingActivity.h"
 
+
+
+#define		InitialPassword		"123456"
+#define 	GUI_VerSion			"V1.00.00"
+#define 	GUI_First_VerSion	1
+#define 	GUI_Second_VerSion	0
+#define 	GUI_Third_VerSion	0
+#define 	Version_Path		"/appconfigs/version.cfg"
+
+
 //namespace std{
 
 typedef struct _PanasonicServe_t{
@@ -21,14 +31,24 @@ typedef struct _PanasonicServe_t{
 	char passwd[128];
 }PanasonicServe_t;
 
+typedef struct MachineVersion_t{
+	char verbuf[128];
+	int ver_notice;
+}MachineVersion;
+
 typedef struct EquipmentTiming_t {
 	int DeviceID;
-	int Time1;
-	int Time2;
-	int Temp1;
-	int Temp2;
-	int Humd1;
-	int Humd2;
+	char WeekBuf[128];
+	bool Time1StageFlag;
+	int TimeOpenValue1;
+	int TimeCloseValue1;
+	int TempSettingValue1;
+	bool Time2StageFlag;
+	int TimeOpenValue2;
+	int TimeCloseValue2;
+	int TempSettingValue2;
+	int HumdSettingValue1;
+	int HumdSettingValue2;
 }EquipmentTiming;
 
 typedef struct MachineTime_t {
@@ -49,6 +69,7 @@ typedef struct _EnvironmentDate_t{
 	int bl;
 	int vol;
 	int envindex;
+	bool MasterorSlaver;
 //	std::vector<DeviceInfo *> envmode;
 }EnvironmentDate_t;
 enum {
@@ -89,8 +110,14 @@ public:
 	MachineTime getMachineTime();
 	void setMasterSlaverKey(char *keyword);
 	char *getMasterSlaverKey();
-	EquipmentTiming getEquipmentTimingFuc();
-	void setEquipmentTimingFunc(EquipmentTiming DevTimeParam);
+	void setMasterorSlaver(bool MasterorSlaverFlag);
+	bool getMasterorSlaver();
+	void initVersion();
+	void saveVersion(char *newversion, int notice);
+	bool getVersionNotice(char *version_desc);
+	int getVersionStatus();
+	void setEquipmentTimeSetting(EquipmentTiming *EquTimeSetting);
+	EquipmentTiming* getEquipmentTimeSetting();
 	//获取和设置环境数据
 	int gettempdate();
 	void settempdate(int data);
@@ -128,8 +155,9 @@ private:
 	int smartprograme_type;
 	int manualprograme_type;
 	MachineTime Machinetime;
-	EquipmentTiming DevTimeParam;
 	char MasterSlaverKey[10];
+	MachineVersion *MachineVer;
+	EquipmentTiming* EquipmentTimeSetting;
 	PanasonicServe_t* config;
 	EnvironmentDate_t* EnvDate;
 	std::vector<DeviceInfo *> EnvInfo;

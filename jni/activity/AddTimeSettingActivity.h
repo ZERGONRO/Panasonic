@@ -26,6 +26,8 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_ADDTIMESETTING_ButtonStage2    20019
+#define ID_ADDTIMESETTING_ButtonStage1    20012
 #define ID_ADDTIMESETTING_ButtonConfire    20002
 #define ID_ADDTIMESETTING_ButtonCancel    20001
 #define ID_ADDTIMESETTING_WindowSL    110003

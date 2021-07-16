@@ -36,8 +36,10 @@ static bool TextKeyFlag = false;
 static std::vector<std::string > KeyVector;
 static char keybuf[6];
 static bool IsModifyKey = false;
+bool Password_Validation = false;
 //static std::vector<char *> KeyVector;
 
+extern int MasterPressed;
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -128,11 +130,20 @@ static bool onUI_Timer(int id){
 					keyflag = true;
 				}
 				if (!keyflag){
+					//key error
+//					Password_Validation = false;
 					TextKeyCount = 0;
 					for (int i = 0;i < 6;i++){
 						mTextViewKeyPtr[i]->setText("");
 					}
 				}else{
+					//key correct
+//					Password_Validation = true;
+					if (MasterPressed == 1){
+						MACHINESTATUS->setMasterorSlaver(false);
+					}else if (MasterPressed == 0){
+						MACHINESTATUS->setMasterorSlaver(true);
+					}
 					EASYUICONTEXT->goBack();
 				}
 			}else{

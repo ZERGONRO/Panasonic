@@ -4,6 +4,8 @@
 #include "AddTimeSettingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButtonStage2Ptr;
+static ZKButton* mButtonStage1Ptr;
 static ZKButton* mButtonConfirePtr;
 static ZKButton* mButtonCancelPtr;
 static ZKWindow* mWindowSLPtr;
@@ -165,6 +167,8 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_ADDTIMESETTING_ButtonStage2, onButtonClick_ButtonStage2,
+    ID_ADDTIMESETTING_ButtonStage1, onButtonClick_ButtonStage1,
     ID_ADDTIMESETTING_ButtonConfire, onButtonClick_ButtonConfire,
     ID_ADDTIMESETTING_ButtonCancel, onButtonClick_ButtonCancel,
     ID_ADDTIMESETTING_Button28, onButtonClick_Button28,
@@ -296,6 +300,8 @@ const char* AddTimeSettingActivity::getAppName() const{
 //TAG:onCreate
 void AddTimeSettingActivity::onCreate() {
 	Activity::onCreate();
+    mButtonStage2Ptr = (ZKButton*)findControlByID(ID_ADDTIMESETTING_ButtonStage2);
+    mButtonStage1Ptr = (ZKButton*)findControlByID(ID_ADDTIMESETTING_ButtonStage1);
     mButtonConfirePtr = (ZKButton*)findControlByID(ID_ADDTIMESETTING_ButtonConfire);
     mButtonCancelPtr = (ZKButton*)findControlByID(ID_ADDTIMESETTING_ButtonCancel);
     mWindowSLPtr = (ZKWindow*)findControlByID(ID_ADDTIMESETTING_WindowSL);
