@@ -123,6 +123,8 @@ static ZKButton* mButtonWenPtr;
 static ZKButton* mButtonTuesPtr;
 static ZKButton* mButtonMonPtr;
 static ZKButton* mButtonEveryDayPtr;
+static ZKButton* mButtonWeekPtr[8];
+
 static ZKWindow* mWindowWeekPtr;
 static ZKButton* mButtonAddTimePtr;
 static ZKTextView* mTextView1Ptr;
@@ -426,6 +428,16 @@ void AddTimeSettingActivity::onCreate() {
     mWindowDispPtr = (ZKWindow*)findControlByID(ID_ADDTIMESETTING_WindowDisp);
     mWindowMainPtr = (ZKWindow*)findControlByID(ID_ADDTIMESETTING_WindowMain);
     mWindowBGPtr = (ZKWindow*)findControlByID(ID_ADDTIMESETTING_WindowBG);
+
+    mButtonWeekPtr[0] = mButtonMonPtr;
+    mButtonWeekPtr[1] = mButtonTuesPtr;
+    mButtonWeekPtr[2] = mButtonWenPtr;
+    mButtonWeekPtr[3] = mButtonThuePtr;
+    mButtonWeekPtr[4] = mButtonFriPtr;
+    mButtonWeekPtr[5] = mButtonSatPtr;
+    mButtonWeekPtr[6] = mButtonSunPtr;
+    mButtonWeekPtr[7] = mButtonEveryDayPtr;
+
 	mActivityPtr = this;
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 

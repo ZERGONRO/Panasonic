@@ -4,6 +4,8 @@
 #include "TimingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewStage2ColorFillPtr;
+static ZKTextView* mTextViewStage1ColorFillPtr;
 static ZKButton* mButton1Ptr;
 static ZKTextView* mTextViewPics2Ptr;
 static ZKTextView* mTextViewPics1Ptr;
@@ -118,6 +120,8 @@ static ZKTextView* mTextView5Ptr;
 static ZKTextView* mTextView4Ptr;
 static ZKTextView* mTextView3Ptr;
 static ZKTextView* mTextView2Ptr;
+
+static ZKTextView* mTextViewPtr[8];
 static ZKWindow* mWindow3Ptr;
 static ZKButton* mButton6Ptr;
 static ZKButton* mButton2Ptr;
@@ -245,6 +249,8 @@ const char* TimingActivity::getAppName() const{
 //TAG:onCreate
 void TimingActivity::onCreate() {
 	Activity::onCreate();
+    mTextViewStage2ColorFillPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewStage2ColorFill);
+    mTextViewStage1ColorFillPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewStage1ColorFill);
     mButton1Ptr = (ZKButton*)findControlByID(ID_TIMING_Button1);
     mTextViewPics2Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextViewPics2);
     mTextViewPics1Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextViewPics1);
@@ -363,6 +369,15 @@ void TimingActivity::onCreate() {
     mButton6Ptr = (ZKButton*)findControlByID(ID_TIMING_Button6);
     mButton2Ptr = (ZKButton*)findControlByID(ID_TIMING_Button2);
     mTextView1Ptr = (ZKTextView*)findControlByID(ID_TIMING_TextView1);
+
+    mTextViewPtr[0] = mTextView2Ptr;
+    mTextViewPtr[1] = mTextView3Ptr;
+    mTextViewPtr[2] = mTextView4Ptr;
+    mTextViewPtr[3] = mTextView5Ptr;
+    mTextViewPtr[4] = mTextView6Ptr;
+    mTextViewPtr[5] = mTextView7Ptr;
+    mTextViewPtr[6] = mTextView8Ptr;
+    mTextViewPtr[7] = mTextView9Ptr;
 	mActivityPtr = this;
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 

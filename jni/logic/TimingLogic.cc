@@ -33,7 +33,7 @@
 
 static bool Flag_Settiming = false;
 
-
+extern bool Flag_EquipmentTimeSetting;
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -41,7 +41,7 @@ static bool Flag_Settiming = false;
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{0,  6000}, //定时器id=0, 时间间隔6秒
-	{1,  1000},
+	{1,  300},
 };
 
 void AddTimeSettingFunc();
@@ -167,7 +167,15 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-	ResetTimeTextPos();
+
+//	if (WindowTimeWave)
+	if (!mButton6Ptr->isSelected()){
+		mWindowTimeWavePtr->setBackgroundColor(0x22252525);
+	}else{
+		mWindowTimeWavePtr->setBackgroundColor(0);
+	}
+
+//	ResetTimeTextPos();
 }
 
 /*
@@ -208,8 +216,8 @@ static bool onUI_Timer(int id){
 				break;
 		case 1:
 		{
-			if (Flag_Settiming){
-				Flag_Settiming = false;
+			if (Flag_EquipmentTimeSetting){
+				Flag_EquipmentTimeSetting = false;
 				AddTimeSettingFunc();
 //				mTextView13Ptr->setText(text)
 			}
@@ -298,25 +306,50 @@ void WeekPosReset()
 void AddTimeSettingFunc()
 {
 
-	int Timenum1, Timenum2;
+	int Timenum1, Timenum2, Timenum3, Timenum4;
 	char Timebuf[64];
+	LayoutPosition lp, lp1;
+	int StartLeft = 0;
+	int ColorFillPos = 427;
 	EquipmentTiming *DevTimeSetting = MACHINESTATUS->getEquipmentTimeSetting();
+	for (int index = 0;index < DevTimeSetting->weekbuf.size();index++){
+		std::string text = DevTimeSetting->weekbuf.at(index);
+//		mTextViewPtr[index]->setVisible(true);
+		lp = mTextViewPtr[index]->getPosition();
+		lp.mLeft = StartLeft;
+		lp.mTop = 10;
+		mTextViewPtr[index]->setPosition(lp);
+		mTextViewPtr[index]->setText(text.c_str());
+		StartLeft += 66;
+	}
 	if (DevTimeSetting->Time1StageFlag){
 		Timenum1 = DevTimeSetting->TimeOpenValue1 / 60;
 		Timenum2 = DevTimeSetting->TimeOpenValue1 % 60;
 		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
 		mTextView13Ptr->setText(Timebuf);
 
-		Timenum1 = DevTimeSetting->TimeCloseValue1 / 60;
-		Timenum2 = DevTimeSetting->TimeCloseValue1 % 60;
-		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
+		Timenum3 = DevTimeSetting->TimeCloseValue1 / 60;
+		Timenum4 = DevTimeSetting->TimeCloseValue1 % 60;
+		sprintf(Timebuf, "%02d:%02d", Timenum3, Timenum4);
 		mTextView14Ptr->setText(Timebuf);
-
 		mTextView15Ptr->setText(std::to_string(DevTimeSetting->TempSettingValue1) + "℃");
+		mWindowAirHum1Ptr->setBackgroundColor(0);
+
+		mTextViewStage1ColorFillPtr->setText(mTextView15Ptr->getText().c_str());
+		int RemainTime = DevTimeSetting->TimeCloseValue1 - DevTimeSetting->TimeOpenValue1;
+		lp1 = mTextViewStage1ColorFillPtr->getPosition();
+		lp1.mLeft = ColorFillPos + (Timenum1 * 33) + (Timenum2 * 16 / 30);
+		lp1.mWidth = (RemainTime / 60) * 33 + ((RemainTime % 60) / 30) * 16;
+		lp1.mTop = 46;
+		mTextViewStage1ColorFillPtr->setPosition(lp1);
+		mTextViewStage1ColorFillPtr->setBackgroundColor(0xFFFF8000);
 	}else{
-		mTextView13Ptr->setText("未设置");
-		mTextView14Ptr->setText("未设置");
-		mTextView15Ptr->setText("未设置");
+//		mTextView13Ptr->setText("未设置");
+//		mTextView14Ptr->setText("未设置");
+//		mTextView15Ptr->setText("未设置");
+
+		mTextViewStage1ColorFillPtr->setBackgroundColor(0);
+		mWindowAirHum1Ptr->setBackgroundColor(0xFFD6D6D6);
 	}
 
 	if (DevTimeSetting->Time2StageFlag){
@@ -325,16 +358,27 @@ void AddTimeSettingFunc()
 		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
 		mTextView23Ptr->setText(Timebuf);
 
-		Timenum1 = DevTimeSetting->TimeCloseValue2 / 60;
-		Timenum2 = DevTimeSetting->TimeCloseValue2 % 60;
-		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
+		Timenum3 = DevTimeSetting->TimeCloseValue2 / 60;
+		Timenum4 = DevTimeSetting->TimeCloseValue2 % 60;
+		sprintf(Timebuf, "%02d:%02d", Timenum3, Timenum4);
 		mTextView24Ptr->setText(Timebuf);
-
 		mTextView25Ptr->setText(std::to_string(DevTimeSetting->TempSettingValue2) + "℃");
+		mWindowAirHum2Ptr->setBackgroundColor(0);
+
+		mTextViewStage2ColorFillPtr->setText(mTextView25Ptr->getText().c_str());
+		int RemainTime1 = DevTimeSetting->TimeCloseValue2 - DevTimeSetting->TimeOpenValue2;
+		lp1 = mTextViewStage2ColorFillPtr->getPosition();
+		lp1.mLeft = ColorFillPos + (Timenum1 * 33) + (Timenum2 * 16 / 30);
+		lp1.mWidth = (RemainTime1 / 60) * 33 + ((RemainTime1 % 60) / 30) * 16;
+		lp1.mTop = 46;
+		mTextViewStage2ColorFillPtr->setPosition(lp1);
+		mTextViewStage2ColorFillPtr->setBackgroundColor(0xFF0080C0);
 	}else{
-		mTextView23Ptr->setText("未设置");
-		mTextView24Ptr->setText("未设置");
-		mTextView25Ptr->setText("未设置");
+//		mTextView23Ptr->setText("未设置");
+//		mTextView24Ptr->setText("未设置");
+//		mTextView25Ptr->setText("未设置");
+		mTextViewStage2ColorFillPtr->setBackgroundColor(0);
+		mWindowAirHum2Ptr->setBackgroundColor(0xFFD6D6D6);
 	}
 
 }
@@ -367,10 +411,7 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
     if (mButton6Ptr->isSelected()){
     	Flag_Settiming = true;
     	EASYUICONTEXT->openActivity("AddTimeSettingActivity", NULL);
-
     }
-
-
 
     return false;
 }
@@ -380,9 +421,11 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
     if (pButton->isSelected()){
     	mButton2Ptr->setSelected(false);
     	pButton->setSelected(false);
+    	mWindowTimeWavePtr->setBackgroundColor(0x22252525);
     }else{
     	mButton2Ptr->setSelected(true);
     	pButton->setSelected(true);
+    	mWindowTimeWavePtr->setBackgroundColor(0);
     }
     return false;
 }

@@ -38,7 +38,8 @@ typedef struct MachineVersion_t{
 
 typedef struct EquipmentTiming_t {
 	int DeviceID;
-	char WeekBuf[128];
+//	char WeekBuf[128];
+	std::vector<std::string > weekbuf;
 	bool Time1StageFlag;
 	int TimeOpenValue1;
 	int TimeCloseValue1;

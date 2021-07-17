@@ -547,20 +547,30 @@ void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSett
 	if (!EquTimeSetting){
 		return;
 	}
-	EquipmentTimeSetting->DeviceID = EquTimeSetting->DeviceID;
-	strcpy(EquipmentTimeSetting->WeekBuf, EquTimeSetting->WeekBuf);
+//	EquipmentTimeSetting->DeviceID = EquTimeSetting->DeviceID;
+//	strcpy(EquipmentTimeSetting->WeekBuf, EquTimeSetting->WeekBuf);
+	EquipmentTimeSetting->weekbuf.clear();
+	for (int i = 0;i < EquTimeSetting->weekbuf.size();i++){
+		std::string tmpweek = EquTimeSetting->weekbuf.at(i);
+		EquipmentTimeSetting->weekbuf.push_back(tmpweek.c_str());
+	}
 //	EquipmentTimeSetting->WeekBuf  = EquTimeSetting->WeekBuf;
 	if (EquTimeSetting->Time1StageFlag){
 		EquipmentTimeSetting->Time1StageFlag = true;
 		EquipmentTimeSetting->TimeOpenValue1 = EquTimeSetting->TimeOpenValue1;
 		EquipmentTimeSetting->TimeCloseValue1 = EquTimeSetting->TimeCloseValue1;
 		EquipmentTimeSetting->TempSettingValue1 = EquTimeSetting->TempSettingValue1;
+	}else{
+		EquipmentTimeSetting->Time1StageFlag = false;
 	}
+
 	if (EquTimeSetting->Time2StageFlag){
 		EquipmentTimeSetting->Time2StageFlag = true;
 		EquipmentTimeSetting->TimeOpenValue2 = EquTimeSetting->TimeOpenValue2;
 		EquipmentTimeSetting->TimeCloseValue2 = EquTimeSetting->TimeCloseValue2;
 		EquipmentTimeSetting->TempSettingValue2 = EquTimeSetting->TempSettingValue2;
+	}else{
+		EquipmentTimeSetting->Time2StageFlag = false;
 	}
 }
 
