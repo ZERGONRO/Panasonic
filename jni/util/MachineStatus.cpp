@@ -27,13 +27,18 @@ MachineStatusListener::MachineStatusListener()
 	config = new PanasonicServe_t;
 	EnvDate = new EnvironmentDate_t;
 	EquipmentTimeSetting = new EquipmentTiming;
+//	EqpTime_Data = new EqpTimeData;
 	config->wifistatus = 1;
 	EnvInfo.clear();
 	EnvDate->MasterorSlaver = false;
+	EquipmentTimeSetting->DeviceID = AirPURIFY;
+	EquipmentTimeSetting->DeviceSwitch = false;
 	EquipmentTimeSetting->Time1StageFlag = false;
 	EquipmentTimeSetting->Time2StageFlag = false;
+
 	strcpy(MasterSlaverKey, InitialPassword);
 	initVersion();
+	initEqpTimeData();
 //	MasterSlaverKey[10] = "123456";
 //	EnvDate->bl = 51;
 //	EnvDate->vol = 51;
@@ -45,11 +50,37 @@ MachineStatusListener::~MachineStatusListener()
 	delete EnvDate;
 	delete EquipmentTimeSetting;
 	delete MachineVer;
+	delete EqpTime_Data;
+
 	MachineVer = NULL;
 	EnvDate = NULL;
 	config = NULL;
 	EquipmentTimeSetting = NULL;
+	EqpTime_Data = NULL;
+	for (int i = 0;i < 7;i++){
+		delete EqpTime_Data->DeviceData[i];
+		EqpTime_Data->DeviceData[i] = NULL;
+	}
+
 }
+
+void MachineStatusListener::initEqpTimeData()
+{
+	if (!EqpTime_Data){
+		EqpTime_Data = new EqpTimeData;
+	}
+	memset(EqpTime_Data, 0, sizeof(EqpTimeData));
+
+	EqpTime_Data->DeviceID = AirPURIFY;
+	for (int i = 0;i < 7;i++){
+		EqpTime_Data->DeviceData[i] = new EquipmentTiming;
+		EqpTime_Data->DeviceData[i]->DeviceSwitch = false;
+		EqpTime_Data->DeviceData[i]->DeviceID = i;
+
+	}
+
+}
+
 
 void MachineStatusListener::initVersion()
 {
@@ -547,7 +578,8 @@ void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSett
 	if (!EquTimeSetting){
 		return;
 	}
-//	EquipmentTimeSetting->DeviceID = EquTimeSetting->DeviceID;
+	EquipmentTimeSetting->DeviceID = EquTimeSetting->DeviceID;
+	EquipmentTimeSetting->DeviceSwitch = EquTimeSetting->DeviceSwitch;
 //	strcpy(EquipmentTimeSetting->WeekBuf, EquTimeSetting->WeekBuf);
 	EquipmentTimeSetting->weekbuf.clear();
 	for (int i = 0;i < EquTimeSetting->weekbuf.size();i++){
@@ -577,6 +609,34 @@ void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSett
 EquipmentTiming* MachineStatusListener::getEquipmentTimeSetting()
 {
 	return EquipmentTimeSetting;
+}
+
+void MachineStatusListener::setEqpTimeData(int DevID, EquipmentTiming *EquTimeSetting)
+{
+	if (DevID < 0 || DevID > 6){
+		return;
+	}
+	EqpTime_Data->DeviceID = DevID;
+//	if (!EqpTime_Data->DeviceData[DevID]){
+//		EqpTime_Data->DeviceData[DevID] = new EquipmentTiming;
+//		EqpTime_Data->DeviceData[DevID]->DeviceSwitch = false;
+//	}
+
+	EqpTime_Data->DeviceData[DevID] = EquTimeSetting;
+}
+EqpTimeData* MachineStatusListener::getEqpTimeData()
+{
+	return EqpTime_Data;
+}
+
+bool MachineStatusListener::getDeviceSwitch(bool SwitchStatus)
+{
+	return EquipmentTimeSetting->DeviceSwitch = SwitchStatus;
+}
+
+void MachineStatusListener::setDeviceID(int DevID)
+{
+	EqpTime_Data->DeviceID = DevID;
 }
 
 

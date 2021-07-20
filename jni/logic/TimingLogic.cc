@@ -31,9 +31,14 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
+static int DeviceID;
+static bool Flag_Switch = false;
 static bool Flag_Settiming = false;
+static EquipmentTiming *DevTime_Setting;
 
+//static EqpTimeData *EqpTime_Date = MACHINESTATUS->getEqpTimeData();
 extern bool Flag_EquipmentTimeSetting;
+
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -44,7 +49,7 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	{1,  300},
 };
 
-void AddTimeSettingFunc();
+void UpdateTimeSettingFunc();
 
 void ResetTimeTextPos(){
 	int StartLeft = 0;
@@ -148,6 +153,95 @@ void ResetTimeTextPos(){
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
+//	if (!EqpTime_Date){
+//		EqpTime_Date = new EqpTimeData;
+//		LOGD("EqpTime_Date is NULL\n");
+////		memset(EqpTime_Date, 0, sizeof(EqpTimeData));
+//	}
+
+}
+
+void DispEqpTimeData(int DevID){
+	int StartLeft = 0;
+	int num1, num2, num3, num4;
+	char Timebuf[64];
+	LayoutPosition lp, lp1;
+
+//		EqpTime_Date->DeviceID = DevID;
+		MACHINESTATUS->setDeviceID(DevID);
+		EquipmentTiming *EqpTSet = MACHINESTATUS->getEqpTimeData()->DeviceData[DevID];	//初次数组为空，无法操作
+//		EquipmentTiming *EqpTSet = MACHINESTATUS->getEquipmentTimeSetting();
+
+
+		if (EqpTSet->DeviceSwitch){
+			mButton6Ptr->setSelected(true);
+			mWindowTimeWavePtr->setBackgroundColor(0);
+		}else{
+			mButton6Ptr->setSelected(false);
+			mWindowTimeWavePtr->setBackgroundColor(0x22252525);
+		}
+		for (int i = 0;i < EqpTSet->weekbuf.size();i++){
+			std::string text = EqpTSet->weekbuf.at(i);
+	//		mTextViewPtr[index]->setVisible(true);
+			lp = mTextViewPtr[i]->getPosition();
+			lp.mLeft = StartLeft;
+			lp.mTop = 10;
+			mTextViewPtr[i]->setPosition(lp);
+			mTextViewPtr[i]->setText(text.c_str());
+			StartLeft += 66;
+		}
+		if (EqpTSet->Time1StageFlag){
+			num1 = EqpTSet->TimeOpenValue1 / 60;
+			num2 = EqpTSet->TimeOpenValue1 % 60;
+			sprintf(Timebuf, "%02d:%02d", num1, num2);
+			mTextView13Ptr->setText(Timebuf);
+
+			num3 = EqpTSet->TimeCloseValue1 / 60;
+			num4 = EqpTSet->TimeCloseValue1 % 60;
+			sprintf(Timebuf, "%02d:%02d", num3, num4);
+			mTextView14Ptr->setText(Timebuf);
+			mTextView15Ptr->setText(std::to_string(EqpTSet->TempSettingValue1) + "℃");
+			mWindowAirHum1Ptr->setBackgroundColor(0);
+
+			mTextViewStage1ColorFillPtr->setText(mTextView15Ptr->getText().c_str());
+			int RemainTime = EqpTSet->TimeCloseValue1 - EqpTSet->TimeOpenValue1;
+			lp1 = mTextViewStage1ColorFillPtr->getPosition();
+			lp1.mLeft = 427 + (num1 * 33) + (num2 * 16 / 30);
+			lp1.mWidth = (RemainTime / 60) * 33 + ((RemainTime % 60) / 30) * 16;
+			lp1.mTop = 46;
+			mTextViewStage1ColorFillPtr->setPosition(lp1);
+			mTextViewStage1ColorFillPtr->setBackgroundColor(0xFFFF8000);
+		}else{
+			mTextViewStage1ColorFillPtr->setBackgroundColor(0);
+			mWindowAirHum1Ptr->setBackgroundColor(0xFFD6D6D6);
+		}
+
+		if (EqpTSet->Time2StageFlag){
+			num1 = EqpTSet->TimeOpenValue2 / 60;
+			num2 = EqpTSet->TimeOpenValue2 % 60;
+			sprintf(Timebuf, "%02d:%02d", num1, num2);
+			mTextView23Ptr->setText(Timebuf);
+
+			num3 = EqpTSet->TimeCloseValue2 / 60;
+			num4 = EqpTSet->TimeCloseValue2 % 60;
+			sprintf(Timebuf, "%02d:%02d", num3, num4);
+			mTextView24Ptr->setText(Timebuf);
+			mTextView25Ptr->setText(std::to_string(EqpTSet->TempSettingValue2) + "℃");
+			mWindowAirHum2Ptr->setBackgroundColor(0);
+
+			mTextViewStage2ColorFillPtr->setText(mTextView25Ptr->getText().c_str());
+			int RemainTime = EqpTSet->TimeCloseValue2 - EqpTSet->TimeOpenValue2;
+			lp1 = mTextViewStage2ColorFillPtr->getPosition();
+			lp1.mLeft = 427 + (num1 * 33) + (num2 * 16 / 30);
+			lp1.mWidth = (RemainTime / 60) * 33 + ((RemainTime % 60) / 30) * 16;
+			lp1.mTop = 46;
+			mTextViewStage2ColorFillPtr->setPosition(lp1);
+			mTextViewStage2ColorFillPtr->setBackgroundColor(0xFFFF8000);
+		}else{
+			mTextViewStage2ColorFillPtr->setBackgroundColor(0);
+			mWindowAirHum2Ptr->setBackgroundColor(0xFFD6D6D6);
+		}
+//	}
 
 }
 
@@ -155,11 +249,31 @@ static void onUI_init(){
  * 当切换到该界面时触发
  */
 static void onUI_intent(const Intent *intentPtr) {
+
     if (intentPtr != NULL) {
         //TODO
     	std::string DeviceName = intentPtr->getExtra("DeviceName");
     	mTextView1Ptr->setText(DeviceName.c_str());
     	mTextViewAirPtr->setText(DeviceName.c_str());
+
+    	//根据设备的ID号进入各自的定时设置界面
+    	if (!strcmp(DeviceName.c_str(), "空气净化器")){
+    		DeviceID = AirPURIFY;
+    	}else if (!strcmp(DeviceName.c_str(), "空调")){
+    		DeviceID = AIRCONDITION;
+    	}else if (!strcmp(DeviceName.c_str(), "全热交换器")){
+    		DeviceID = HOTEXCHANGE;
+    	}else if (!strcmp(DeviceName.c_str(), "除湿器")){
+    		DeviceID = DEHUMIDIFY;
+    	}else if (!strcmp(DeviceName.c_str(), "新风机")){
+    		DeviceID = WINDEXCHANGE;
+    	}else if (!strcmp(DeviceName.c_str(), "净味器")){
+    		DeviceID = STERILIZATION;
+    	}else if (!strcmp(DeviceName.c_str(), "浴霸")){
+    		DeviceID = YUBA;
+    	}
+
+    	DispEqpTimeData(DeviceID);
     }
 }
 
@@ -169,11 +283,8 @@ static void onUI_intent(const Intent *intentPtr) {
 static void onUI_show() {
 
 //	if (WindowTimeWave)
-	if (!mButton6Ptr->isSelected()){
-		mWindowTimeWavePtr->setBackgroundColor(0x22252525);
-	}else{
-		mWindowTimeWavePtr->setBackgroundColor(0);
-	}
+
+
 
 //	ResetTimeTextPos();
 }
@@ -189,7 +300,8 @@ static void onUI_hide() {
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-
+//	delete EqpTime_Date;
+//	EqpTime_Date = NULL;
 
 }
 
@@ -218,7 +330,7 @@ static bool onUI_Timer(int id){
 		{
 			if (Flag_EquipmentTimeSetting){
 				Flag_EquipmentTimeSetting = false;
-				AddTimeSettingFunc();
+				UpdateTimeSettingFunc();
 //				mTextView13Ptr->setText(text)
 			}
 		}
@@ -303,7 +415,7 @@ void WeekPosReset()
 
 }
 
-void AddTimeSettingFunc()
+void UpdateTimeSettingFunc()
 {
 
 	int Timenum1, Timenum2, Timenum3, Timenum4;
@@ -311,7 +423,9 @@ void AddTimeSettingFunc()
 	LayoutPosition lp, lp1;
 	int StartLeft = 0;
 	int ColorFillPos = 427;
+//	EqpTime_Date->DeviceData[DeviceID] = MACHINESTATUS->getEquipmentTimeSetting();
 	EquipmentTiming *DevTimeSetting = MACHINESTATUS->getEquipmentTimeSetting();
+	MACHINESTATUS->setEqpTimeData(DeviceID, DevTimeSetting);
 	for (int index = 0;index < DevTimeSetting->weekbuf.size();index++){
 		std::string text = DevTimeSetting->weekbuf.at(index);
 //		mTextViewPtr[index]->setVisible(true);
@@ -347,7 +461,7 @@ void AddTimeSettingFunc()
 //		mTextView13Ptr->setText("未设置");
 //		mTextView14Ptr->setText("未设置");
 //		mTextView15Ptr->setText("未设置");
-
+		mTextViewStage1ColorFillPtr->setText("");
 		mTextViewStage1ColorFillPtr->setBackgroundColor(0);
 		mWindowAirHum1Ptr->setBackgroundColor(0xFFD6D6D6);
 	}
@@ -377,6 +491,7 @@ void AddTimeSettingFunc()
 //		mTextView23Ptr->setText("未设置");
 //		mTextView24Ptr->setText("未设置");
 //		mTextView25Ptr->setText("未设置");
+		mTextViewStage2ColorFillPtr->setText("");
 		mTextViewStage2ColorFillPtr->setBackgroundColor(0);
 		mWindowAirHum2Ptr->setBackgroundColor(0xFFD6D6D6);
 	}
@@ -419,14 +534,17 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
     if (pButton->isSelected()){
+    	Flag_Switch = false;
     	mButton2Ptr->setSelected(false);
     	pButton->setSelected(false);
     	mWindowTimeWavePtr->setBackgroundColor(0x22252525);
     }else{
+    	Flag_Switch = true;
     	mButton2Ptr->setSelected(true);
     	pButton->setSelected(true);
     	mWindowTimeWavePtr->setBackgroundColor(0);
     }
+    MACHINESTATUS->getDeviceSwitch(Flag_Switch);
     return false;
 }
 

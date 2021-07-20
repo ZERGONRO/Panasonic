@@ -36,9 +36,20 @@ typedef struct MachineVersion_t{
 	int ver_notice;
 }MachineVersion;
 
+typedef enum {
+	AirPURIFY,
+	AIRCONDITION,
+	HOTEXCHANGE,
+	DEHUMIDIFY,
+	WINDEXCHANGE,
+	STERILIZATION,
+	YUBA
+}IOTDeviceID;
+
 typedef struct EquipmentTiming_t {
 	int DeviceID;
 //	char WeekBuf[128];
+	bool DeviceSwitch;
 	std::vector<std::string > weekbuf;
 	bool Time1StageFlag;
 	int TimeOpenValue1;
@@ -51,6 +62,11 @@ typedef struct EquipmentTiming_t {
 	int HumdSettingValue1;
 	int HumdSettingValue2;
 }EquipmentTiming;
+
+typedef struct EqpTimeData_t {
+	IOTDeviceID DeviceID;
+	EquipmentTiming *DeviceData[7];
+}EqpTimeData;
 
 typedef struct MachineTime_t {
 	int year;
@@ -80,15 +96,7 @@ enum {
 	VACATION_MODE,
 };
 
-enum {
-	MANAUAL_PURIFY,
-	MANAUAL_AIRCONDITION,
-	MANAUAL_HOTCHANGE,
-	MANAUAL_SETHUMD,
-	MANAUAL_EXCHANGEWIND,
-	MANAUAL_STERILIZATION,
-	MANAUAL_YUBA,
-}IOTDeviceID;
+
 
 class MachineStatusListener{
 
@@ -119,6 +127,11 @@ public:
 	int getVersionStatus();
 	void setEquipmentTimeSetting(EquipmentTiming *EquTimeSetting);
 	EquipmentTiming* getEquipmentTimeSetting();
+	void setEqpTimeData(int DevID, EquipmentTiming *EquTimeSetting);
+	EqpTimeData* getEqpTimeData();
+	void initEqpTimeData();
+	bool getDeviceSwitch(bool SwitchStatus);
+	void setDeviceID(int DevID);
 	//获取和设置环境数据
 	int gettempdate();
 	void settempdate(int data);
@@ -159,6 +172,7 @@ private:
 	char MasterSlaverKey[10];
 	MachineVersion *MachineVer;
 	EquipmentTiming* EquipmentTimeSetting;
+	EqpTimeData* EqpTime_Data;
 	PanasonicServe_t* config;
 	EnvironmentDate_t* EnvDate;
 	std::vector<DeviceInfo *> EnvInfo;

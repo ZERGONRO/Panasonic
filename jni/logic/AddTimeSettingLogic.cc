@@ -274,46 +274,30 @@ static bool onAddTimeSettingActivityTouchEvent(const MotionEvent &ev) {
 void EquipmentTimeSettingFunc(){
 
 //	int index = 0;
+	EquipmentTimeSetting.DeviceSwitch = true;
 	EquipmentTimeSetting.weekbuf.clear();
 	if (mButtonEveryDayPtr->isSelected()){
-//		strcpy(weekbuf[index], mButtonEveryDayPtr->getText().c_str());
-//		weekbuf[index] = mButtonEveryDayPtr->getText().c_str();
-//		EquipmentTimeSetting.weekbuf.clear();
 		EquipmentTimeSetting.weekbuf.push_back(mButtonEveryDayPtr->getText().c_str());
 	}else{
 		if (mButtonMonPtr->isSelected()){
-//			strcpy(weekbuf[index++], mButtonMonPtr->getText().c_str());
-//			weekbuf[index++] = mButtonMonPtr->getText().c_str();
 			EquipmentTimeSetting.weekbuf.push_back(mButtonMonPtr->getText().c_str());
 		}
 		if (mButtonTuesPtr->isSelected()){
-//			strcpy(weekbuf[index++], mButtonTuesPtr->getText().c_str());
-//			weekbuf[index++] = mButtonTuesPtr->getText().c_str();
 			EquipmentTimeSetting.weekbuf.push_back(mButtonTuesPtr->getText().c_str());
 		}
 		if (mButtonWenPtr->isSelected()){
-//			strcpy(weekbuf[index++], mButtonWenPtr->getText().c_str());
-//			weekbuf[index++] = mButtonWenPtr->getText().c_str();
 			EquipmentTimeSetting.weekbuf.push_back(mButtonWenPtr->getText().c_str());
 		}
 		if (mButtonThuePtr->isSelected()){
-//			strcpy(weekbuf[index++], mButtonThuePtr->getText().c_str());
-//			weekbuf[index++] = mButtonThuePtr->getText().c_str();
 			EquipmentTimeSetting.weekbuf.push_back(mButtonThuePtr->getText().c_str());
 		}
 		if (mButtonFriPtr->isSelected()){
-//			strcpy(weekbuf[index++], mButtonFriPtr->getText().c_str());
-//			weekbuf[index++] = mButtonFriPtr->getText().c_str();
 			EquipmentTimeSetting.weekbuf.push_back(mButtonFriPtr->getText().c_str());
 		}
 		if (mButtonSatPtr->isSelected()){
-//			strcpy(weekbuf[index++], mButtonSatPtr->getText().c_str());
-//			weekbuf[index++] = mButtonSatPtr->getText().c_str();
 			EquipmentTimeSetting.weekbuf.push_back(mButtonSatPtr->getText().c_str());
 		}
 		if (mButtonSunPtr->isSelected()){
-//			strcpy(weekbuf[index++], mButtonSunPtr->getText().c_str());
-//			weekbuf[index] = mButtonSunPtr->getText().c_str();
 			EquipmentTimeSetting.weekbuf.push_back(mButtonSunPtr->getText().c_str());
 		}
 
@@ -324,10 +308,6 @@ void EquipmentTimeSettingFunc(){
 
 	}
 
-
-//	EquipmentTimeSetting.WeekBuf = weekbuf;
-//	strcpy(EquipmentTimeSetting.WeekBuf, weekbuf);
-//	EquipmentTimeSetting.Time1StageFlag = true;
 	if (mButtonStage1Ptr->isSelected()){
 		EquipmentTimeSetting.Time1StageFlag = true;
 		EquipmentTimeSetting.TimeOpenValue1 = TimeSet1;
