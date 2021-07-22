@@ -194,10 +194,16 @@ void DispEqpTimeData(int DevID){
 		//显示对应设备定时的相关数据
 		if (EqpTSet->DeviceSwitch){
 			mButton6Ptr->setSelected(true);
+			mButton2Ptr->setSelected(true);
 			mWindowTimeWavePtr->setBackgroundColor(0);
 		}else{
 			mButton6Ptr->setSelected(false);
+			mButton2Ptr->setSelected(false);
 			mWindowTimeWavePtr->setBackgroundColor(0x22252525);
+		}
+
+		for (int k = 0;k < 8;k++){
+			mTextViewPtr[k]->setText("");
 		}
 		for (int i = 0;i < EqpTSet->weekbuf.size();i++){
 			std::string text = EqpTSet->weekbuf.at(i);
@@ -441,7 +447,7 @@ void UpdateTimeSettingFunc()
 {
 
 	int Timenum1, Timenum2, Timenum3, Timenum4;
-	char Timebuf[128];
+	char Timebuf[64];
 	LayoutPosition lp, lp1;
 	int StartLeft = 0;
 	int ColorFillPos = 427;
@@ -454,6 +460,9 @@ void UpdateTimeSettingFunc()
 	MACHINESTATUS->setEqpTimeData();
 
 
+	for (int k = 0;k < 8;k++){
+		mTextViewPtr[k]->setText("");
+	}
 	for (int index = 0;index < DevTimeSetting->weekbuf.size();index++){
 		std::string text = DevTimeSetting->weekbuf.at(index);
 //		mTextViewPtr[index]->setVisible(true);

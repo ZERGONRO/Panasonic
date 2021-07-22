@@ -79,8 +79,30 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 	int OpenTime1 = 0, OpenTime2 = 0;
-	char Timebuf[16];
-	EquipmentTiming *EqpTime = MACHINESTATUS->getEquipmentTimeSetting();
+	char Timebuf[64];
+	int Flag_AddTimer = false;
+	EquipmentTiming *EqpTime = (EquipmentTiming *)malloc(sizeof(EquipmentTiming));//MACHINESTATUS->getEquipmentTimeSetting();
+	for(int i = 0;i < MACHINESTATUS->getEqpTimeData().size();i++){
+		EqpTimeData *tmp = MACHINESTATUS->getEqpTimeData().at(i);
+		if (tmp->DeviceID == DeviceID){
+			Flag_AddTimer = true;
+			LOGD("copy the recorded data to show\n");
+//				EqpTSet = (*tmpEqpTimer)->DeviceData;
+			memcpy(EqpTime, tmp->DeviceData, sizeof(EquipmentTiming));
+			break;
+		}
+	}
+
+	if (!Flag_AddTimer){
+		TimeSet1 = 0;
+		TimeSet2 = 0;
+		TimeSet3 = 0;
+		TimeSet4 = 0;
+		free(EqpTime);
+		EqpTime = NULL;
+		return;
+	}
+
 	for (int i = 0;i < EqpTime->weekbuf.size();i++){
 		std::string weektext = EqpTime->weekbuf.at(i);
 		if (!strcmp(weektext.c_str(), "周一")){
@@ -144,7 +166,8 @@ static void onUI_show() {
 
 		mTextView16Ptr->setText(std::to_string(EqpTime->TempSettingValue2));
 	}
-
+			free(EqpTime);
+			EqpTime = NULL;
 }
 
 /*

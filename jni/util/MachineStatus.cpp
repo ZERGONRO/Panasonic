@@ -595,6 +595,7 @@ EquipmentTiming* MachineStatusListener::getEquipmentTimeSetting()
 
 void MachineStatusListener::setEqpTimeData()
 {
+	int Eqp_Count = 0;
 	if (!EquipmentTimeSetting){
 		return;
 	}
@@ -603,20 +604,23 @@ void MachineStatusListener::setEqpTimeData()
 //		for (int i = 0;i < EqpTime_Data.size();i++){
 		for (;it != EqpTime_Data.end();it++){
 			EqpTimeData *tmp = (*it);
-			if (EquipmentTimeSetting->DeviceID == tmp->DeviceID){
-				if (memcmp(tmp->DeviceData, EquipmentTimeSetting, sizeof(EquipmentTiming)) == 0){
+			EqpTimeData *tmp1 = EqpTime_Data.at(Eqp_Count);
+			if (EquipmentTimeSetting->DeviceID == tmp1->DeviceID){
+				if (memcmp(tmp1->DeviceData, EquipmentTimeSetting, sizeof(EquipmentTiming)) == 0){
 					LOGD("the same EqpTime_Data\n");
 					return;
 				}else{
 					EqpTime_Data.erase(it);
-					free(tmp);
 					free(tmp->DeviceData);
-					tmp = NULL;
 					tmp->DeviceData = NULL;
+					free(tmp);
+					tmp = NULL;
+
 					LOGD("the same DeviceID but not EqpTime_Data\n");
 					break;
 				}
 			}
+			Eqp_Count++;
 		}
 	}
 	EqpTimeData *tmpEqpTimer = (EqpTimeData *)malloc(sizeof(EqpTimeData));
