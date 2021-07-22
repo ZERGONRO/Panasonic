@@ -31,11 +31,12 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
-static int DeviceID;
+int DeviceID;
 static bool Flag_Switch = false;
 static bool Flag_Settiming = false;
-static EquipmentTiming *DevTime_Setting;
-
+//static EquipmentTiming *DevTime_Setting;
+static EquipmentTiming *EqpTSet_t = NULL;
+static EqpTimeData *tmpEqpTmer_Data = NULL;
 //static EqpTimeData *EqpTime_Date = MACHINESTATUS->getEqpTimeData();
 extern bool Flag_EquipmentTimeSetting;
 
@@ -153,12 +154,9 @@ void ResetTimeTextPos(){
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-//	if (!EqpTime_Date){
-//		EqpTime_Date = new EqpTimeData;
-//		LOGD("EqpTime_Date is NULL\n");
-////		memset(EqpTime_Date, 0, sizeof(EqpTimeData));
-//	}
 
+
+//	LOGD("init1\n");
 }
 
 void DispEqpTimeData(int DevID){
@@ -166,13 +164,34 @@ void DispEqpTimeData(int DevID){
 	int num1, num2, num3, num4;
 	char Timebuf[64];
 	LayoutPosition lp, lp1;
+	bool Flag_EqpTimer = false;
+//	LOGD("init2\n");
 
-//		EqpTime_Date->DeviceID = DevID;
-		MACHINESTATUS->setDeviceID(DevID);
-		EquipmentTiming *EqpTSet = MACHINESTATUS->getEqpTimeData()->DeviceData[DevID];	//初次数组为空，无法操作
-//		EquipmentTiming *EqpTSet = MACHINESTATUS->getEquipmentTimeSetting();
+	EquipmentTiming *EqpTSet = (EquipmentTiming *)malloc(sizeof(EquipmentTiming));//EqpTSet_t;
+	//EqpTSet = NULL;
+	LOGD("MACHINESTATUS getEqpTimeData size is %d\n", MACHINESTATUS->getEqpTimeData().size());
+//		std::vector<EqpTimeData *>::iterator tmpEqpTimer = MACHINESTATUS->getEqpTimeData().begin();
+//		for (;tmpEqpTimer != MACHINESTATUS->getEqpTimeData().end();tmpEqpTimer++){
+		for(int i = 0;i < MACHINESTATUS->getEqpTimeData().size();i++){
+			EqpTimeData *tmp = MACHINESTATUS->getEqpTimeData().at(i);
+			if (tmp->DeviceID == DevID){
+				Flag_EqpTimer = true;
+				LOGD("copy the recorded data to show\n");
+//				EqpTSet = (*tmpEqpTimer)->DeviceData;
+				memcpy(EqpTSet, tmp->DeviceData, sizeof(EquipmentTiming));
+				break;
+			}
+		}
+
+		if (!Flag_EqpTimer){
+			LOGD("Flag_EqpTimer is false\n");
+			free(EqpTSet);
+			EqpTSet = NULL;
+			return;
+		}
 
 
+		//显示对应设备定时的相关数据
 		if (EqpTSet->DeviceSwitch){
 			mButton6Ptr->setSelected(true);
 			mWindowTimeWavePtr->setBackgroundColor(0);
@@ -242,6 +261,8 @@ void DispEqpTimeData(int DevID){
 			mWindowAirHum2Ptr->setBackgroundColor(0xFFD6D6D6);
 		}
 //	}
+		free(EqpTSet);
+		EqpTSet = NULL;
 
 }
 
@@ -300,8 +321,9 @@ static void onUI_hide() {
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-//	delete EqpTime_Date;
-//	EqpTime_Date = NULL;
+//	LOGD("Timing exit\n");
+//	tmpEqpTmer_Data = NULL;
+//	free(tmpEqpTmer_Data);
 
 }
 
@@ -419,13 +441,19 @@ void UpdateTimeSettingFunc()
 {
 
 	int Timenum1, Timenum2, Timenum3, Timenum4;
-	char Timebuf[64];
+	char Timebuf[128];
 	LayoutPosition lp, lp1;
 	int StartLeft = 0;
 	int ColorFillPos = 427;
-//	EqpTime_Date->DeviceData[DeviceID] = MACHINESTATUS->getEquipmentTimeSetting();
+
+
+//	EqpTimeData *EqpTmer_Data = (EqpTimeData *)malloc(sizeof(EqpTimeData)*4);//
 	EquipmentTiming *DevTimeSetting = MACHINESTATUS->getEquipmentTimeSetting();
-	MACHINESTATUS->setEqpTimeData(DeviceID, DevTimeSetting);
+//	EqpTmer_Data->DeviceID = DevTimeSetting->DeviceID;
+//	memcpy(&EqpTmer_Data->DeviceData, &DevTimeSetting, sizeof(EquipmentTiming));
+	MACHINESTATUS->setEqpTimeData();
+
+
 	for (int index = 0;index < DevTimeSetting->weekbuf.size();index++){
 		std::string text = DevTimeSetting->weekbuf.at(index);
 //		mTextViewPtr[index]->setVisible(true);
@@ -495,6 +523,7 @@ void UpdateTimeSettingFunc()
 		mTextViewStage2ColorFillPtr->setBackgroundColor(0);
 		mWindowAirHum2Ptr->setBackgroundColor(0xFFD6D6D6);
 	}
+
 
 }
 

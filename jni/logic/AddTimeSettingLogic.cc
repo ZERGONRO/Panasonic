@@ -39,6 +39,7 @@ static EquipmentTiming EquipmentTimeSetting;
 static char weekbuf[64];
 
 void EquipmentTimeSettingFunc();
+extern int DeviceID;
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -274,6 +275,7 @@ static bool onAddTimeSettingActivityTouchEvent(const MotionEvent &ev) {
 void EquipmentTimeSettingFunc(){
 
 //	int index = 0;
+	EquipmentTimeSetting.DeviceID = DeviceID;
 	EquipmentTimeSetting.DeviceSwitch = true;
 	EquipmentTimeSetting.weekbuf.clear();
 	if (mButtonEveryDayPtr->isSelected()){

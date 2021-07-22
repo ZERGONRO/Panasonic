@@ -27,6 +27,8 @@ MachineStatusListener::MachineStatusListener()
 	config = new PanasonicServe_t;
 	EnvDate = new EnvironmentDate_t;
 	EquipmentTimeSetting = new EquipmentTiming;
+//	EqpTime_Data = new std::vector<EqpTimeData *>[10];
+	EqpTime_Data.clear();
 //	EqpTime_Data = new EqpTimeData;
 	config->wifistatus = 1;
 	EnvInfo.clear();
@@ -38,7 +40,7 @@ MachineStatusListener::MachineStatusListener()
 
 	strcpy(MasterSlaverKey, InitialPassword);
 	initVersion();
-	initEqpTimeData();
+//	initEqpTimeData();
 //	MasterSlaverKey[10] = "123456";
 //	EnvDate->bl = 51;
 //	EnvDate->vol = 51;
@@ -50,36 +52,15 @@ MachineStatusListener::~MachineStatusListener()
 	delete EnvDate;
 	delete EquipmentTimeSetting;
 	delete MachineVer;
-	delete EqpTime_Data;
 
 	MachineVer = NULL;
 	EnvDate = NULL;
 	config = NULL;
 	EquipmentTimeSetting = NULL;
-	EqpTime_Data = NULL;
-	for (int i = 0;i < 7;i++){
-		delete EqpTime_Data->DeviceData[i];
-		EqpTime_Data->DeviceData[i] = NULL;
-	}
 
 }
 
-void MachineStatusListener::initEqpTimeData()
-{
-	if (!EqpTime_Data){
-		EqpTime_Data = new EqpTimeData;
-	}
-	memset(EqpTime_Data, 0, sizeof(EqpTimeData));
 
-	EqpTime_Data->DeviceID = AirPURIFY;
-	for (int i = 0;i < 7;i++){
-		EqpTime_Data->DeviceData[i] = new EquipmentTiming;
-		EqpTime_Data->DeviceData[i]->DeviceSwitch = false;
-		EqpTime_Data->DeviceData[i]->DeviceID = i;
-
-	}
-
-}
 
 
 void MachineStatusListener::initVersion()
@@ -578,15 +559,15 @@ void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSett
 	if (!EquTimeSetting){
 		return;
 	}
+
 	EquipmentTimeSetting->DeviceID = EquTimeSetting->DeviceID;
 	EquipmentTimeSetting->DeviceSwitch = EquTimeSetting->DeviceSwitch;
-//	strcpy(EquipmentTimeSetting->WeekBuf, EquTimeSetting->WeekBuf);
 	EquipmentTimeSetting->weekbuf.clear();
 	for (int i = 0;i < EquTimeSetting->weekbuf.size();i++){
 		std::string tmpweek = EquTimeSetting->weekbuf.at(i);
 		EquipmentTimeSetting->weekbuf.push_back(tmpweek.c_str());
 	}
-//	EquipmentTimeSetting->WeekBuf  = EquTimeSetting->WeekBuf;
+
 	if (EquTimeSetting->Time1StageFlag){
 		EquipmentTimeSetting->Time1StageFlag = true;
 		EquipmentTimeSetting->TimeOpenValue1 = EquTimeSetting->TimeOpenValue1;
@@ -604,6 +585,7 @@ void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSett
 	}else{
 		EquipmentTimeSetting->Time2StageFlag = false;
 	}
+
 }
 
 EquipmentTiming* MachineStatusListener::getEquipmentTimeSetting()
@@ -611,20 +593,39 @@ EquipmentTiming* MachineStatusListener::getEquipmentTimeSetting()
 	return EquipmentTimeSetting;
 }
 
-void MachineStatusListener::setEqpTimeData(int DevID, EquipmentTiming *EquTimeSetting)
+void MachineStatusListener::setEqpTimeData()
 {
-	if (DevID < 0 || DevID > 6){
+	if (!EquipmentTimeSetting){
 		return;
 	}
-	EqpTime_Data->DeviceID = DevID;
-//	if (!EqpTime_Data->DeviceData[DevID]){
-//		EqpTime_Data->DeviceData[DevID] = new EquipmentTiming;
-//		EqpTime_Data->DeviceData[DevID]->DeviceSwitch = false;
-//	}
-
-	EqpTime_Data->DeviceData[DevID] = EquTimeSetting;
+	if (!EqpTime_Data.empty()){
+		std::vector<EqpTimeData *>::iterator it = EqpTime_Data.begin();
+//		for (int i = 0;i < EqpTime_Data.size();i++){
+		for (;it != EqpTime_Data.end();it++){
+			EqpTimeData *tmp = (*it);
+			if (EquipmentTimeSetting->DeviceID == tmp->DeviceID){
+				if (memcmp(tmp->DeviceData, EquipmentTimeSetting, sizeof(EquipmentTiming)) == 0){
+					LOGD("the same EqpTime_Data\n");
+					return;
+				}else{
+					EqpTime_Data.erase(it);
+					free(tmp);
+					free(tmp->DeviceData);
+					tmp = NULL;
+					tmp->DeviceData = NULL;
+					LOGD("the same DeviceID but not EqpTime_Data\n");
+					break;
+				}
+			}
+		}
+	}
+	EqpTimeData *tmpEqpTimer = (EqpTimeData *)malloc(sizeof(EqpTimeData));
+	tmpEqpTimer->DeviceData = (EquipmentTiming *)malloc(sizeof(EquipmentTiming));
+	tmpEqpTimer->DeviceID = EquipmentTimeSetting->DeviceID;
+	memcpy(tmpEqpTimer->DeviceData, EquipmentTimeSetting, sizeof(EquipmentTiming));
+	EqpTime_Data.push_back(tmpEqpTimer);
 }
-EqpTimeData* MachineStatusListener::getEqpTimeData()
+std::vector<EqpTimeData *> MachineStatusListener::getEqpTimeData()
 {
 	return EqpTime_Data;
 }
@@ -636,7 +637,7 @@ bool MachineStatusListener::getDeviceSwitch(bool SwitchStatus)
 
 void MachineStatusListener::setDeviceID(int DevID)
 {
-	EqpTime_Data->DeviceID = DevID;
+//	EqpTime_Data.DeviceID = DevID;
 }
 
 

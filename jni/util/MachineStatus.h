@@ -64,8 +64,8 @@ typedef struct EquipmentTiming_t {
 }EquipmentTiming;
 
 typedef struct EqpTimeData_t {
-	IOTDeviceID DeviceID;
-	EquipmentTiming *DeviceData[7];
+	int DeviceID;
+	EquipmentTiming *DeviceData;
 }EqpTimeData;
 
 typedef struct MachineTime_t {
@@ -127,8 +127,8 @@ public:
 	int getVersionStatus();
 	void setEquipmentTimeSetting(EquipmentTiming *EquTimeSetting);
 	EquipmentTiming* getEquipmentTimeSetting();
-	void setEqpTimeData(int DevID, EquipmentTiming *EquTimeSetting);
-	EqpTimeData* getEqpTimeData();
+	void setEqpTimeData();
+	std::vector<EqpTimeData *> getEqpTimeData();
 	void initEqpTimeData();
 	bool getDeviceSwitch(bool SwitchStatus);
 	void setDeviceID(int DevID);
@@ -172,10 +172,11 @@ private:
 	char MasterSlaverKey[10];
 	MachineVersion *MachineVer;
 	EquipmentTiming* EquipmentTimeSetting;
-	EqpTimeData* EqpTime_Data;
+//	EqpTimeData* EqpTime_Data;
 	PanasonicServe_t* config;
 	EnvironmentDate_t* EnvDate;
 	std::vector<DeviceInfo *> EnvInfo;
+	std::vector<EqpTimeData *> EqpTime_Data;
 
 };
 
