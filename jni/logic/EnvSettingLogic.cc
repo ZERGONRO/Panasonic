@@ -32,6 +32,7 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
+bool Flag_EnvRefresh = false;
 static char *text_name;
 static char *pic_name;
 static int EnvDevSetting_index;
@@ -411,6 +412,7 @@ static bool onEnvSettingActivityTouchEvent(const MotionEvent &ev) {
 static bool onButtonClick_Button9(ZKButton *pButton) {
     LOGD(" ButtonClick Button9 !!!\n");
     IOTDevSettingVectorList = &AllDevListVector;
+    Flag_EnvRefresh = true;
     EASYUICONTEXT->goBack();
     return false;
 }
@@ -421,6 +423,7 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     {
     	mButton10Ptr->setSelected(false);
     }
+    Flag_EnvRefresh = true;
     IOTDevSettingVectorList = &AllDevListVector;
     EASYUICONTEXT->goBack();
     return false;
@@ -428,7 +431,7 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
 
 static int getListItemCount_ListView2(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView2 !\n");
-
+	MACHINESTATUS->setEnvListInfo(EnvSettingVectorList);
     return EnvSettingVectorList->size();
 }
 

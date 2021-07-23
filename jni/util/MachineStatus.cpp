@@ -32,6 +32,7 @@ MachineStatusListener::MachineStatusListener()
 //	EqpTime_Data = new EqpTimeData;
 	config->wifistatus = 1;
 	EnvInfo.clear();
+	EnvListInfo.clear();
 	EnvDate->MasterorSlaver = false;
 	EquipmentTimeSetting->DeviceID = AirPURIFY;
 	EquipmentTimeSetting->DeviceSwitch = false;
@@ -508,11 +509,27 @@ void MachineStatusListener::setEnvSpaceInfo(std::vector<DeviceInfo *> *EnvDevSet
 //	DeviceInfo *info = (DeviceInfo *)malloc(sizeof(DeviceInfo));
 	for(std::vector<DeviceInfo *>::iterator it = EnvDevSettingVector->begin(); it != EnvDevSettingVector->end();it++)
 	{
-		DeviceInfo *info = (*it);
-		EnvInfo.push_back(info);
+		DeviceInfo *tmp = (*it);
+		EnvInfo.push_back(tmp);
 	}
+}
 
+void MachineStatusListener::setEnvListInfo(std::vector<SpaceInfo *> *EnvSettingVectorList)
+{
+	if (!EnvSettingVectorList){
+		return;
+	}
+	EnvListInfo.clear();
+	std::vector<SpaceInfo *>::iterator it = EnvListInfo.begin();
+	for (;it != EnvListInfo.end();it++){
+		SpaceInfo *tmp = (*it);
+		EnvListInfo.push_back(tmp);
+	}
+}
 
+std::vector<SpaceInfo *> MachineStatusListener::getEnvListInfo()
+{
+	return EnvListInfo;
 }
 
 void MachineStatusListener::setMachineTime(struct tm *time)

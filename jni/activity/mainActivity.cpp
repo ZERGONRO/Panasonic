@@ -5,6 +5,10 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextView61Ptr;
+static ZKTextView* mTextView57Ptr;
+static ZKSeekBar* mSeekBarSoundPtr;
+static ZKWindow* mWindowSoundSeebakPtr;
 static ZKTextView* mIconViewFrostPtr;
 static ZKTextView* mIconViewFilterPtr;
 static ZKTextView* mIconViewTimingPtr;
@@ -265,6 +269,7 @@ typedef struct {
 }S_ZKSeekBarCallback;
 /*TAG:SeekBarCallbackTab*/
 static S_ZKSeekBarCallback SZKSeekBarCallbackTab[] = {
+    ID_MAIN_SeekBarSound, onProgressChanged_SeekBarSound,
 };
 
 
@@ -342,6 +347,10 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mTextView61Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView61);
+    mTextView57Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView57);
+    mSeekBarSoundPtr = (ZKSeekBar*)findControlByID(ID_MAIN_SeekBarSound);if(mSeekBarSoundPtr!= NULL){mSeekBarSoundPtr->setSeekBarChangeListener(this);}
+    mWindowSoundSeebakPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowSoundSeebak);
     mIconViewFrostPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewFrost);
     mIconViewFilterPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewFilter);
     mIconViewTimingPtr = (ZKTextView*)findControlByID(ID_MAIN_IconViewTiming);

@@ -162,6 +162,8 @@ public:
 
 	std::vector<DeviceInfo *> getEnvSpaceInfo();
 	void setEnvSpaceInfo(std::vector<DeviceInfo *> *EnvDevSettingVector);
+	void setEnvListInfo(std::vector<SpaceInfo *> *EnvSettingVectorList);
+	std::vector<SpaceInfo *> getEnvListInfo();
 protected:
 
 private:
@@ -176,6 +178,7 @@ private:
 	PanasonicServe_t* config;
 	EnvironmentDate_t* EnvDate;
 	std::vector<DeviceInfo *> EnvInfo;
+	std::vector<SpaceInfo *>  EnvListInfo;
 	std::vector<EqpTimeData *> EqpTime_Data;
 
 };

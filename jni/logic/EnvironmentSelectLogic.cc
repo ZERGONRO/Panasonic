@@ -31,8 +31,9 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 extern void SetEnvName(std::string focusindex);
-
+extern char *EnvListText;
 //static char *gEnvironmentSelList[10] = {"卧室", "浴室", "客厅", "厨房", "次卧", "厨房", "书房", "阳台", "'储物间", "卫生间"};
+bool Flag_EnvListInfo = false;
 
 static std::vector<std::string > EnvironmentSelVector;
 
@@ -48,23 +49,27 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 
 void setEnvSelList()
 {
-	EnvironmentSelVector.push_back("卧室");
-	EnvironmentSelVector.push_back("浴室");
-	EnvironmentSelVector.push_back("客厅");
-	EnvironmentSelVector.push_back("厨房");
-	EnvironmentSelVector.push_back("次卧");
-	EnvironmentSelVector.push_back("书房");
-	EnvironmentSelVector.push_back("阳台");
-	EnvironmentSelVector.push_back("储物间");
-	EnvironmentSelVector.push_back("卫生间");
+	if (!EnvironmentSelVector.empty()){
+		EnvironmentSelVector.clear();
+	}
 
+	if (!MACHINESTATUS->getEnvListInfo().empty()){
+		LOGD("MACHINESTATUS->getEnvListInfo() is not empty, %d\n", MACHINESTATUS->getEnvListInfo().size());
+		for (int i = 0;i < MACHINESTATUS->getEnvListInfo().size();i++){
+			SpaceInfo *tmp = MACHINESTATUS->getEnvListInfo().at(i);
+			EnvironmentSelVector.push_back(tmp->maintext);
+		}
+	}
 }
 /**
  * 当界面构造时触发
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+//	if (!EnvironmentSelVector){
+//		EnvironmentSelVector = new std::vector<SpaceInfo *>[10];
+//		EnvironmentSelVector->clear();
+//	}
 }
 
 /**
@@ -74,13 +79,7 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
-//    for(int i = 0;i < 9;i++)
-//    {
-//    	EnvironmentSelVector.push_back(std::to_string(gEnvironmentSelList[i]));
-//    }
-    setEnvSelList();
-    mListView_EnvPtr->setSelected(MACHINESTATUS->getenvironmentindex());
-    mListView_EnvPtr->refreshListView();
+
     mWindowBGPtr->setAlpha(150);
 }
 
@@ -88,7 +87,19 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-
+	 setEnvSelList();
+	if (!EnvironmentSelVector.empty()){
+		for (int index = 0;index < EnvironmentSelVector.size();index++){
+			std::string tmptext = EnvironmentSelVector.at(index);
+			if (!strcmp(EnvListText, tmptext.c_str())){
+				LOGD("focus the EnvListInfo\n");
+				mListView_EnvPtr->setSelection(index);
+			}
+		}
+	}
+	 mListView_EnvPtr->refreshListView();
+	 mListView_EnvPtr->setDecRatio(0.7);
+//	mListView_EnvPtr->setSelection(index)
 }
 
 /*
@@ -102,7 +113,7 @@ static void onUI_hide() {
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-	EnvironmentSelVector.clear();
+//	EnvironmentSelVector.clear();
 }
 
 /**
@@ -168,10 +179,11 @@ static bool onButtonClick_ButtonCancel(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonConfirm(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonConfirm !!!\n");
+    Flag_EnvListInfo = true;
     int index = mListView_EnvPtr->getFirstVisibleItemIndex();
     index = index + 2;
     std::string focusindex = EnvironmentSelVector.at(index);
-    SetEnvName(focusindex);
+    strcpy(EnvListText, focusindex.c_str());
     EASYUICONTEXT->goBack();
     return false;
 }
@@ -186,7 +198,7 @@ typedef enum
 
 static int getListItemCount_ListView_Env(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView_Env !\n");
-    return 9;
+    return EnvironmentSelVector.size();
 }
 
 static void showListviewItems(MiddleItemDisplayMode_e eDispMode, int selectIdx, ZKListView::ZKListSubItem* pListItem[], int itemIdx, std::string &stringFocus, std::vector<std::string> &vect)
@@ -335,8 +347,8 @@ static void obtainListItemData_ListView_Env(ZKListView *pListView,ZKListView::ZK
 		};
 	int focusIdx;
 	std::string focusString;
-	if(index > (EnvironmentSelVector.size() - 1))
-		index = index - EnvironmentSelVector.size();
+//	if(index > (EnvironmentSelVector.size() - 1))
+//		index = index - EnvironmentSelVector.size();
 
 	setListViewItems(pListView, index, focusIdx, focusString, listItems, EnvironmentSelVector);
 }

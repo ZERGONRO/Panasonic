@@ -47,9 +47,12 @@ static pthread_t g_MovePicPosThread = 0;
 static std::vector<WifiInfo_t *> *WifiInfo;
 static std::vector<DeviceInfo *> *EnvInfoVector;
 
+char *EnvListText;
 
 static Mutex pLock;
 
+extern bool Flag_EnvRefresh;
+extern bool Flag_EnvListInfo;
 extern bool UpdateTimeFlag;
 extern void initStatusBarMode();
 extern void showstatusbars();
@@ -78,7 +81,7 @@ static EnvInfo EnvInfoData[] = {
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 //	{0,  6000}, //定时器id=0, 时间间隔6秒
-	{1,  1000},
+	{1,  500},
 	{2,  1000},
 };
 
@@ -435,6 +438,7 @@ static void onUI_show() {
 //	mTextView31Ptr->setText(std::to_string(atoi(mTextView31Ptr->getText().c_str())));
 //	mTextView48Ptr->setText(std::to_string(atoi(mTextView48Ptr->getText().c_str())));
 
+
 	mListView1Ptr->setDecRatio(0.7);
 	mIconViewWifiPtr->setVisible(nwlistener->IsConnected());
 //	LOGD("mIconViewWifiPtr->setVisible(nwlistener->IsConnected()); !!!\n");
@@ -500,8 +504,27 @@ static bool onUI_Timer(int id){
 		break;
 	case 1:
 	{
+		if (Flag_EnvListInfo){
+			Flag_EnvListInfo = false;
+			mButton8Ptr->setText(EnvListText);
+		}
 
+		if (Flag_EnvRefresh){
+			Flag_EnvRefresh = false;
 
+			EnvInfoVector->clear();
+			std::vector<DeviceInfo *> tmp = MACHINESTATUS->getEnvSpaceInfo();
+	//    	LOGD("tmp.size is %d \n", tmp.size());
+			if(tmp.size() > 1)
+			{
+				for(int i = 0;i < tmp.size() - 1;i++)
+				{
+					DeviceInfo *tmp1 = tmp.at(i);
+					EnvInfoVector->push_back(tmp1);
+				}
+			}
+			mListView1Ptr->refreshListView();
+		}
 	}
 		break;
 	case 2:
@@ -638,8 +661,9 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
 
 static bool onButtonClick_Button8(ZKButton *pButton) {
     LOGD(" ButtonClick Button8 !!!\n");
+    strcpy(EnvListText, mButton8Ptr->getText().c_str());
 //    mWindowEnvBGDispPtr->setVisible(true);
-    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
+    EASYUICONTEXT->openActivity("EnvironmentSelectActivity", NULL);
     return false;
 }
 
@@ -1400,6 +1424,17 @@ static bool onButtonClick_ButtonMusicPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonMusicMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonMusicMode !!!\n");
+    static int count = 0;
+    count++;
+    if (count == 1){
+    	pButton->setBackgroundPic("./ui/单曲循环.png");
+    }else if (count == 2){
+    	pButton->setBackgroundPic("./ui/音乐播放-随机播放.png");
+    }else{
+    	pButton->setBackgroundPic("./ui/循环2.png");
+    	count = 0;
+    }
+
     return false;
 }
 
@@ -1429,6 +1464,17 @@ static bool onButtonClick_ButtonMusicNext(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonMusicAudio(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonMusicAudio !!!\n");
+    static int count = 0;
+    count++;
+    if (count == 1){
+    	mWindowSoundSeebakPtr->setVisible(true);
+    }else if (count == 2){
+    	mWindowSoundSeebakPtr->setVisible(false);
+    	mButtonMusicAudioPtr->setBackgroundPic("./ui/音乐播放-静音.png");
+    }else{
+    	count = 0;
+    	mButtonMusicAudioPtr->setBackgroundPic("./ui/声音2.png");
+    }
     return false;
 }
 static bool onButtonClick_ButtonHomepage(ZKButton *pButton) {
@@ -1469,4 +1515,8 @@ static bool onButtonClick_ButtonHistorty(ZKButton *pButton) {
 static bool onButtonClick_ButtonHistorty1(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHistorty1 !!!\n");
     return false;
+}
+static void onProgressChanged_SeekBarSound(ZKSeekBar *pSeekBar, int progress) {
+    //LOGD(" ProgressChanged SeekBarSound %d !!!\n", progress);
+	mTextView61Ptr->setText(std::to_string(progress));
 }
