@@ -31,7 +31,7 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 extern void SetEnvName(std::string focusindex);
-extern char *EnvListText;
+extern char EnvListText[10];
 //static char *gEnvironmentSelList[10] = {"卧室", "浴室", "客厅", "厨房", "次卧", "厨房", "书房", "阳台", "'储物间", "卫生间"};
 bool Flag_EnvListInfo = false;
 
@@ -53,23 +53,25 @@ void setEnvSelList()
 		EnvironmentSelVector.clear();
 	}
 
-	if (!MACHINESTATUS->getEnvListInfo().empty()){
-		LOGD("MACHINESTATUS->getEnvListInfo() is not empty, %d\n", MACHINESTATUS->getEnvListInfo().size());
-		for (int i = 0;i < MACHINESTATUS->getEnvListInfo().size();i++){
-			SpaceInfo *tmp = MACHINESTATUS->getEnvListInfo().at(i);
+	std::vector<SpaceInfo *> tmpEnvListInfo = MACHINESTATUS->getEnvListInfo();
+	if (!tmpEnvListInfo.empty()){
+		LOGD("MACHINESTATUS->getEnvListInfo() is not empty, %d\n", tmpEnvListInfo.size());
+		for (int i = 0;i < tmpEnvListInfo.size()-1;i++){
+			SpaceInfo *tmp = tmpEnvListInfo.at(i);
 			EnvironmentSelVector.push_back(tmp->maintext);
 		}
+	}else{
+		LOGD("MACHINESTATUS->getEnvListInfo() is empty\n");
+		return;
 	}
+
 }
 /**
  * 当界面构造时触发
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-//	if (!EnvironmentSelVector){
-//		EnvironmentSelVector = new std::vector<SpaceInfo *>[10];
-//		EnvironmentSelVector->clear();
-//	}
+
 }
 
 /**
@@ -79,6 +81,7 @@ static void onUI_intent(const Intent *intentPtr) {
     if (intentPtr != NULL) {
         //TODO
     }
+    setEnvSelList();
 
     mWindowBGPtr->setAlpha(150);
 }
@@ -87,13 +90,15 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-	 setEnvSelList();
+
 	if (!EnvironmentSelVector.empty()){
 		for (int index = 0;index < EnvironmentSelVector.size();index++){
 			std::string tmptext = EnvironmentSelVector.at(index);
-			if (!strcmp(EnvListText, tmptext.c_str())){
+//			LOGD("tmptext is %s \n", tmptext.c_str());
+			if (strcmp(std::string(EnvListText).c_str(), tmptext.c_str()) == 0){
 				LOGD("focus the EnvListInfo\n");
-				mListView_EnvPtr->setSelection(index);
+				mListView_EnvPtr->setSelection(index - 2);
+				break;
 			}
 		}
 	}

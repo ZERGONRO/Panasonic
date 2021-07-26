@@ -47,7 +47,7 @@ static pthread_t g_MovePicPosThread = 0;
 static std::vector<WifiInfo_t *> *WifiInfo;
 static std::vector<DeviceInfo *> *EnvInfoVector;
 
-char *EnvListText;
+char EnvListText[10];
 
 static Mutex pLock;
 
@@ -506,6 +506,15 @@ static bool onUI_Timer(int id){
 	{
 		if (Flag_EnvListInfo){
 			Flag_EnvListInfo = false;
+//			std::vector<SpaceInfo *>::iterator it = MACHINESTATUS->getEnvListInfo().begin();
+//			for (;it != MACHINESTATUS->getEnvListInfo().end();it++){
+			for (int i = 0;i < MACHINESTATUS->getEnvListInfo().size();i++){
+				SpaceInfo *tmptext = MACHINESTATUS->getEnvListInfo().at(i);
+				if (strcmp(std::string(tmptext->maintext).c_str(), std::string(EnvListText).c_str()) == 0){
+					mButton2Ptr->setBackgroundPic(tmptext->mainPic);
+					break;
+				}
+			}
 			mButton8Ptr->setText(EnvListText);
 		}
 
@@ -654,7 +663,7 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
 }
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
-    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
+//    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
 //    mWindowEnvBGDispPtr->setVisible(true);
     return false;
 }

@@ -520,8 +520,10 @@ void MachineStatusListener::setEnvListInfo(std::vector<SpaceInfo *> *EnvSettingV
 		return;
 	}
 	EnvListInfo.clear();
-	std::vector<SpaceInfo *>::iterator it = EnvListInfo.begin();
-	for (;it != EnvListInfo.end();it++){
+	std::vector<SpaceInfo *>::iterator it = EnvSettingVectorList->begin();
+	for (;it != EnvSettingVectorList->end();it++){
+//		SpaceInfo *tmp = (SpaceInfo *)malloc(sizeof(SpaceInfo));
+//		tmp = (*it);
 		SpaceInfo *tmp = (*it);
 		EnvListInfo.push_back(tmp);
 	}
