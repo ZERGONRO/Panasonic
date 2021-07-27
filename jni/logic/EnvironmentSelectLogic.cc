@@ -52,7 +52,6 @@ void setEnvSelList()
 	if (!EnvironmentSelVector.empty()){
 		EnvironmentSelVector.clear();
 	}
-
 	std::vector<SpaceInfo *> tmpEnvListInfo = MACHINESTATUS->getEnvListInfo();
 	if (!tmpEnvListInfo.empty()){
 		LOGD("MACHINESTATUS->getEnvListInfo() is not empty, %d\n", tmpEnvListInfo.size());
@@ -96,14 +95,22 @@ static void onUI_show() {
 			std::string tmptext = EnvironmentSelVector.at(index);
 //			LOGD("tmptext is %s \n", tmptext.c_str());
 			if (strcmp(std::string(EnvListText).c_str(), tmptext.c_str()) == 0){
-				LOGD("focus the EnvListInfo\n");
-				mListView_EnvPtr->setSelection(index - 2);
+//				LOGD("focus the EnvListInfo and index is %d\n", index);
+				if (index < 2){
+					mListView_EnvPtr->setSelection(index + 6);
+				}else{
+					mListView_EnvPtr->setSelection(index - 2);
+				}
+
 				break;
 			}
 		}
+		 mListView_EnvPtr->refreshListView();
+		 mListView_EnvPtr->setDecRatio(0.7);
+	}else{
+		LOGD("EnvironmentSelVector is empty\n");
 	}
-	 mListView_EnvPtr->refreshListView();
-	 mListView_EnvPtr->setDecRatio(0.7);
+
 //	mListView_EnvPtr->setSelection(index)
 }
 
@@ -186,7 +193,8 @@ static bool onButtonClick_ButtonConfirm(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonConfirm !!!\n");
     Flag_EnvListInfo = true;
     int index = mListView_EnvPtr->getFirstVisibleItemIndex();
-    index = index + 2;
+    index = (index + 2) % 8;
+//    LOGD("index is %d\n", index);
     std::string focusindex = EnvironmentSelVector.at(index);
     strcpy(EnvListText, focusindex.c_str());
     EASYUICONTEXT->goBack();

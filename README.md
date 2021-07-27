@@ -17,6 +17,8 @@ array before you use it,that would be display the garbled and timer's data could
 2021/7/22
 1,Althouh you malloc a ram for the struct which include a varible and a pointer,you want to operate the pointer,you must malloc a ram for the pointer. 
 
+2021/7/26
+1,If you want to strcpy string to another string, you alloc the string arrays better.If you want to strcmp two string, you use the std::string(string).c_string to compare.
 
 
 
