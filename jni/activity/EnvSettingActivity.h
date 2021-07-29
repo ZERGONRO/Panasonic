@@ -27,6 +27,7 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_ENVSETTING_EditText1    51001
 #define ID_ENVSETTING_TextViewPic1    50003
 #define ID_ENVSETTING_TextViewPicShow    50001
 #define ID_ENVSETTING_SubItemDevName    20008

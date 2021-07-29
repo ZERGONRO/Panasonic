@@ -32,6 +32,7 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
+char *stringText = "";
 bool Flag_EnvRefresh = false;
 static char *text_name;
 static char *pic_name;
@@ -728,4 +729,8 @@ static void onListItemClick_ListView3(ZKListView *pListView, int index, int id) 
 
 	}
 	mListView3Ptr->refreshListView();
+}
+static void onEditTextChanged_EditText1(const std::string &text) {
+    LOGD(" onEditTextChanged_ EditText1 %s !!!\n", text.c_str());
+//    *stringText = text.c_str();
 }

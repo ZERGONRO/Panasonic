@@ -20,6 +20,8 @@ array before you use it,that would be display the garbled and timer's data could
 2021/7/26
 1,If you want to strcpy string to another string, you alloc the string arrays better.If you want to strcmp two string, you use the std::string(string).c_string to compare.
 
+2021/7/29
+1,The flythings IDE have the pinyin Demo, you need add the Demo files to the project,and you must modify you Linux kernel(modify the imgae.mk(copy the .dat file to the customer_app/res)and EasyUI.cfg)
 
 
 

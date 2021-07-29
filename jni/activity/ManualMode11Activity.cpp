@@ -4,6 +4,36 @@
 #include "ManualMode11Activity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewAirVol45Ptr;
+static ZKTextView* mTextViewAirVol44Ptr;
+static ZKTextView* mTextViewAirVol43Ptr;
+static ZKTextView* mTextViewAirVol42Ptr;
+static ZKTextView* mTextViewAirVol41Ptr;
+static ZKWindow* mWindowAirVol4Ptr;
+static ZKTextView* mTextViewAirVol35Ptr;
+static ZKTextView* mTextViewAirVol34Ptr;
+static ZKTextView* mTextViewAirVol33Ptr;
+static ZKTextView* mTextViewAirVol32Ptr;
+static ZKTextView* mTextViewAirVol31Ptr;
+static ZKWindow* mWindowAirVol3Ptr;
+static ZKTextView* mTextViewAirVol25Ptr;
+static ZKTextView* mTextViewAirVol24Ptr;
+static ZKTextView* mTextViewAirVol23Ptr;
+static ZKTextView* mTextViewAirVol22Ptr;
+static ZKTextView* mTextViewAirVol21Ptr;
+static ZKWindow* mWindowAirVol2Ptr;
+static ZKTextView* mTextViewAirVol15Ptr;
+static ZKTextView* mTextViewAirVol14Ptr;
+static ZKTextView* mTextViewAirVol13Ptr;
+static ZKTextView* mTextViewAirVol12Ptr;
+static ZKTextView* mTextViewAirVol11Ptr;
+static ZKWindow* mWindowAirVol1Ptr;
+static ZKTextView* mTextViewAirVol5Ptr;
+static ZKTextView* mTextViewAirVol4Ptr;
+static ZKTextView* mTextViewAirVol3Ptr;
+static ZKTextView* mTextViewAirVol2Ptr;
+static ZKTextView* mTextViewAirVol1Ptr;
+static ZKWindow* mWindowAirVolPtr;
 static ZKTextView* mTextView121Ptr;
 static ZKTextView* mTextView120Ptr;
 static ZKTextView* mTextView122Ptr;
@@ -541,6 +571,36 @@ const char* ManualMode11Activity::getAppName() const{
 //TAG:onCreate
 void ManualMode11Activity::onCreate() {
 	Activity::onCreate();
+    mTextViewAirVol45Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol45);
+    mTextViewAirVol44Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol44);
+    mTextViewAirVol43Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol43);
+    mTextViewAirVol42Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol42);
+    mTextViewAirVol41Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol41);
+    mWindowAirVol4Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowAirVol4);
+    mTextViewAirVol35Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol35);
+    mTextViewAirVol34Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol34);
+    mTextViewAirVol33Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol33);
+    mTextViewAirVol32Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol32);
+    mTextViewAirVol31Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol31);
+    mWindowAirVol3Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowAirVol3);
+    mTextViewAirVol25Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol25);
+    mTextViewAirVol24Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol24);
+    mTextViewAirVol23Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol23);
+    mTextViewAirVol22Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol22);
+    mTextViewAirVol21Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol21);
+    mWindowAirVol2Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowAirVol2);
+    mTextViewAirVol15Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol15);
+    mTextViewAirVol14Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol14);
+    mTextViewAirVol13Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol13);
+    mTextViewAirVol12Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol12);
+    mTextViewAirVol11Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol11);
+    mWindowAirVol1Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowAirVol1);
+    mTextViewAirVol5Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol5);
+    mTextViewAirVol4Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol4);
+    mTextViewAirVol3Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol3);
+    mTextViewAirVol2Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol2);
+    mTextViewAirVol1Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextViewAirVol1);
+    mWindowAirVolPtr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowAirVol);
     mTextView121Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView121);
     mTextView120Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView120);
     mTextView122Ptr = (ZKTextView*)findControlByID(ID_MANUALMODE11_TextView122);

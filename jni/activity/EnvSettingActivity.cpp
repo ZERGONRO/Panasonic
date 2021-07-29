@@ -4,6 +4,7 @@
 #include "EnvSettingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKEditText* mEditText1Ptr;
 static ZKTextView* mTextViewPic1Ptr;
 static ZKTextView* mTextViewPicShowPtr;
 static ZKListView* mListView3Ptr;
@@ -150,6 +151,7 @@ typedef struct {
 }S_EditTextInputCallback;
 /*TAG:EditTextInputCallback*/
 static S_EditTextInputCallback SEditTextInputCallbackTab[] = {
+    ID_ENVSETTING_EditText1, onEditTextChanged_EditText1,
 };
 
 typedef void (*VideoViewCallback)(ZKVideoView *pVideoView, int msg);
@@ -195,6 +197,7 @@ const char* EnvSettingActivity::getAppName() const{
 //TAG:onCreate
 void EnvSettingActivity::onCreate() {
 	Activity::onCreate();
+    mEditText1Ptr = (ZKEditText*)findControlByID(ID_ENVSETTING_EditText1);if(mEditText1Ptr!= NULL){mEditText1Ptr->setTextChangeListener(this);}
     mTextViewPic1Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextViewPic1);
     mTextViewPicShowPtr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextViewPicShow);
     mListView3Ptr = (ZKListView*)findControlByID(ID_ENVSETTING_ListView3);if(mListView3Ptr!= NULL){mListView3Ptr->setListAdapter(this);mListView3Ptr->setItemClickListener(this);}

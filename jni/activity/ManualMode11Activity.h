@@ -26,6 +26,36 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MANUALMODE11_TextViewAirVol45    50156
+#define ID_MANUALMODE11_TextViewAirVol44    50155
+#define ID_MANUALMODE11_TextViewAirVol43    50154
+#define ID_MANUALMODE11_TextViewAirVol42    50153
+#define ID_MANUALMODE11_TextViewAirVol41    50152
+#define ID_MANUALMODE11_WindowAirVol4    110025
+#define ID_MANUALMODE11_TextViewAirVol35    50151
+#define ID_MANUALMODE11_TextViewAirVol34    50150
+#define ID_MANUALMODE11_TextViewAirVol33    50149
+#define ID_MANUALMODE11_TextViewAirVol32    50148
+#define ID_MANUALMODE11_TextViewAirVol31    50147
+#define ID_MANUALMODE11_WindowAirVol3    110024
+#define ID_MANUALMODE11_TextViewAirVol25    50146
+#define ID_MANUALMODE11_TextViewAirVol24    50145
+#define ID_MANUALMODE11_TextViewAirVol23    50144
+#define ID_MANUALMODE11_TextViewAirVol22    50143
+#define ID_MANUALMODE11_TextViewAirVol21    50142
+#define ID_MANUALMODE11_WindowAirVol2    110023
+#define ID_MANUALMODE11_TextViewAirVol15    50141
+#define ID_MANUALMODE11_TextViewAirVol14    50140
+#define ID_MANUALMODE11_TextViewAirVol13    50139
+#define ID_MANUALMODE11_TextViewAirVol12    50138
+#define ID_MANUALMODE11_TextViewAirVol11    50137
+#define ID_MANUALMODE11_WindowAirVol1    110022
+#define ID_MANUALMODE11_TextViewAirVol5    50136
+#define ID_MANUALMODE11_TextViewAirVol4    50135
+#define ID_MANUALMODE11_TextViewAirVol3    50134
+#define ID_MANUALMODE11_TextViewAirVol2    50133
+#define ID_MANUALMODE11_TextViewAirVol1    50132
+#define ID_MANUALMODE11_WindowAirVol    110018
 #define ID_MANUALMODE11_TextView121    50130
 #define ID_MANUALMODE11_TextView120    50129
 #define ID_MANUALMODE11_TextView122    50131
