@@ -315,6 +315,11 @@ static ZKTextView* mTextView4Ptr;
 static ZKTextView* mTextView3Ptr;
 static ZKTextView* mTextView2Ptr;
 static ZKTextView* mTextView1Ptr;
+static ZKTextView* mTextViewAirVolPtr0[5];
+static ZKTextView* mTextViewAirVolPtr1[5];
+static ZKTextView* mTextViewAirVolPtr2[5];
+static ZKTextView* mTextViewAirVolPtr3[5];
+static ZKTextView* mTextViewAirVolPtr4[5];
 static ZKWindow* mWindowInsideStatusPtr;
 static ZKWindow* mWindow1Ptr;
 static ZKWindow* mWindowBGPtr;
@@ -885,6 +890,38 @@ void ManualMode11Activity::onCreate() {
     mWindowInsideStatusPtr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowInsideStatus);
     mWindow1Ptr = (ZKWindow*)findControlByID(ID_MANUALMODE11_Window1);
     mWindowBGPtr = (ZKWindow*)findControlByID(ID_MANUALMODE11_WindowBG);
+
+    mTextViewAirVolPtr0[0] = mTextViewAirVol1Ptr;
+    mTextViewAirVolPtr0[1] = mTextViewAirVol2Ptr;
+    mTextViewAirVolPtr0[2] = mTextViewAirVol3Ptr;
+    mTextViewAirVolPtr0[3] = mTextViewAirVol4Ptr;
+    mTextViewAirVolPtr0[4] = mTextViewAirVol5Ptr;
+
+    mTextViewAirVolPtr1[0] = mTextViewAirVol11Ptr;
+    mTextViewAirVolPtr1[1] = mTextViewAirVol12Ptr;
+    mTextViewAirVolPtr1[2] = mTextViewAirVol13Ptr;
+    mTextViewAirVolPtr1[3] = mTextViewAirVol14Ptr;
+    mTextViewAirVolPtr1[4] = mTextViewAirVol15Ptr;
+
+    mTextViewAirVolPtr2[0] = mTextViewAirVol21Ptr;
+    mTextViewAirVolPtr2[1] = mTextViewAirVol22Ptr;
+    mTextViewAirVolPtr2[2] = mTextViewAirVol23Ptr;
+    mTextViewAirVolPtr2[3] = mTextViewAirVol24Ptr;
+    mTextViewAirVolPtr2[4] = mTextViewAirVol25Ptr;
+
+    mTextViewAirVolPtr3[0] = mTextViewAirVol31Ptr;
+    mTextViewAirVolPtr3[1] = mTextViewAirVol32Ptr;
+    mTextViewAirVolPtr3[2] = mTextViewAirVol33Ptr;
+    mTextViewAirVolPtr3[3] = mTextViewAirVol34Ptr;
+    mTextViewAirVolPtr3[4] = mTextViewAirVol35Ptr;
+
+    mTextViewAirVolPtr4[0] = mTextViewAirVol41Ptr;
+    mTextViewAirVolPtr4[1] = mTextViewAirVol42Ptr;
+    mTextViewAirVolPtr4[2] = mTextViewAirVol43Ptr;
+    mTextViewAirVolPtr4[3] = mTextViewAirVol44Ptr;
+    mTextViewAirVolPtr4[4] = mTextViewAirVol45Ptr;
+
+
 	mActivityPtr = this;
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 

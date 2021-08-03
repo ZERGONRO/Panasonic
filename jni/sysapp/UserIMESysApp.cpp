@@ -21,6 +21,8 @@ using namespace ime_pinyin;
 #define MAX_SEARCH_HANZI		256
 #define MAX_PINYIN_LEN			64
 
+bool Flag_IME_Text = false;
+
 static bool toUTF8(UTF8 *dest, size_t destLen, const char16 *src, size_t srcLen) {
 	UTF16 *utf16Start = (UTF16 *) src;
 	UTF16 *utf16End = (UTF16 *) (src + srcLen);
@@ -183,6 +185,8 @@ void UserIMESysApp::onCreate() {
 	if (pDel) {
 		pDel->setLongClickListener(this);
 	}
+//	mTextViewContentPtr->setText("");
+//	pTextView->setText("");
 }
 
 void UserIMESysApp::onClick(ZKBase *pBase) {
@@ -242,6 +246,7 @@ void UserIMESysApp::onClick(ZKBase *pBase) {
 	case ID_IME_BUTTON_DEL:
 	case ID_IME_BUTTON_NUMBER_DEL:
 		if (mPinyinStr.empty()) {
+
 			delOneChar(mIMETextInfoPtr->text.length());
 		} else {
 			if (mPinyinStr.size() == 1) {
@@ -257,8 +262,10 @@ void UserIMESysApp::onClick(ZKBase *pBase) {
 	case ID_IME_BUTTON_ENTER:
 	case ID_IME_BUTTON_NUMBER_ENTER:
 		if (mPinyinStr.empty()) {
+			Flag_IME_Text = true;
 			doneIMETextUpdate(mIMETextInfoPtr->text);
 		} else {
+			Flag_IME_Text = true;
 			addStr(mIMETextInfoPtr->text.length(), mPinyinStr);
 			clearPinyin();
 		}
@@ -355,8 +362,8 @@ void UserIMESysApp::onInitIME(SIMETextInfo *pInfo) {
 			pWnd->showWnd();
 		}
 	} else {
-//		mIsIMOpenDecoderOK = im_open_decoder(CONFIGMANAGER->getDictPinyinPath().c_str(), "/data/user.dic");
-		mIsIMOpenDecoderOK = im_open_decoder(CONFIGMANAGER->getDictPinyinPath().c_str(), "/customer_app/res/dict_pinyin.dat");
+		mIsIMOpenDecoderOK = im_open_decoder(CONFIGMANAGER->getDictPinyinPath().c_str(), "/data/user.dic");
+//		mIsIMOpenDecoderOK = im_open_decoder(CONFIGMANAGER->getDictPinyinPath().c_str(), "/customer_app/res/dict_pinyin.dat");
 		LOGD("onInitIME mIsIMOpenDecoderOK: %d\n", mIsIMOpenDecoderOK);
 
 		if (!mIsIMOpenDecoderOK || mIMETextInfoPtr->isPassword) {
@@ -429,15 +436,19 @@ void UserIMESysApp::updateContentText() {
 	if (!mIMETextInfoPtr->isPassword) {
 		mTextViewContentPtr->setText(mIMETextInfoPtr->text);
 	} else {
+//		mTextViewContentPtr->setText("");
+
 		if (!mIMETextInfoPtr->text.empty()) {
 			char *pPwdStr = new char[mIMETextInfoPtr->text.length() + 1];
 			pPwdStr[mIMETextInfoPtr->text.length()] = '\0';
 			memset(pPwdStr, mIMETextInfoPtr->passwordChar, mIMETextInfoPtr->text.length());
+			LOGD("pPwdStr is %s\n", pPwdStr);
 			mTextViewContentPtr->setText(pPwdStr);
 			delete[] pPwdStr;
 		} else {
 			mTextViewContentPtr->setText("");
 		}
+
 	}
 }
 

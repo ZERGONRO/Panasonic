@@ -2,8 +2,9 @@
 /gen auto by zuitools
 ***********************************************/
 #include "EnvSettingActivity.h"
-
+#include "app/SysAppFactory.h"
 /*TAG:GlobalVariable全局变量*/
+static ZKEditText* mEditText2Ptr;
 static ZKEditText* mEditText1Ptr;
 static ZKTextView* mTextViewPic1Ptr;
 static ZKTextView* mTextViewPicShowPtr;
@@ -151,6 +152,7 @@ typedef struct {
 }S_EditTextInputCallback;
 /*TAG:EditTextInputCallback*/
 static S_EditTextInputCallback SEditTextInputCallbackTab[] = {
+    ID_ENVSETTING_EditText2, onEditTextChanged_EditText2,
     ID_ENVSETTING_EditText1, onEditTextChanged_EditText1,
 };
 
@@ -190,6 +192,11 @@ EnvSettingActivity::~EnvSettingActivity() {
     unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
 }
 
+EnvSettingActivity* EnvSettingActivity::getInstance(){
+	static EnvSettingActivity sES;
+	return &sES;
+}
+
 const char* EnvSettingActivity::getAppName() const{
 	return "EnvSetting.ftu";
 }
@@ -197,6 +204,7 @@ const char* EnvSettingActivity::getAppName() const{
 //TAG:onCreate
 void EnvSettingActivity::onCreate() {
 	Activity::onCreate();
+    mEditText2Ptr = (ZKEditText*)findControlByID(ID_ENVSETTING_EditText2);if(mEditText2Ptr!= NULL){mEditText2Ptr->setTextChangeListener(this);}
     mEditText1Ptr = (ZKEditText*)findControlByID(ID_ENVSETTING_EditText1);if(mEditText1Ptr!= NULL){mEditText1Ptr->setTextChangeListener(this);}
     mTextViewPic1Ptr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextViewPic1);
     mTextViewPicShowPtr = (ZKTextView*)findControlByID(ID_ENVSETTING_TextViewPicShow);
@@ -351,6 +359,7 @@ void EnvSettingActivity::onTextChanged(ZKTextView *pTextView, const std::string 
     int tablen = sizeof(SEditTextInputCallbackTab) / sizeof(S_EditTextInputCallback);
     for (int i = 0; i < tablen; ++i) {
         if (SEditTextInputCallbackTab[i].id == pTextView->getID()) {
+//        	mEditText1Ptr->setText("");
             SEditTextInputCallbackTab[i].onEditTextChangedCallback(text);
             break;
         }

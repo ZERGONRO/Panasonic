@@ -3,6 +3,8 @@
 #include "util/MachineStatus.h"
 #include "util/ProtocolDataRecv.h"
 #include "util/ProtocolDataSend.h"
+#include "util/ManualStatusListence.h"
+
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -35,6 +37,7 @@
 
 static std::vector<std::string > AirPFListViewVector, AirListViewVector, HumdListViewVector, WindListViewVector, HotListViewVector, YuBaListViewVector,SterlListViewVector;
 static int ManualType = Manual_AirPF;
+
 
 /**
  * 注册定时器
@@ -79,6 +82,104 @@ void VectorInit()
 	SterlListViewVector.push_back("S-VV3070");
 	SterlListViewVector.push_back("S-VV1660");
 	SterlListViewVector.push_back("S-VV2080");
+}
+
+void setManualIndoorDataColor(){
+	int Datatmp;
+	float Datatmp1;
+	char DataBuf[64];
+	Datatmp = atoi(mTextView50Ptr->getText().c_str());		//PM2.5
+	if (Datatmp > 0 && Datatmp < 35){
+		mTextView50Ptr->setTextColor(0xFF00AAF4);
+//		mTextView23Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp > 34 && Datatmp < 75){
+		mTextView50Ptr->setTextColor(0xFFFFFF80);
+//		mTextView23Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp > 74 && Datatmp < 150){
+		mTextView50Ptr->setTextColor(0xFFFF8040);
+//		mTextView23Ptr->setTextColor(0xFFFF8040);
+	}else if (Datatmp > 149 && Datatmp < 10000){
+		mTextView50Ptr->setTextColor(0xFF8000FF);
+//		mTextView23Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView50Ptr->setVisible(false);
+//		mTextView23Ptr->setVisible(false);
+	}
+
+	Datatmp = atoi(mTextView46Ptr->getText().c_str());		//温度
+	mTextView46Ptr->setTextColor(0xFF000000);
+	mTextView47Ptr->setTextColor(0xFF000000);
+	if (Datatmp > 50 && Datatmp < -30){
+		mTextView46Ptr->setVisible(false);
+	}
+
+	Datatmp = atoi(mTextView48Ptr->getText().c_str());		//湿度
+	mTextView48Ptr->setTextColor(0xFF000000);
+	mTextView49Ptr->setTextColor(0xFF000000);
+	if (Datatmp > 100 && Datatmp < 0){
+		mTextView48Ptr->setVisible(false);
+	}
+
+	Datatmp1 = atoi(mTextView53Ptr->getText().c_str());		//甲醛
+	if (Datatmp1 > 0 && Datatmp1 < 0.04){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView53Ptr->setText(DataBuf);
+		mTextView53Ptr->setTextColor(0xFF00AAF4);
+//		mTextView31Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp1 > 0.03 && Datatmp1 < 0.07){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView53Ptr->setText(DataBuf);
+		mTextView53Ptr->setTextColor(0xFFFFFF80);
+//		mTextView31Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp1 > 0.07 && Datatmp1 < 2.50){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView53Ptr->setText(DataBuf);
+		mTextView53Ptr->setTextColor(0xFF8000FF);
+//		mTextView31Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView53Ptr->setVisible(false);
+//		mTextView31Ptr->setVisible(false);
+	}
+
+	Datatmp1 = atoi(mTextView62Ptr->getText().c_str());		//TVOC
+	if (Datatmp1 > 0 && Datatmp1 < 0.04){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView62Ptr->setText(DataBuf);
+		mTextView62Ptr->setTextColor(0xFF00AAF4);
+//		mTextView51Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp1 > 0.03 && Datatmp1 < 0.07){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView62Ptr->setText(DataBuf);
+		mTextView62Ptr->setTextColor(0xFFFFFF80);
+//		mTextView51Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp1 > 0.07 && Datatmp1 < 2.50){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView62Ptr->setText(DataBuf);
+		mTextView62Ptr->setTextColor(0xFF8000FF);
+//		mTextView51Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView62Ptr->setVisible(false);
+//		mTextView51Ptr->setVisible(false);
+	}
+
+	Datatmp = atoi(mTextView56Ptr->getText().c_str());		//CO2
+	if (Datatmp > 0 && Datatmp < 801){
+		mTextView56Ptr->setTextColor(0xFF00AAF4);
+//		mTextView34Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp > 800 && Datatmp < 1501){
+		mTextView56Ptr->setTextColor(0xFFFFFF80);
+//		mTextView34Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp > 1500 && Datatmp < 3001){
+		mTextView56Ptr->setTextColor(0xFFFF8040);
+//		mTextView34Ptr->setTextColor(0xFFFF8040);
+	}else if (Datatmp > 3000 && Datatmp < 5000){
+		mTextView56Ptr->setTextColor(0xFF8000FF);
+//		mTextView34Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView56Ptr->setVisible(false);
+//		mTextView34Ptr->setVisible(false);
+	}
+
 }
 
 void ManualMode11SelStatus(int index);
@@ -185,12 +286,310 @@ static bool onManualMode11ActivityTouchEvent(const MotionEvent &ev) {
 	return false;
 }
 
+/* 发送数据更新 */
+void UpdateProtocolSendData(){
+	SProtocolSendData sPSenddata;
+//	std::vector<EqpTimeData *> tmpEqpTimeData = MACHINESTATUS->getEqpTimeData();
+//	EquipmentTiming *tmpDeviceData;
+	if (mButtonAirPFSwitchPtr->isSelected()){
+		sPSenddata.PurifyData.Switch = 1;
+		strcpy(sPSenddata.PurifyData.ModelSetting, mTextView37Ptr->getText().c_str());
+		sPSenddata.PurifyData.BrightSetting = mButtonAirPFLightPtr->isSelected();
+		sPSenddata.PurifyData.ChildLock = mButtonAirPFChildLockPtr->isSelected();
+		sPSenddata.PurifyData.FilterReset = mButtonAirPFFilterResetPtr->isSelected();
+		sPSenddata.PurifyData.NanoexSetting = mButtonAirPFNANOEXPtr->isSelected();
+		for (int i = 4;i >= 0;i--){
+			if (mTextViewAirVolPtr0[i]->isVisible()){
+				sPSenddata.PurifyData.AutoWindVolSetting = i;
+				break;
+			}
+		}
+		sPSenddata.PurifyData.WindDirectSetting = atoi(mTextView17Ptr->getText().c_str());
+		sPSenddata.PurifyData.AddHumdSetting = atoi(mTextView18Ptr->getText().c_str());
+
+		/*定时信息*/
+		if (!MACHINESTATUS->getEqpTimeData().empty()){
+			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
+			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
+				if ((*it)->DeviceID == AirPURIFY){
+					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
+					if (tmpDeviceData->DeviceSwitch){
+						sPSenddata.PurifyData.TimingSwitch = 1;
+						if (tmpDeviceData->Time1StageFlag){
+							sPSenddata.PurifyData.TimeSetting1 = 1;
+							sPSenddata.PurifyData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSenddata.PurifyData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSenddata.PurifyData.TempValue1 = tmpDeviceData->TempSettingValue1;
+						}
+						if (tmpDeviceData->Time2StageFlag){
+							sPSenddata.PurifyData.TimeSetting2 = 1;
+							sPSenddata.PurifyData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSenddata.PurifyData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSenddata.PurifyData.TempValue2 = tmpDeviceData->TempSettingValue2;
+						}
+						/* 星期时间 */
+					}
+					break;
+				}
+
+			}
+		}
+	}else{
+		sPSenddata.PurifyData.Switch = 0;
+	}
+
+	if (mButtonAirSwitchPtr->isSelected()){
+		sPSenddata.AirConditionData.Swtich = 1;
+		strcpy(sPSenddata.AirConditionData.ModelSetting, mTextView38Ptr->getText().c_str());
+//		sPSenddata.AirConditionData.NanoeX
+		sPSenddata.AirConditionData.WindDirectSetting = mButtonAirSwitchWindDirectUpDownPtr->isSelected()?1 : 0;
+		sPSenddata.AirConditionData.TempSettingValue = atoi(mTextView22Ptr->getText().c_str());
+		if (mButtonAirSwitchModeAutoPtr->isSelected()){
+			sPSenddata.AirConditionData.ModeSelect = 0;
+		}else if (mButtonAirSwitchModeHotPtr->isSelected()){
+			sPSenddata.AirConditionData.ModeSelect = 1;
+		}else if (mButtonAirSwitchModeColdPtr->isSelected()){
+			sPSenddata.AirConditionData.ModeSelect = 2;
+		}else if (mButtonAirSwitchModeHumdPtr->isSelected()){
+			sPSenddata.AirConditionData.ModeSelect = 3;
+		}
+
+		for (int i = 4;i >= 0;i--){
+			if (mTextViewAirVolPtr1[i]->isVisible()){
+				sPSenddata.AirConditionData.AutoAirVolSetting = i;
+				break;
+			}
+		}
+		/*定时信息*/
+		if (!MACHINESTATUS->getEqpTimeData().empty()){
+			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
+			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
+				if ((*it)->DeviceID == AIRCONDITION){
+					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
+					if (tmpDeviceData->DeviceSwitch){
+						sPSenddata.AirConditionData.TimingSwtich = 1;
+						if (tmpDeviceData->Time1StageFlag){
+							sPSenddata.AirConditionData.TimeSetting1 = 1;
+							sPSenddata.AirConditionData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSenddata.AirConditionData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSenddata.AirConditionData.TempValue1 = tmpDeviceData->TempSettingValue1;
+						}
+						if (tmpDeviceData->Time2StageFlag){
+							sPSenddata.AirConditionData.TimeSetting2 = 1;
+							sPSenddata.AirConditionData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSenddata.AirConditionData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSenddata.AirConditionData.TempValue2 = tmpDeviceData->TempSettingValue2;
+						}
+						/* 星期时间 */
+					}
+					break;
+				}
+
+			}
+		}
+
+	}else{
+		sPSenddata.AirConditionData.Swtich = 0;
+	}
+
+	if (mButtonHotCSwitchPtr->isSelected()){
+		sPSenddata.HeatChangeData.Swtich = 1;
+		strcpy(sPSenddata.HeatChangeData.ModelSetting, mTextView39Ptr->getText().c_str());
+		sPSenddata.HeatChangeData.NanoeX = mButtonHotChangeSwitchNANOEXPtr->isSelected();
+		if (mButtonHotChangeSwitchModeAutoPtr->isSelected()){
+			sPSenddata.HeatChangeData.ModeSetting = 0;
+		}else if (mButtonHotChangeSwitchModeHotChangePtr->isSelected()){
+			sPSenddata.HeatChangeData.ModeSetting = 1;
+		}else if (mButtonHotChangeSwitchModeCyclePtr->isSelected()){
+			sPSenddata.HeatChangeData.ModeSetting = 2;
+		}
+
+		for (int i = 4;i >= 0;i--){
+			if (mTextViewAirVolPtr2[i]->isVisible()){
+				sPSenddata.HeatChangeData.AutoAirVolSetting = i;
+				break;
+			}
+		}
+		/*定时信息*/
+		if (!MACHINESTATUS->getEqpTimeData().empty()){
+			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
+			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
+				if ((*it)->DeviceID == HOTEXCHANGE){
+					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
+					if (tmpDeviceData->DeviceSwitch){
+						sPSenddata.HeatChangeData.TimingSwtich = 1;
+						if (tmpDeviceData->Time1StageFlag){
+							sPSenddata.HeatChangeData.TimeSetting1 = 1;
+							sPSenddata.HeatChangeData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSenddata.HeatChangeData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSenddata.HeatChangeData.TempValue1 = tmpDeviceData->TempSettingValue1;
+						}
+						if (tmpDeviceData->Time2StageFlag){
+							sPSenddata.HeatChangeData.TimeSetting2 = 1;
+							sPSenddata.HeatChangeData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSenddata.HeatChangeData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSenddata.HeatChangeData.TempValue2 = tmpDeviceData->TempSettingValue2;
+						}
+						/* 星期时间 */
+					}
+					break;
+				}
+
+			}
+		}
+
+	}else{
+		sPSenddata.HeatChangeData.Swtich = 0;
+	}
+
+	if (mButtonHumdSwitchPtr->isSelected()){
+		sPSenddata.AdjustHumdData.Swtich = 1;
+		strcpy(sPSenddata.AdjustHumdData.ModelSetting, mTextView90Ptr->getText().c_str());
+		sPSenddata.AdjustHumdData.AirDirectSetting = atoi(mTextView29Ptr->getText().c_str());
+		sPSenddata.AdjustHumdData.AdjustHumdValue = atoi(mTextView30Ptr->getText().c_str());
+		for (int i = 4;i >= 0;i--){
+			if (mTextViewAirVolPtr3[i]->isVisible()){
+				sPSenddata.AdjustHumdData.AutoAirVolSetting = i;
+				break;
+			}
+		}
+		if (mButtonHumdSwitchFuncSelAutoPtr->isSelected()){
+			sPSenddata.AdjustHumdData.FunctionSelectSetting = 0;
+		}else if (mButtonHumdSwitchFuncSelContPtr->isSelected()){
+			sPSenddata.AdjustHumdData.FunctionSelectSetting = 1;
+		}else if (mButtonHumdSwitchFuncSelSendPtr->isSelected()){
+			sPSenddata.AdjustHumdData.FunctionSelectSetting = 2;
+		}
+		/*定时信息*/
+		if (!MACHINESTATUS->getEqpTimeData().empty()){
+			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
+			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
+				if ((*it)->DeviceID == DEHUMIDIFY){
+					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
+					if (tmpDeviceData->DeviceSwitch){
+						sPSenddata.AdjustHumdData.TimingSwtich = 1;
+						if (tmpDeviceData->Time1StageFlag){
+							sPSenddata.AdjustHumdData.TimeSetting1 = 1;
+							sPSenddata.AdjustHumdData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSenddata.AdjustHumdData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSenddata.AdjustHumdData.TempValue1 = tmpDeviceData->TempSettingValue1;
+						}
+						if (tmpDeviceData->Time2StageFlag){
+							sPSenddata.AdjustHumdData.TimeSetting2 = 1;
+							sPSenddata.AdjustHumdData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSenddata.AdjustHumdData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSenddata.AdjustHumdData.TempValue2 = tmpDeviceData->TempSettingValue2;
+						}
+						/* 星期时间 */
+					}
+					break;
+				}
+
+			}
+		}
+
+
+	}else{
+		sPSenddata.AdjustHumdData.Swtich = 0;
+	}
+
+	if (mButtonWindSwitchPtr->isSelected()){
+		sPSenddata.WindChangAirData.Swtich = 1;
+		strcpy(sPSenddata.WindChangAirData.ModelSetting, mTextView91Ptr->getText().c_str());
+		sPSenddata.WindChangAirData.NanoeX = mButtonWindSwitchNANOEXPtr->isSelected();
+		for (int i = 4;i >= 0;i--){
+			if (mTextViewAirVolPtr4[i]->isVisible()){
+				sPSenddata.WindChangAirData.AutoAirVolSetting = i;
+				break;
+			}
+		}
+		/*定时信息*/
+		if (!MACHINESTATUS->getEqpTimeData().empty()){
+			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
+			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
+				if ((*it)->DeviceID == WINDEXCHANGE){
+					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
+					if (tmpDeviceData->DeviceSwitch){
+						sPSenddata.WindChangAirData.TimingSwtich = 1;
+						if (tmpDeviceData->Time1StageFlag){
+							sPSenddata.WindChangAirData.TimeSetting1 = 1;
+							sPSenddata.WindChangAirData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSenddata.WindChangAirData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSenddata.WindChangAirData.TempValue1 = tmpDeviceData->TempSettingValue1;
+						}
+						if (tmpDeviceData->Time2StageFlag){
+							sPSenddata.WindChangAirData.TimeSetting2 = 1;
+							sPSenddata.WindChangAirData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSenddata.WindChangAirData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSenddata.WindChangAirData.TempValue2 = tmpDeviceData->TempSettingValue2;
+						}
+						/* 星期时间 */
+					}
+					break;
+				}
+
+			}
+		}
+
+	}else{
+		sPSenddata.WindChangAirData.Swtich = 0;
+	}
+
+	if (mButtonSterilizationSwitchPtr->isSelected()){
+
+	}
+
+	if (mButtonYubaSwitchPtr->isSelected()){
+		sPSenddata.YuBaData.Swtich = 1;
+		strcpy(sPSenddata.YuBaData.ModelSetting, mTextView93Ptr->getText().c_str());
+		sPSenddata.YuBaData.BrightnessSetting = mButtonYuBaLightNightPtr->isSelected()?1 : 0;
+		sPSenddata.YuBaData.ColdDrySetting = mButtonYuBaColdHotStrPtr->isSelected()?1 : 0;
+		sPSenddata.YuBaData.HeatDrySetting = mButtonYuBaHottingStrPtr->isSelected()?1 : 0;
+		sPSenddata.YuBaData.HeatingSetting = mButtonYuBaHeatingStrPtr->isSelected()?1 : 0;
+		sPSenddata.YuBaData.NanoeX = mButtonYuBaNANOEXPtr->isSelected();
+		sPSenddata.YuBaData.WindType = mButtonYuBaWindClassConcenPtr->isSelected()?1 : 0;
+		sPSenddata.YuBaData.AirChangeSetting = mButtonYuBaChangAirStrPtr->isSelected()?1 : 0;
+		sPSenddata.YuBaData.AirDirectSetting = mButtonYuBaWindDirectManualPtr->isSelected()?1 : 0;
+		/*定时信息*/
+		if (!MACHINESTATUS->getEqpTimeData().empty()){
+			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
+			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
+				if ((*it)->DeviceID == YUBA){
+					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
+					if (tmpDeviceData->DeviceSwitch){
+						sPSenddata.YuBaData.TimingSwtich = 1;
+						if (tmpDeviceData->Time1StageFlag){
+							sPSenddata.YuBaData.TimeSetting1 = 1;
+							sPSenddata.YuBaData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSenddata.YuBaData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSenddata.YuBaData.TempValue1 = tmpDeviceData->TempSettingValue1;
+						}
+						if (tmpDeviceData->Time2StageFlag){
+							sPSenddata.YuBaData.TimeSetting2 = 1;
+							sPSenddata.YuBaData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSenddata.YuBaData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSenddata.YuBaData.TempValue2 = tmpDeviceData->TempSettingValue2;
+						}
+						/* 星期时间 */
+					}
+					break;
+				}
+
+			}
+		}
+
+	}else{
+		sPSenddata.YuBaData.Swtich = 0;
+	}
+}
+
+/* 接收的数据更新 */
 static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 {
 	SProtocolRecvDate data = Data;
 	if(data.PurifyData.Switch)							//净化
 	{
-		mTextView17Ptr->setText(data.PurifyData.WindDirectSetting + '°');
+		mTextView17Ptr->setText(data.PurifyData.WindDirectSetting + "°");
 		mTextView18Ptr->setText(data.PurifyData.AddHumdSetting + '%');
 		mButtonAirPFNANOEXPtr->setSelected(data.PurifyData.NanoexSetting);
 		mButtonAirPFLightPtr->setSelected(data.PurifyData.BrightSetting);
@@ -273,8 +672,8 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 
 	if(data.AdjustHumdData.Swtich)							//调湿
 	{
-		mTextView29Ptr->setText(data.AdjustHumdData.AirDirectSetting + '°');
-		mTextView30Ptr->setText(data.AdjustHumdData.AdjustHumdValue + '%');
+		mTextView29Ptr->setText(data.AdjustHumdData.AirDirectSetting + "°");
+		mTextView30Ptr->setText(data.AdjustHumdData.AdjustHumdValue + "%");
 		if(data.AdjustHumdData.FunctionSelectSetting == 1)
 		{
 			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
@@ -406,7 +805,7 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 
 void ManualMode11SelStatus(int index)
 {
-
+	SProtocolSendData sPSendData;	//数据有待获取
 	switch(index)
 	{
 		case Manual_AirPF:
@@ -431,7 +830,20 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(false);
 			mWindowYubaSwitchPtr->setVisible(false);
 			mWindowSterilizationPtr->setVisible(false);
-//			std::string text;
+
+			/*AirPF Param show */
+			mButtonAirPFNANOEXPtr->setSelected(sPSendData.PurifyData.NanoexSetting);
+			mButtonAirPFFilterResetPtr->setSelected(sPSendData.PurifyData.FilterReset);
+			mButtonAirPFLightPtr->setSelected(sPSendData.PurifyData.BrightSetting);
+			mButtonAirPFChildLockPtr->setSelected(sPSendData.PurifyData.ChildLock);
+			mTextView17Ptr->setText(sPSendData.PurifyData.WindDirectSetting);
+			mTextView18Ptr->setText(sPSendData.PurifyData.AddHumdSetting);
+			for (int j = 0;j < 4;j++){
+				mTextViewAirVolPtr0[j]->setVisible(false);
+			}
+			for (int i = sPSendData.PurifyData.AutoWindVolSetting;i >= 0;i--){
+				mTextViewAirVolPtr0[i]->setVisible(true);
+			}
 		}
 			break;
 		case Manual_Air:
@@ -456,6 +868,45 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(false);
 			mWindowYubaSwitchPtr->setVisible(false);
 			mWindowSterilizationPtr->setVisible(false);
+
+			/* Air Param show */
+			mTextView22Ptr->setText(sPSendData.AirConditionData.TempSettingValue);
+			for (int j = 0;j < 4;j++){
+				mTextViewAirVolPtr1[j]->setVisible(false);
+			}
+			for (int i = sPSendData.AirConditionData.AutoAirVolSetting;i >= 0;i--){
+				mTextViewAirVolPtr1[i]->setVisible(true);
+			}
+			if (sPSendData.AirConditionData.WindDirectSetting == 1){
+				mButtonAirSwitchWindDirectLeftRightPtr->setSelected(true);
+				mButtonAirSwitchWindDirectUpDownPtr->setSelected(false);
+			}else{
+				mButtonAirSwitchWindDirectLeftRightPtr->setSelected(false);
+				mButtonAirSwitchWindDirectUpDownPtr->setSelected(true);
+			}
+
+			if (sPSendData.AirConditionData.ModeSelect == 0){
+				mButtonAirSwitchModeAutoPtr->setSelected(true);
+				mButtonAirSwitchModeHotPtr->setSelected(false);
+				mButtonAirSwitchModeColdPtr->setSelected(false);
+				mButtonAirSwitchModeHumdPtr->setSelected(false);
+			}else if (sPSendData.AirConditionData.ModeSelect == 1){
+				mButtonAirSwitchModeAutoPtr->setSelected(false);
+				mButtonAirSwitchModeHotPtr->setSelected(true);
+				mButtonAirSwitchModeColdPtr->setSelected(false);
+				mButtonAirSwitchModeHumdPtr->setSelected(false);
+			}else if (sPSendData.AirConditionData.ModeSelect == 2){
+				mButtonAirSwitchModeAutoPtr->setSelected(false);
+				mButtonAirSwitchModeHotPtr->setSelected(false);
+				mButtonAirSwitchModeColdPtr->setSelected(true);
+				mButtonAirSwitchModeHumdPtr->setSelected(false);
+			}else if (sPSendData.AirConditionData.ModeSelect == 3){
+				mButtonAirSwitchModeAutoPtr->setSelected(false);
+				mButtonAirSwitchModeHotPtr->setSelected(false);
+				mButtonAirSwitchModeColdPtr->setSelected(false);
+				mButtonAirSwitchModeHumdPtr->setSelected(true);
+			}
+
 		}
 			break;
 		case Manual_HotChange:
@@ -480,6 +931,30 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(false);
 			mWindowYubaSwitchPtr->setVisible(false);
 			mWindowSterilizationPtr->setVisible(false);
+
+			/* HotChang Param show */
+			mButtonHotChangeSwitchNANOEXPtr->setSelected(sPSendData.HeatChangeData.NanoeX);
+			for (int j = 0;j < 4;j++){
+				mTextViewAirVolPtr2[j]->setVisible(false);
+			}
+			for (int i = sPSendData.HeatChangeData.AutoAirVolSetting;i >= 0;i--){
+				mTextViewAirVolPtr2[i]->setVisible(true);
+			}
+			if (sPSendData.HeatChangeData.ModeSetting == 0){
+				mButtonHotChangeSwitchModeAutoPtr->setSelected(true);
+				mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
+				mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
+			}else if (sPSendData.HeatChangeData.ModeSetting == 1){
+				mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
+				mButtonHotChangeSwitchModeHotChangePtr->setSelected(true);
+				mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
+			}else if (sPSendData.HeatChangeData.ModeSetting == 2){
+				mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
+				mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
+				mButtonHotChangeSwitchModeCyclePtr->setSelected(true);
+			}
+
+
 		}
 			break;
 		case Manual_Humd:
@@ -504,6 +979,30 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(false);
 			mWindowYubaSwitchPtr->setVisible(false);
 			mWindowSterilizationPtr->setVisible(false);
+
+			/* HotChang Param show */
+			for (int j = 0;j < 4;j++){
+				mTextViewAirVolPtr3[j]->setVisible(false);
+			}
+			for (int i = sPSendData.AdjustHumdData.AutoAirVolSetting;i >= 0;i--){
+				mTextViewAirVolPtr3[i]->setVisible(true);
+			}
+			mTextView29Ptr->setText(sPSendData.AdjustHumdData.AirDirectSetting);
+			mTextView30Ptr->setText(sPSendData.AdjustHumdData.AdjustHumdValue);
+			if (sPSendData.AdjustHumdData.FunctionSelectSetting == 0){
+				mButtonHumdSwitchFuncSelAutoPtr->setSelected(true);
+				mButtonHumdSwitchFuncSelContPtr->setSelected(false);
+				mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
+			}else if (sPSendData.AdjustHumdData.FunctionSelectSetting == 1){
+				mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
+				mButtonHumdSwitchFuncSelContPtr->setSelected(true);
+				mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
+			}else if (sPSendData.AdjustHumdData.FunctionSelectSetting == 2){
+				mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
+				mButtonHumdSwitchFuncSelContPtr->setSelected(false);
+				mButtonHumdSwitchFuncSelSendPtr->setSelected(true);
+			}
+
 		}
 			break;
 		case Manual_WindChange:
@@ -528,6 +1027,16 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(true);
 			mWindowYubaSwitchPtr->setVisible(false);
 			mWindowSterilizationPtr->setVisible(false);
+
+			/* WindChange Param show */
+			mButtonWindSwitchNANOEXPtr->setSelected(sPSendData.WindChangAirData.NanoeX);
+			for (int j = 0;j < 4;j++){
+				mTextViewAirVolPtr4[j]->setVisible(false);
+			}
+			for (int i = sPSendData.WindChangAirData.AutoAirVolSetting;i >= 0;i--){
+				mTextViewAirVolPtr4[i]->setVisible(true);
+			}
+
 		}
 			break;
 		case Manual_Ster:
@@ -576,6 +1085,60 @@ void ManualMode11SelStatus(int index)
 			mWindowWindSwitchPtr->setVisible(false);
 			mWindowYubaSwitchPtr->setVisible(true);
 			mWindowSterilizationPtr->setVisible(false);
+
+			/* YuBa Param show */
+			mButtonYuBaNANOEXPtr->setSelected(sPSendData.YuBaData.NanoeX);
+
+			if (sPSendData.YuBaData.BrightnessSetting == 0){
+				mButtonYuBaLightNightPtr->setSelected(true);
+				mButtonYuBaLightClosePtr->setSelected(false);
+			}else{
+				mButtonYuBaLightNightPtr->setSelected(false);
+				mButtonYuBaLightClosePtr->setSelected(true);
+			}
+			if (sPSendData.YuBaData.AirChangeSetting == 0){
+				mButtonYuBaChangAirStrPtr->setSelected(true);
+				mButtonYuBaChangAirWeakPtr->setSelected(false);
+			}else{
+				mButtonYuBaChangAirStrPtr->setSelected(false);
+				mButtonYuBaChangAirWeakPtr->setSelected(true);
+			}
+			if (sPSendData.YuBaData.AirDirectSetting == 0){
+				mButtonYuBaWindDirectManualPtr->setSelected(true);
+				mButtonYuBaWindDirectAutoPtr->setSelected(false);
+			}else{
+				mButtonYuBaWindDirectManualPtr->setSelected(false);
+				mButtonYuBaWindDirectAutoPtr->setSelected(true);
+			}
+			if (sPSendData.YuBaData.ColdDrySetting == 0){
+				mButtonYuBaColdHotStrPtr->setSelected(true);
+				mButtonYuBaColdHotWeakPtr->setSelected(false);
+			}else{
+				mButtonYuBaColdHotStrPtr->setSelected(false);
+				mButtonYuBaColdHotWeakPtr->setSelected(true);
+			}
+			if (sPSendData.YuBaData.HeatDrySetting == 0){
+				mButtonYuBaHottingStrPtr->setSelected(true);
+				mButtonYuBaHottingWeakPtr->setSelected(false);
+			}else{
+				mButtonYuBaHottingStrPtr->setSelected(false);
+				mButtonYuBaHottingWeakPtr->setSelected(true);
+			}
+			if (sPSendData.YuBaData.HeatingSetting == 0){
+				mButtonYuBaHeatingStrPtr->setSelected(true);
+				mButtonYuBaHeatingWeakPtr->setSelected(false);
+			}else{
+				mButtonYuBaHeatingStrPtr->setSelected(false);
+				mButtonYuBaHeatingWeakPtr->setSelected(true);
+			}
+			if (sPSendData.YuBaData.WindType == 0){
+				mButtonYuBaWindClassConcenPtr->setSelected(true);
+				mButtonYuBaWindClassdiffusionPtr->setSelected(false);
+			}else{
+				mButtonYuBaWindClassConcenPtr->setSelected(false);
+				mButtonYuBaWindClassdiffusionPtr->setSelected(true);
+			}
+
 		}
 			break;
 		default:
@@ -662,6 +1225,19 @@ static bool onButtonClick_ButtonAirPFAutoWindLess(ZKButton *pButton) {
     if (!mButtonAirPFSwitchPtr->isSelected()){
        	return false;
    }
+    for (int i = 4; i >= 0;i--){
+    	if (mTextViewAirVolPtr0[i]->isVisible()){
+    		mTextViewAirVolPtr0[i]->setVisible(false);
+    		if (i < 1){
+    			MANUALSTATUS->setAirPFAutoWind(0);
+    		}else{
+    			MANUALSTATUS->setAirPFAutoWind(i - 1);
+    		}
+
+    		break;
+    	}
+    }
+
     return false;
 }
 
@@ -670,6 +1246,14 @@ static bool onButtonClick_ButtonAirPFAutoWindAdd(ZKButton *pButton) {
     if (!mButtonAirPFSwitchPtr->isSelected()){
        	return false;
    }
+
+    for (int i = 0;i < 5;i++){
+    	if (!mTextViewAirVolPtr0[i]->isVisible()){
+    		mTextViewAirVolPtr0[i]->setVisible(true);
+    		MANUALSTATUS->setAirPFAutoWind(i);
+    		break;
+    	}
+    }
     return false;
 }
 
@@ -683,6 +1267,7 @@ static bool onButtonClick_ButtonAirPFWindDirectLess(ZKButton *pButton) {
     if (atoi(mTextView17Ptr->getText().c_str()) < 0){
       	mTextView17Ptr->setText("0");
     }
+    MANUALSTATUS->setAirPFWindDirec(atoi(mTextView17Ptr->getText().c_str()));
     return false;
 }
 
@@ -696,6 +1281,7 @@ static bool onButtonClick_ButtonAirPFWindDirectAdd(ZKButton *pButton) {
     if (atoi(mTextView17Ptr->getText().c_str()) > 70){
     	mTextView17Ptr->setText("70");
     }
+    MANUALSTATUS->setAirPFWindDirec(atoi(mTextView17Ptr->getText().c_str()));
     return false;
 }
 
@@ -708,6 +1294,7 @@ static bool onButtonClick_ButtonAirPFHumdSettingLess(ZKButton *pButton) {
 	if (atoi(mTextView18Ptr->getText().c_str()) < 0){
 		mTextView18Ptr->setText("0");
 	}
+	MANUALSTATUS->setAirPFHumdValue(atoi(mTextView18Ptr->getText().c_str()));
     return false;
 }
 
@@ -720,6 +1307,8 @@ static bool onButtonClick_ButtonAirPFHumdSettingAdd(ZKButton *pButton) {
 	if (atoi(mTextView18Ptr->getText().c_str()) > 70){
 		mTextView18Ptr->setText("70");
 	}
+	MANUALSTATUS->setAirPFHumdValue(atoi(mTextView18Ptr->getText().c_str()));
+//	ManualContext->setHumd();
     return false;
 }
 
@@ -733,6 +1322,7 @@ static bool onButtonClick_ButtonAirPFNANOEX(ZKButton *pButton) {
     }else{
     	pButton->setSelected(true);
     }
+    MANUALSTATUS->setAirPFNanoeX(pButton->isSelected());
     return false;
 }
 
@@ -746,6 +1336,7 @@ static bool onButtonClick_ButtonAirPFLight(ZKButton *pButton) {
     }else{
        	pButton->setSelected(true);
     }
+    MANUALSTATUS->setAirPFBright(pButton->isSelected());
     return false;
 }
 
@@ -767,6 +1358,7 @@ static bool onButtonClick_ButtonAirPFFilterReset(ZKButton *pButton) {
    }else{
        	pButton->setSelected(true);
    }
+    MANUALSTATUS->setAirPFFilter(pButton->isSelected());
     return false;
 }
 
@@ -780,6 +1372,7 @@ static bool onButtonClick_ButtonAirPFChildLock(ZKButton *pButton) {
    }else{
        	pButton->setSelected(true);
    }
+    MANUALSTATUS->setAirPFChildLock(pButton->isSelected());
     return false;
 }
 
@@ -788,6 +1381,18 @@ static bool onButtonClick_ButtonAirSwitchAutoWindLess(ZKButton *pButton) {
     if (!mButtonAirSwitchPtr->isSelected()){
 		return false;
 	}
+
+    for (int i = 4; i >= 0;i--){
+		if (mTextViewAirVolPtr1[i]->isVisible()){
+			mTextViewAirVolPtr1[i]->setVisible(false);
+			if (i < 1){
+				 MANUALSTATUS->setAirAutoWind(0);
+			}else{
+				MANUALSTATUS->setAirAutoWind(i - 1);
+			}
+			break;
+		}
+	}
     return false;
 }
 
@@ -795,6 +1400,13 @@ static bool onButtonClick_ButtonAirSwitchAutoWindAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchAutoWindAdd !!!\n");
     if (!mButtonAirSwitchPtr->isSelected()){
 		return false;
+	}
+    for (int i = 0; i < 5;i++){
+		if (!mTextViewAirVolPtr1[i]->isVisible()){
+			mTextViewAirVolPtr1[i]->setVisible(true);
+			MANUALSTATUS->setAirAutoWind(i);
+			break;
+		}
 	}
     return false;
 }
@@ -806,6 +1418,7 @@ static bool onButtonClick_ButtonAirSwitchWindDirectUpDown(ZKButton *pButton) {
 	}
     mButtonAirSwitchWindDirectUpDownPtr->setSelected(true);
     mButtonAirSwitchWindDirectLeftRightPtr->setSelected(false);
+    MANUALSTATUS->setAirWindDirect(0);
     return false;
 }
 
@@ -826,6 +1439,7 @@ static bool onButtonClick_ButtonAirSwitchWindDirectLeftRight(ZKButton *pButton) 
 	}
     mButtonAirSwitchWindDirectUpDownPtr->setSelected(false);
     mButtonAirSwitchWindDirectLeftRightPtr->setSelected(true);
+    MANUALSTATUS->setAirWindDirect(1);
     return false;
 }
 
@@ -838,6 +1452,7 @@ static bool onButtonClick_ButtonAirSwitchModeAuto(ZKButton *pButton) {
 	mButtonAirSwitchModeHotPtr->setSelected(false);
 	mButtonAirSwitchModeColdPtr->setSelected(false);
 	mButtonAirSwitchModeHumdPtr->setSelected(false);
+	MANUALSTATUS->setAirMode(0);
     return false;
 }
 
@@ -850,6 +1465,7 @@ static bool onButtonClick_ButtonAirSwitchModeHot(ZKButton *pButton) {
 	mButtonAirSwitchModeHotPtr->setSelected(true);
 	mButtonAirSwitchModeColdPtr->setSelected(false);
 	mButtonAirSwitchModeHumdPtr->setSelected(false);
+	MANUALSTATUS->setAirMode(1);
     return false;
 }
 
@@ -862,6 +1478,7 @@ static bool onButtonClick_ButtonAirSwitchModeCold(ZKButton *pButton) {
    	mButtonAirSwitchModeHotPtr->setSelected(false);
    	mButtonAirSwitchModeColdPtr->setSelected(true);
    	mButtonAirSwitchModeHumdPtr->setSelected(false);
+   	MANUALSTATUS->setAirMode(2);
     return false;
 }
 
@@ -874,6 +1491,7 @@ static bool onButtonClick_ButtonAirSwitchModeHumd(ZKButton *pButton) {
 	mButtonAirSwitchModeHotPtr->setSelected(false);
 	mButtonAirSwitchModeColdPtr->setSelected(false);
 	mButtonAirSwitchModeHumdPtr->setSelected(true);
+	MANUALSTATUS->setAirMode(3);
     return false;
 }
 
@@ -883,6 +1501,10 @@ static bool onButtonClick_ButtonAirSwitchTempSettingLess(ZKButton *pButton) {
 		return false;
 	}
     mTextView22Ptr->setText(atoi(mTextView22Ptr->getText().c_str()) - 1);
+    if (atoi(mTextView22Ptr->getText().c_str()) < 16){
+    	mTextView22Ptr->setText("16℃");
+    }
+    MANUALSTATUS->setAirTemp(atoi(mTextView22Ptr->getText().c_str()));
     return false;
 }
 
@@ -892,6 +1514,10 @@ static bool onButtonClick_ButtonAirSwitchTempSettingAdd(ZKButton *pButton) {
 		return false;
 	}
     mTextView22Ptr->setText(atoi(mTextView22Ptr->getText().c_str()) + 1);
+    if (atoi(mTextView22Ptr->getText().c_str()) > 30){
+    	mTextView22Ptr->setText("30℃");
+	}
+    MANUALSTATUS->setAirTemp(atoi(mTextView22Ptr->getText().c_str()));
     return false;
 }
 
@@ -914,11 +1540,36 @@ static bool onButtonClick_ButtonHotChangeSwitchMode(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHotChangeSwitchAutoWindLess(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchAutoWindLess !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+    	return false;
+    }
+
+    for (int i = 4; i >= 0;i--){
+   		if (mTextViewAirVolPtr2[i]->isVisible()){
+   			mTextViewAirVolPtr2[i]->setVisible(false);
+   			if (i < 1){
+   				MANUALSTATUS->setHeatChangeAutoWind(0);
+   			}else{
+   				MANUALSTATUS->setHeatChangeAutoWind(i - 1);
+   			}
+   			break;
+   		}
+   	}
     return false;
 }
 
 static bool onButtonClick_ButtonHotChangeSwitchAutoWindAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotChangeSwitchAutoWindAdd !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+    	return false;
+    }
+    for (int i = 0; i < 5;i++){
+		if (!mTextViewAirVolPtr2[i]->isVisible()){
+			mTextViewAirVolPtr2[i]->setVisible(true);
+			MANUALSTATUS->setHeatChangeAutoWind(i);
+			break;
+		}
+	}
     return false;
 }
 
@@ -930,6 +1581,7 @@ static bool onButtonClick_ButtonHotChangeSwitchModeAuto(ZKButton *pButton) {
     mButtonHotChangeSwitchModeAutoPtr->setSelected(true);
     mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
     mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
+    MANUALSTATUS->setHeatChangeMode(0);
     return false;
 }
 
@@ -943,6 +1595,7 @@ static bool onButtonClick_ButtonHotChangeSwitchNANOEX(ZKButton *pButton) {
    }else{
        	pButton->setSelected(true);
    }
+    MANUALSTATUS->setHeatChangeNanoeX(pButton->isSelected());
     return false;
 }
 
@@ -954,6 +1607,7 @@ static bool onButtonClick_ButtonHotChangeSwitchModeHotChange(ZKButton *pButton) 
     mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
     mButtonHotChangeSwitchModeHotChangePtr->setSelected(true);
     mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
+    MANUALSTATUS->setHeatChangeMode(1);
     return false;
 }
 
@@ -965,6 +1619,7 @@ static bool onButtonClick_ButtonHotChangeSwitchModeCycle(ZKButton *pButton) {
     mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
     mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
     mButtonHotChangeSwitchModeCyclePtr->setSelected(true);
+    MANUALSTATUS->setHeatChangeMode(2);
     return false;
 }
 
@@ -995,6 +1650,18 @@ static bool onButtonClick_ButtonHumdSwitchAutoWindLess(ZKButton *pButton) {
     if (!mButtonHumdSwitchPtr->isSelected()){
         	return false;
 	}
+
+    for (int i = 4; i >= 0;i--){
+		if (mTextViewAirVolPtr3[i]->isVisible()){
+			mTextViewAirVolPtr3[i]->setVisible(false);
+			if (i < 1){
+				MANUALSTATUS->setHumdAutoWind(0);
+			}else{
+				MANUALSTATUS->setHumdAutoWind(i - 1);
+			}
+			break;
+		}
+	}
     return false;
 }
 
@@ -1003,6 +1670,14 @@ static bool onButtonClick_ButtonHumdSwitchAutoWindAdd(ZKButton *pButton) {
     if (!mButtonHumdSwitchPtr->isSelected()){
         	return false;
 	}
+
+    for (int i = 0; i < 5;i++){
+   		if (!mTextViewAirVolPtr3[i]->isVisible()){
+   			mTextViewAirVolPtr3[i]->setVisible(true);
+   			MANUALSTATUS->setHumdAutoWind(i);
+   			break;
+   		}
+   	}
     return false;
 }
 
@@ -1012,6 +1687,7 @@ static bool onButtonClick_ButtonHumdSwitchWindDirectLess(ZKButton *pButton) {
 		return false;
 	}
     mTextView29Ptr->setText(atoi(mTextView29Ptr->getText().c_str()) - 1);
+    MANUALSTATUS->setHumdWindDirect(atoi(mTextView29Ptr->getText().c_str()));
     return false;
 }
 
@@ -1021,6 +1697,7 @@ static bool onButtonClick_ButtonHumdSwitchWindDirectAdd(ZKButton *pButton) {
 		return false;
 	}
     mTextView29Ptr->setText(atoi(mTextView29Ptr->getText().c_str()) + 1);
+    MANUALSTATUS->setHumdWindDirect(atoi(mTextView29Ptr->getText().c_str()));
     return false;
 }
 
@@ -1030,6 +1707,7 @@ static bool onButtonClick_ButtonHumdSwitchHumdSettingLess(ZKButton *pButton) {
 		return false;
 	}
     mTextView30Ptr->setText(atoi(mTextView30Ptr->getText().c_str()) - 1);
+    MANUALSTATUS->setHumdsettingHumd(atoi(mTextView30Ptr->getText().c_str()));
     return false;
 }
 
@@ -1039,6 +1717,7 @@ static bool onButtonClick_ButtonHumdSwitchHumdSettingAdd(ZKButton *pButton) {
 		return false;
 	}
     mTextView30Ptr->setText(atoi(mTextView30Ptr->getText().c_str()) + 1);
+    MANUALSTATUS->setHumdsettingHumd(atoi(mTextView30Ptr->getText().c_str()));
     return false;
 }
 
@@ -1066,6 +1745,7 @@ static bool onButtonClick_ButtonHumdSwitchFuncSelAuto(ZKButton *pButton) {
     mButtonHumdSwitchFuncSelAutoPtr->setSelected(true);
     mButtonHumdSwitchFuncSelContPtr->setSelected(false);
     mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
+    MANUALSTATUS->setHumdMode(0);
     return false;
 }
 
@@ -1077,6 +1757,7 @@ static bool onButtonClick_ButtonHumdSwitchFuncSelCont(ZKButton *pButton) {
     mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
     mButtonHumdSwitchFuncSelContPtr->setSelected(true);
     mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
+    MANUALSTATUS->setHumdMode(1);
     return false;
 }
 
@@ -1088,6 +1769,7 @@ static bool onButtonClick_ButtonHumdSwitchFuncSelKeep(ZKButton *pButton) {
     mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
     mButtonHumdSwitchFuncSelContPtr->setSelected(false);
     mButtonHumdSwitchFuncSelSendPtr->setSelected(true);
+    MANUALSTATUS->setHumdMode(2);
     return false;
 }
 
@@ -1122,6 +1804,18 @@ static bool onButtonClick_ButtonWindSwitchAutoWindLess(ZKButton *pButton) {
     if (!mButtonWindSwitchPtr->isSelected()){
         	return false;
 	}
+
+    for (int i = 4; i >= 0;i--){
+   		if (mTextViewAirVolPtr4[i]->isVisible()){
+   			mTextViewAirVolPtr4[i]->setVisible(false);
+   			if (i < 1){
+   				MANUALSTATUS->setWindAutoWind(0);
+   			}else{
+   				MANUALSTATUS->setWindAutoWind(i - 1);
+   			}
+   			break;
+   		}
+   	}
     return false;
 }
 
@@ -1129,6 +1823,14 @@ static bool onButtonClick_ButtonWindSwitchAutoWindAdd(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindSwitchAutoWindAdd !!!\n");
     if (!mButtonWindSwitchPtr->isSelected()){
         	return false;
+	}
+
+    for (int i = 0; i < 5;i++){
+		if (!mTextViewAirVolPtr4[i]->isVisible()){
+			mTextViewAirVolPtr4[i]->setVisible(true);
+			MANUALSTATUS->setWindAutoWind(i);
+			break;
+		}
 	}
     return false;
 }
@@ -1143,6 +1845,7 @@ static bool onButtonClick_ButtonWindSwitchNANOEX(ZKButton *pButton) {
    }else{
        	pButton->setSelected(true);
    }
+    MANUALSTATUS->setWindNaneoX(pButton->isSelected());
     return false;
 }
 
@@ -1209,6 +1912,7 @@ static bool onButtonClick_ButtonYuBaNANOEX(ZKButton *pButton) {
    }else{
        	pButton->setSelected(true);
    }
+    MANUALSTATUS->setYuBaNaneoX(pButton->isSelected());
     return false;
 }
 
@@ -1239,6 +1943,7 @@ static bool onButtonClick_ButtonYuBaHeatingStr(ZKButton *pButton) {
 	}
     mButtonYuBaHeatingStrPtr->setSelected(true);
     mButtonYuBaHeatingWeakPtr->setSelected(false);
+    MANUALSTATUS->setYuBaHeating(0);
     return false;
 }
 
@@ -1249,6 +1954,7 @@ static bool onButtonClick_ButtonYuBaHeatingWeak(ZKButton *pButton) {
 	}
     mButtonYuBaHeatingStrPtr->setSelected(false);
    mButtonYuBaHeatingWeakPtr->setSelected(true);
+   MANUALSTATUS->setYuBaHeating(1);
     return false;
 }
 
@@ -1259,6 +1965,7 @@ static bool onButtonClick_ButtonYuBaWindDirectManual(ZKButton *pButton) {
 	}
     mButtonYuBaWindDirectManualPtr->setSelected(true);
     mButtonYuBaWindDirectAutoPtr->setSelected(false);
+    MANUALSTATUS->setYuBaWindDirct(0);
     return false;
 }
 
@@ -1269,6 +1976,7 @@ static bool onButtonClick_ButtonYuBaWindDirectAuto(ZKButton *pButton) {
 	}
     mButtonYuBaWindDirectManualPtr->setSelected(false);
     mButtonYuBaWindDirectAutoPtr->setSelected(true);
+    MANUALSTATUS->setYuBaWindDirct(1);
     return false;
 }
 
@@ -1279,6 +1987,7 @@ static bool onButtonClick_ButtonYuBaHottingStr(ZKButton *pButton) {
 	}
     mButtonYuBaHottingStrPtr->setSelected(true);
 	mButtonYuBaHottingWeakPtr->setSelected(false);
+	 MANUALSTATUS->setYuBaHeatDry(0);
     return false;
 }
 
@@ -1289,6 +1998,7 @@ static bool onButtonClick_ButtonYuBaHottingWeak(ZKButton *pButton) {
 	}
     mButtonYuBaHottingStrPtr->setSelected(false);
 	mButtonYuBaHottingWeakPtr->setSelected(true);
+	 MANUALSTATUS->setYuBaHeatDry(1);
     return false;
 }
 
@@ -1299,6 +2009,7 @@ static bool onButtonClick_ButtonYuBaWindClassConcen(ZKButton *pButton) {
 	}
     mButtonYuBaWindClassdiffusionPtr->setSelected(false);
    	mButtonYuBaWindClassConcenPtr->setSelected(true);
+    MANUALSTATUS->setYuBaWindType(0);
     return false;
 }
 
@@ -1309,6 +2020,7 @@ static bool onButtonClick_ButtonYuBaColdHotStr(ZKButton *pButton) {
 	}
     mButtonYuBaColdHotStrPtr->setSelected(true);
    	mButtonYuBaColdHotWeakPtr->setSelected(false);
+    MANUALSTATUS->setYuBaColdDry(0);
     return false;
 }
 
@@ -1319,6 +2031,7 @@ static bool onButtonClick_ButtonYuBaWindClassdiffusion(ZKButton *pButton) {
 	}
     mButtonYuBaWindClassdiffusionPtr->setSelected(true);
 	mButtonYuBaWindClassConcenPtr->setSelected(false);
+	  MANUALSTATUS->setYuBaWindType(1);
     return false;
 }
 
@@ -1329,6 +2042,7 @@ static bool onButtonClick_ButtonYuBaColdHotWeak(ZKButton *pButton) {
 	}
     mButtonYuBaColdHotStrPtr->setSelected(false);
 	mButtonYuBaColdHotWeakPtr->setSelected(true);
+	 MANUALSTATUS->setYuBaColdDry(1);
     return false;
 }
 
@@ -1340,6 +2054,7 @@ static bool onButtonClick_ButtonYuBaLightNight(ZKButton *pButton) {
 	}
     mButtonYuBaLightClosePtr->setSelected(false);
    	mButtonYuBaLightNightPtr->setSelected(true);
+   	MANUALSTATUS->setYuBaBright(0);
     return false;
 }
 
@@ -1350,6 +2065,7 @@ static bool onButtonClick_ButtonYuBaLightClose(ZKButton *pButton) {
 	}
     mButtonYuBaLightClosePtr->setSelected(true);
 	mButtonYuBaLightNightPtr->setSelected(false);
+	MANUALSTATUS->setYuBaBright(1);
     return false;
 }
 
@@ -1361,6 +2077,7 @@ static bool onButtonClick_ButtonYuBaChangAirStr(ZKButton *pButton) {
 	}
     mButtonYuBaChangAirStrPtr->setSelected(true);
    	mButtonYuBaChangAirWeakPtr->setSelected(false);
+    MANUALSTATUS->setYuBaChangeAir(0);
     return false;
 }
 
@@ -1371,6 +2088,7 @@ static bool onButtonClick_ButtonYuBaChangAirWeak(ZKButton *pButton) {
 	}
     mButtonYuBaChangAirStrPtr->setSelected(false);
 	mButtonYuBaChangAirWeakPtr->setSelected(true);
+	MANUALSTATUS->setYuBaChangeAir(1);
     return false;
 }
 static bool onButtonClick_ButtonHomepage2(ZKButton *pButton) {
@@ -1438,10 +2156,7 @@ static bool onButtonClick_ButtonDropDown(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonDropDown !!!\n");
     return false;
 }
-static bool onButtonClick_Button1(ZKButton *pButton) {
-    LOGD(" ButtonClick Button1 !!!\n");
-    return false;
-}
+
 
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
@@ -1458,20 +2173,6 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button3(ZKButton *pButton) {
-    LOGD(" ButtonClick Button3 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button4(ZKButton *pButton) {
-    LOGD(" ButtonClick Button4 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button5(ZKButton *pButton) {
-    LOGD(" ButtonClick Button5 !!!\n");
-    return false;
-}
 
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
@@ -1488,20 +2189,7 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button7(ZKButton *pButton) {
-    LOGD(" ButtonClick Button7 !!!\n");
-    return false;
-}
 
-static bool onButtonClick_Button8(ZKButton *pButton) {
-    LOGD(" ButtonClick Button8 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button9(ZKButton *pButton) {
-    LOGD(" ButtonClick Button9 !!!\n");
-    return false;
-}
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
@@ -1518,20 +2206,6 @@ static bool onButtonClick_Button10(ZKButton *pButton) {
     return false;
 }
 
-static bool onButtonClick_Button11(ZKButton *pButton) {
-    LOGD(" ButtonClick Button11 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button12(ZKButton *pButton) {
-    LOGD(" ButtonClick Button12 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button13(ZKButton *pButton) {
-    LOGD(" ButtonClick Button13 !!!\n");
-    return false;
-}
 
 static bool onButtonClick_Button14(ZKButton *pButton) {
     LOGD(" ButtonClick Button14 !!!\n");
@@ -1610,6 +2284,7 @@ static bool onButtonClick_ButtonAirPFSwitch(ZKButton *pButton) {
 //		mButtonAirPFFilterResetPtr->setSelected(true);
 //		mButtonAirPFChildLockPtr->setSelected(true);
     }
+    MANUALSTATUS->setAirPFSwitch(pButton->isSelected());
     return false;
 }
 
@@ -1698,6 +2373,7 @@ static bool onButtonClick_ButtonHotCSwitch(ZKButton *pButton) {
 //		mButtonHotChangeSwitchNANOEXPtr->setSelected(true);
 		mWindowHotChangeSwitchPtr->setBackgroundColor(0);
     }
+    MANUALSTATUS->setHeatChangeSwitch(pButton->isSelected());
     return false;
 }
 
@@ -1739,6 +2415,7 @@ static bool onButtonClick_ButtonHumdSwitch(ZKButton *pButton) {
 		mButtonHumdSwitchHumdSettingAddPtr->setSelected(true);
 		mWindowHumdSwitchPtr->setBackgroundColor(0);
     }
+    MANUALSTATUS->setHumdSwitch(pButton->isSelected());
     return false;
 }
 
@@ -1771,7 +2448,7 @@ static bool onButtonClick_ButtonWindSwitch(ZKButton *pButton) {
 		mButtonWindSwitchAutoWindAddPtr->setSelected(true);
 		mWindowWindSwitchPtr->setBackgroundColor(0);
     }
-
+    MANUALSTATUS->setWindSwitch(pButton->isSelected());
     return false;
 }
 
@@ -1818,6 +2495,7 @@ static bool onButtonClick_ButtonYubaSwitch(ZKButton *pButton) {
     	pButton->setSelected(true);
     	mWindowYubaSwitchPtr->setBackgroundColor(0);
     }
+    MANUALSTATUS->setYuBaSwitch(pButton->isSelected());
     return false;
 }
 
@@ -1852,6 +2530,7 @@ static void onListItemClick_ListViewAirPF(ZKListView *pListView, int index, int 
     //LOGD(" onListItemClick_ ListViewAirPF  !!!\n");
 	std::string tmp = AirPFListViewVector.at(index);
 	mTextView37Ptr->setText(tmp);
+	MANUALSTATUS->setAirPFModel(mTextView37Ptr->getText().c_str());
 	mListViewAirPFPtr->setVisible(false);
 }
 static int getListItemCount_ListViewAir(const ZKListView *pListView) {
@@ -1870,6 +2549,7 @@ static void onListItemClick_ListViewAir(ZKListView *pListView, int index, int id
     //LOGD(" onListItemClick_ ListViewAir  !!!\n");
 	std::string tmp = AirListViewVector.at(index);
 	mTextView38Ptr->setText(tmp);
+	MANUALSTATUS->setAirModel(mTextView38Ptr->getText().c_str());
 	mListViewAirPtr->setVisible(false);
 }
 
@@ -1889,6 +2569,7 @@ static void onListItemClick_ListViewHot(ZKListView *pListView, int index, int id
     //LOGD(" onListItemClick_ ListViewHot  !!!\n");
 	std::string tmp = HotListViewVector.at(index);
 	mTextView39Ptr->setText(tmp);
+	MANUALSTATUS->setHeatChangeModel(mTextView39Ptr->getText().c_str());
 	mListViewHotPtr->setVisible(false);
 }
 
@@ -1908,6 +2589,7 @@ static void onListItemClick_ListViewHumd(ZKListView *pListView, int index, int i
     //LOGD(" onListItemClick_ ListViewHumd  !!!\n");
 	std::string tmp = HumdListViewVector.at(index);
 	mTextView90Ptr->setText(tmp);
+	MANUALSTATUS->setHumdModel(mTextView90Ptr->getText().c_str());
 	mListViewHumdPtr->setVisible(false);
 }
 
@@ -1927,6 +2609,7 @@ static void onListItemClick_ListViewWind(ZKListView *pListView, int index, int i
     //LOGD(" onListItemClick_ ListViewWind  !!!\n");
 	std::string tmp = WindListViewVector.at(index);
 	mTextView91Ptr->setText(tmp);
+	MANUALSTATUS->setWindModel(mTextView91Ptr->getText().c_str());
 	mListViewWindPtr->setVisible(false);
 }
 
@@ -1965,12 +2648,14 @@ static void onListItemClick_ListViewYuBa(ZKListView *pListView, int index, int i
     //LOGD(" onListItemClick_ ListViewYuBa  !!!\n");
 	std::string tmp = YuBaListViewVector.at(index);
 	mTextView93Ptr->setText(tmp);
+	MANUALSTATUS->setYuBaModel(mTextView93Ptr->getText().c_str());
 	mListViewYuBaPtr->setVisible(false);
 }
 static bool onButtonClick_ButtonAirPFAutoWind(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFAutoWind !!!\n");
     return false;
 }
+
 
 static bool onButtonClick_ButtonAirPFWindDirect(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFWindDirect !!!\n");

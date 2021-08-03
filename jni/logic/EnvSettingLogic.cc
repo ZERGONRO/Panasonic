@@ -2,6 +2,7 @@
 #include "uart/ProtocolSender.h"
 #include "util/MachineStatus.h"
 #include <pthread.h>
+#include "app/SysAppFactory.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -32,14 +33,15 @@
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
 
-char *stringText = "";
+//char *stringText = "";
+static std::string stringText;
 bool Flag_EnvRefresh = false;
 static char *text_name;
 static char *pic_name;
 static int EnvDevSetting_index;
 static int DevListType;
 static Mutex lLock;
-static std::vector<DeviceInfo *> *EnvSettingVector[10];
+static std::vector<DeviceInfo *> *EnvSettingVector[20];
 static std::vector<SpaceInfo *> *EnvSettingVectorList;			//用指针直接操作，无需中间介质（EnvSettingVector）代替操作
 static std::vector<DeviceInfo *> *DevSettingVectorList;
 static std::vector<IOTDevInfo *> *IOTDevSettingVectorList;
@@ -47,6 +49,12 @@ static std::vector<DeviceInfo *> BedroomDevSettingVector, LivingroomDevSettingVe
 static std::vector<IOTDevInfo *> AllDevListVector, LifeSmallDevListVector, BigDevListVector, KitcheenDevListVector, HomeDevListVector;
 
 static bool pushback_flag = true;
+
+extern bool Flag_IME_Text;
+
+void onEditTextChanged_EditText1(const std::string &text);
+
+//extern struct S_EditTextInputCallback;
 
 static SpaceInfo SpaceInfoList[] = {
 		{"卧室", "./ui/首页-图标-主卧室1.png", false},
@@ -56,8 +64,14 @@ static SpaceInfo SpaceInfoList[] = {
 		{"浴室", "./ui/首页-图标-浴室1.png", false},
 		{"餐厅", "./ui/首页-图标-餐厅1.png", false},
 		{"儿童房", "./ui/首页-图标-儿童房.png", false},
-		{"阳台", "./ui/首页-图标-阳台1.png", false},
-		{"自定义", "", false}
+		{"阳台", "./ui/首页-图标-阳台1.png", false}
+//		{"阳台1", "./ui/首页-图标-阳台1.png", false},
+//		{"阳台2", "./ui/首页-图标-阳台1.png", false},
+//		{"阳台3", "./ui/首页-图标-阳台1.png", false},
+//		{"阳台4", "./ui/首页-图标-阳台1.png", false},
+//		{"阳台5", "./ui/首页-图标-阳台1.png", false},
+//		{"阳台6", "./ui/首页-图标-阳台1.png", false}
+//		{"自定义", "", false}
 };
 
 static IOTDevInfo IOTDevInfoList[] = {
@@ -296,7 +310,7 @@ static void onUI_init(){
 	{
 		if(!EnvSettingVector[j])
 		{
-			EnvSettingVector[j] = new std::vector<DeviceInfo *>[5];
+			EnvSettingVector[j] = new std::vector<DeviceInfo *>[20];
 			EnvSettingVector[j]->clear();
 			DeviceInfo *tmp1 = (DeviceInfo*)malloc(sizeof(DeviceInfo));
 			tmp1->maintext = "+";
@@ -430,6 +444,60 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     return false;
 }
 
+void setEditTextPos(int size){
+	LayoutPosition lp = mEditText2Ptr->getPosition();
+	mEditText2Ptr->setText("自定义");
+	mEditText2Ptr->setTextColor(0xFF000000);
+	mEditText2Ptr->setBackgroundColor(0xFFFFFFFF);
+	/*
+	if (size <= 12){
+		if (size == 0){
+			lp.mLeft = 50 + 0;
+			lp.mTop = 188 + 22 + 5;
+		}else if (size == 1){
+			lp.mLeft = 50 + 200;
+			lp.mTop = 188 + 22 + 5;
+		}else if (size == 2){
+			lp.mLeft = 50 + 400;
+			lp.mTop = 188 + 22 + 5;
+		}else if (size == 3){
+			lp.mLeft = 50 + 600;
+			lp.mTop = 188 + 22 + 5;
+		}else if (size == 4){
+			lp.mLeft = 50 + 0;
+			lp.mTop = 188 + 92 + 5;
+		}else if (size == 5){
+			lp.mLeft = 50 + 200;
+			lp.mTop = 188 + 92 + 5;
+		}else if (size == 6){
+			lp.mLeft = 50 + 400;
+			lp.mTop = 188 + 92 + 5;
+		}else if (size == 7){
+			lp.mLeft = 50 + 600;
+			lp.mTop = 188 + 92 + 5;
+		}else if (size == 8){
+			lp.mLeft = 50 + 0;
+			lp.mTop = 188 + 162;
+		}else if (size == 9){
+			lp.mLeft = 50 + 200;
+			lp.mTop = 188 + 162;
+		}else if (size == 10){
+			lp.mLeft = 50 + 400;
+			lp.mTop = 188 + 162;
+		}else if (size == 11){
+			lp.mLeft = 50 + 600;
+			lp.mTop = 188 + 162;
+		}
+	}else{
+		lp.mLeft = 50 + 600;
+		lp.mTop = 188 + 222 + 10;
+	}
+	 */
+	lp.mLeft = 650;
+	lp.mTop = 420;
+	mEditText2Ptr->setPosition(lp);
+}
+
 static int getListItemCount_ListView2(const ZKListView *pListView) {
     //LOGD("getListItemCount_ListView2 !\n");
 	MACHINESTATUS->setEnvListInfo(EnvSettingVectorList);
@@ -438,30 +506,23 @@ static int getListItemCount_ListView2(const ZKListView *pListView) {
 
 static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
     //LOGD(" obtainListItemData_ ListView2  !!!\n");
+	LayoutPosition lp;
 	ZKListView::ZKListSubItem* psubText = pListItem->findSubItemByID(ID_ENVSETTING_SubItemTitle);
 	ZKListView::ZKListSubItem* psubPic  = pListItem->findSubItemByID(ID_ENVSETTING_SubItemPic);
 	ZKListView::ZKListSubItem* psubButton = pListItem->findSubItemByID(ID_ENVSETTING_SubItemCancel);
-//	SpaceInfo *tmp1 = EnvSettingVectorList->at(0);
-//	mTextViewPic1Ptr->setBackgroundPic(tmp1->mainPic);
-//	mTextView45Ptr->setText(tmp1->maintext);
 	SpaceInfo *tmp = EnvSettingVectorList->at(index);
 	psubPic->setBackgroundPic(tmp->mainPic);
 	psubText->setText(tmp->maintext);
-
+	setEditTextPos((int)EnvSettingVectorList->size());
+//	setEditTextPos(index);
 	if(mButton10Ptr->isSelected())
 	{
-		if(EnvSettingVectorList->size() - 1 != index)
-		{
-			psubButton->setVisible(true);
-		}
-		else
-		{
-			psubButton->setVisible(false);
-		}
+		psubButton->setVisible(true);
 	}
 	else
 	{
 		psubButton->setVisible(false);
+
 	}
 //	mListView2Ptr->refreshListView();
 }
@@ -469,49 +530,34 @@ static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKLis
 static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) {
     //LOGD(" onListItemClick_ ListView2  !!!\n");
 	/* 在点击删除图标后，删除对应的环境需要重新对应数组数据 */
-//	ZKListView::ZKListSubItem* psubButtonClick = pListItem->findSubItemByID(ID_ENVSETTING_SubItemCancel);
 	Mutex::Autolock _l(lLock);
 	if(mButton10Ptr->isSelected())
 	{
-		LOGD("psubButtonClick!!! and index is : %d\n", index);
-//		EnvSettingVectorList->clear();
-		for(std::vector<SpaceInfo *>::iterator it = EnvSettingVectorList->begin() ; it != EnvSettingVectorList->end();it++)
+		for(std::vector<SpaceInfo *>::iterator it = EnvSettingVectorList->begin();;it++)
 		{
-			if(index == EnvSettingVectorList->size() - 1)
-			{
-				LOGD(" DIY button, Click_ListView2 can't press down  !!!\n");
-				break;
-			}
 			if((*it) == EnvSettingVectorList->at(index))
 			{
-//				delete EnvSettingVector[index];			//need modify
-//				EnvSettingVector[index] = NULL;
 				SpaceInfo *tmp = (*it);
-				it = EnvSettingVectorList->erase(it);
+				EnvSettingVectorList->erase(it);
 				free(tmp);
 				tmp = NULL;
-
+				break;
+			}
+			if (it == EnvSettingVectorList->end()){
+				break;
 			}
 		}
 	}
 	else
 	{
-		if(EnvSettingVectorList->size() - 1 == index)
-		{
-			/*自定义设置区*/
-
-		}
-		else
-		{
-			SpaceInfo *tmp1 = EnvSettingVectorList->at(index);
-			text_name = tmp1->maintext;
-			pic_name = tmp1->mainPic;
-			EnvDevSetting_index = index;
-			DevSettingVectorList = EnvSettingVector[index];
-			mListView2Ptr->setVisible(false);
-			mWindow12Ptr->setVisible(false);
-			mWindow4Ptr->setVisible(true);
-		}
+		SpaceInfo *tmp1 = EnvSettingVectorList->at(index);
+		text_name = tmp1->maintext;
+		pic_name = tmp1->mainPic;
+		EnvDevSetting_index = index;
+		DevSettingVectorList = EnvSettingVector[index];
+		mListView2Ptr->setVisible(false);
+		mWindow12Ptr->setVisible(false);
+		mWindow4Ptr->setVisible(true);
 	}
 	mListView2Ptr->refreshListView();
 }
@@ -732,5 +778,20 @@ static void onListItemClick_ListView3(ZKListView *pListView, int index, int id) 
 }
 static void onEditTextChanged_EditText1(const std::string &text) {
     LOGD(" onEditTextChanged_ EditText1 %s !!!\n", text.c_str());
+//    mEditText1Ptr->setText("自定义");
 //    *stringText = text.c_str();
+}
+static void onEditTextChanged_EditText2(const std::string &text) {
+    LOGD(" onEditTextChanged_ EditText2 %s !!!\n", text.c_str());
+    if (Flag_IME_Text){
+    	LOGD("Text Entern\n");
+    	Flag_IME_Text = false;
+    	SpaceInfo *tmpEditText = (SpaceInfo *)malloc(sizeof(SpaceInfo));
+		strcpy(tmpEditText->maintext, text.c_str());
+		strcpy(tmpEditText->mainPic, "");
+		tmpEditText->cancelstatus = false;
+		EnvSettingVectorList->push_back(tmpEditText);
+    }
+
+//    mEditText2Ptr->setText("");
 }

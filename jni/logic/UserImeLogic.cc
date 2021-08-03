@@ -62,7 +62,7 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-
+	mTEXTVIEW_CONTENTPtr->setText("");
 }
 
 /*

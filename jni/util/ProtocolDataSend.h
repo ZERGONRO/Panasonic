@@ -59,92 +59,116 @@ typedef struct CommonSendDate_t{
 typedef struct AirConditionSendData_t {
 	BYTE Swtich;
 	BYTE TimingSwtich;
-	UINT16 ModelSetting;
+	char ModelSetting[64];
 	BYTE TimeSetting1;
 	BYTE TimeSetting2;
-	UINT16 TimeValueSetting1;
-	UINT16 TimeValueSetting2;
-	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3
+	UINT16 TimeValueOpenSetting1;
+	UINT16 TimeValueCloseSetting1;
+	UINT16 TimeValueOpenSetting2;
+	UINT16 TimeValueCloseSetting2;
+	BYTE TempValue1;
+	BYTE TempValue2;
+	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3-4
 	UINT16 WindDirectSetting;		//风向		0上下-1左右
 	UINT16 TempSettingValue;		//温度设定
 	BYTE NanoeX;
-	BYTE ModeSelect;				//模式选择		自动-制暖-制冷-抽湿
+	BYTE ModeSelect;				//模式选择		0自动-1制暖-2制冷-3抽湿
 }AirConditionSendData;
 
 
 typedef struct PurifySendData_t {
 	BYTE Switch;
-	BYTE ModelSelect;
+	char ModelSetting[64];
 	BYTE TimingSwitch;
 	BYTE TimeSetting1;
 	BYTE TimeSetting2;
-	UINT16 TimeValueSetting1;
-	UINT16 TimeValueSetting2;
-	BYTE AutoWindVolSetting;		//自动风量 		0-1-2-3
+	UINT16 TimeValueOpenSetting1;
+	UINT16 TimeValueCloseSetting1;
+	UINT16 TimeValueOpenSetting2;
+	UINT16 TimeValueCloseSetting2;
+	BYTE TempValue1;
+	BYTE TempValue2;
+	BYTE AutoWindVolSetting;		//自动风量 		0-1-2-3-4
 	UINT16 WindDirectSetting;		//风向
 	UINT16 AddHumdSetting;			//加湿
 	BYTE NanoexSetting;
 	UINT16 BrightSetting;			//亮度
-	BYTE FilterReset;				//滤网复位		0-1
+	BYTE FilterReset;				//滤网复位
 	BYTE ChildLock;
 }PurifySendData;
 
 typedef struct HeatChangeSendData_t {
 	BYTE Swtich;
 	BYTE TimingSwtich;
-	UINT16 ModelSetting;
+	char ModelSetting[64];
 	BYTE TimeSetting1;
 	BYTE TimeSetting2;
-	UINT16 TimeValueSetting1;
-	UINT16 TimeValueSetting2;
-	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3
-	UINT16 ModeSetting;				//模式选择		自动-热交换-内循环
+	UINT16 TimeValueOpenSetting1;
+	UINT16 TimeValueCloseSetting1;
+	UINT16 TimeValueOpenSetting2;
+	UINT16 TimeValueCloseSetting2;
+	BYTE TempValue1;
+	BYTE TempValue2;
+	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3-4
+	UINT16 ModeSetting;				//模式选择		0自动-1热交换-2内循环
 	BYTE NanoeX;
 }HeatChangeSendData;
 
 typedef struct AdjustHumdSendData_t {
 	BYTE Swtich;
 	BYTE TimingSwtich;
-	UINT16 ModelSetting;
+	char ModelSetting[64];
 	BYTE TimeSetting1;
 	BYTE TimeSetting2;
-	UINT16 TimeValueSetting1;
-	UINT16 TimeValueSetting2;
-	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3
+	UINT16 TimeValueOpenSetting1;
+	UINT16 TimeValueCloseSetting1;
+	UINT16 TimeValueOpenSetting2;
+	UINT16 TimeValueCloseSetting2;
+	BYTE TempValue1;
+	BYTE TempValue2;
+	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3-4
 	UINT16 AirDirectSetting;		//风向
 	UINT16 AdjustHumdValue;			//温度设定
-	BYTE FunctionSelectSetting;		//功能选择		自动除湿-连续除湿-保湿-送风
+	BYTE FunctionSelectSetting;		//功能选择		0自动除湿-1连续除湿-2送风
 }AdjustHumdSendData;
 
 
 typedef struct WindChangAirSendData_t {
 	BYTE Swtich;
 	BYTE TimingSwtich;
-	UINT16 ModelSetting;
+	char ModelSetting[64];
 	BYTE TimeSetting1;
 	BYTE TimeSetting2;
-	UINT16 TimeValueSetting1;
-	UINT16 TimeValueSetting2;
+	UINT16 TimeValueOpenSetting1;
+	UINT16 TimeValueCloseSetting1;
+	UINT16 TimeValueOpenSetting2;
+	UINT16 TimeValueCloseSetting2;
+	BYTE TempValue1;
+	BYTE TempValue2;
 	BYTE NanoeX;
-	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3
+	UINT16 AutoAirVolSetting;		//自动风量 		0-1-2-3-4
 }WindChangAirSendData;
 
 
 typedef struct YuBaSendData_t {
 	BYTE Swtich;
 	BYTE TimingSwtich;
-	UINT16 ModelSetting;
+	char ModelSetting[64];
 	BYTE TimeSetting1;
 	BYTE TimeSetting2;
-	UINT16 TimeValueSetting1;
-	UINT16 TimeValueSetting2;
+	UINT16 TimeValueOpenSetting1;
+	UINT16 TimeValueCloseSetting1;
+	UINT16 TimeValueOpenSetting2;
+	UINT16 TimeValueCloseSetting2;
+	BYTE TempValue1;
+	BYTE TempValue2;
 	BYTE HeatDrySetting;			//热干燥	0强-1弱
 	BYTE ColdDrySetting;			//凉干燥	0强-1弱
 	BYTE AirDirectSetting;			//风向	0手动-1自动
 	BYTE WindType;					//风种	0集中-1扩散
 	BYTE NanoeX;
 	BYTE HeatingSetting;			//取暖	0强-1弱
-	BYTE AirChangeSetting;			//换气 	0快速换气-1强-2弱
+	BYTE AirChangeSetting;			//换气 	0强-1弱
 	BYTE BrightnessSetting;			//照明	0冷色-1暖色
 }YuBaSendData;
 

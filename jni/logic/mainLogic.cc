@@ -105,6 +105,103 @@ void SetEnvName(std::string focusindex)
 }
 //struct tm *t = TimeHelper::getDateTime();
 
+void UpdateIndoorDataColorandValue(){
+	int Datatmp;
+	float Datatmp1;
+	char DataBuf[64];
+	Datatmp = atoi(mTextView22Ptr->getText().c_str());		//PM2.5
+	if (Datatmp >= 0 && Datatmp <= 34){
+		mTextView22Ptr->setTextColor(0xFF00AAF4);
+		mTextView23Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp >= 35 && Datatmp <= 74){
+		mTextView22Ptr->setTextColor(0xFFFFFF80);
+		mTextView23Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp >= 75 && Datatmp <= 149){
+		mTextView22Ptr->setTextColor(0xFFFF8040);
+		mTextView23Ptr->setTextColor(0xFFFF8040);
+	}else if (Datatmp >= 150 && Datatmp <= 999){
+		mTextView22Ptr->setTextColor(0xFF8000FF);
+		mTextView23Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView22Ptr->setVisible(false);
+		mTextView23Ptr->setVisible(false);
+	}
+
+	Datatmp = atoi(mTextView26Ptr->getText().c_str());		//温度
+	mTextView26Ptr->setTextColor(0xFF000000);
+	mTextView27Ptr->setTextColor(0xFF000000);
+	if (Datatmp > 50 && Datatmp < -30){
+		mTextView26Ptr->setVisible(false);
+	}
+
+	Datatmp = atoi(mTextView19Ptr->getText().c_str());		//湿度
+	mTextView19Ptr->setTextColor(0xFF000000);
+	mTextView36Ptr->setTextColor(0xFF000000);
+	if (Datatmp > 100 && Datatmp < 0){
+		mTextView19Ptr->setVisible(false);
+	}
+
+	Datatmp1 = atoi(mTextView30Ptr->getText().c_str());		//甲醛
+	if (Datatmp1 >= 0 && Datatmp1 <= 0.03){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView30Ptr->setText(DataBuf);
+		mTextView30Ptr->setTextColor(0xFF00AAF4);
+		mTextView31Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp1 >= 0.04 && Datatmp1 <= 0.07){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView30Ptr->setText(DataBuf);
+		mTextView30Ptr->setTextColor(0xFFFFFF80);
+		mTextView31Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp1 >= 0.08 && Datatmp1 <= 2.50){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView30Ptr->setText(DataBuf);
+		mTextView30Ptr->setTextColor(0xFF8000FF);
+		mTextView31Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView30Ptr->setVisible(false);
+		mTextView31Ptr->setVisible(false);
+	}
+
+	Datatmp1 = atoi(mTextView46Ptr->getText().c_str());		//TVOC
+	if (Datatmp1 >= 0 && Datatmp1 <= 0.03){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView46Ptr->setText(DataBuf);
+		mTextView46Ptr->setTextColor(0xFF00AAF4);
+		mTextView51Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp1 >= 0.04 && Datatmp1 <= 0.07){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView46Ptr->setText(DataBuf);
+		mTextView46Ptr->setTextColor(0xFFFFFF80);
+		mTextView51Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp1 >= 0.08 && Datatmp1 <= 2.50){
+		sprintf(DataBuf, "%03d", Datatmp1);
+		mTextView46Ptr->setText(DataBuf);
+		mTextView46Ptr->setTextColor(0xFF8000FF);
+		mTextView51Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView46Ptr->setVisible(false);
+		mTextView51Ptr->setVisible(false);
+	}
+
+	Datatmp = atoi(mTextView33Ptr->getText().c_str());		//CO2
+	if (Datatmp >= 0 && Datatmp <= 800){
+		mTextView33Ptr->setTextColor(0xFF00AAF4);
+		mTextView34Ptr->setTextColor(0xFF00AAF4);
+	}else if (Datatmp > 800 && Datatmp <= 1500){
+		mTextView33Ptr->setTextColor(0xFFFFFF80);
+		mTextView34Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp > 1500 && Datatmp <= 3000){
+		mTextView33Ptr->setTextColor(0xFFFF8040);
+		mTextView34Ptr->setTextColor(0xFFFF8040);
+	}else if (Datatmp > 3000 && Datatmp <= 5000){
+		mTextView33Ptr->setTextColor(0xFF8000FF);
+		mTextView34Ptr->setTextColor(0xFF8000FF);
+	}else{
+		mTextView33Ptr->setVisible(false);
+		mTextView34Ptr->setVisible(false);
+	}
+}
+
 static void updateTime()
 {
 	char timeStr[20];

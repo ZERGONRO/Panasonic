@@ -1,6 +1,7 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "util/MachineStatus.h"
+#include "util/ManualStatusListence.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -443,6 +444,50 @@ void WeekPosReset()
 
 }
 
+void setManualDevTimeInfo(int DevID, EquipmentTiming *EqpTimeInfo){
+		if (DevID < 0 || DevID > 6){
+			return;
+		}
+		switch(DevID){
+			case AirPURIFY:
+			{
+				MANUALSTATUS->setAirPFTimeInfo(EqpTimeInfo);
+			}
+			break;
+			case AIRCONDITION:
+			{
+				MANUALSTATUS->setAirTimeInfo(EqpTimeInfo);
+			}
+			break;
+			case HOTEXCHANGE:
+			{
+				MANUALSTATUS->setHeatChangeTimeInfo(EqpTimeInfo);
+			}
+			break;
+			case DEHUMIDIFY:
+			{
+				MANUALSTATUS->setHumdTimeInfo(EqpTimeInfo);
+			}
+			break;
+			case WINDEXCHANGE:
+			{
+				MANUALSTATUS->setWindTimeInfo(EqpTimeInfo);
+			}
+			break;
+			case STERILIZATION:
+			{
+	//			MANUALSTATUS->setAirPFTimeSwitch(status);
+			}
+			break;
+			case YUBA:
+			{
+				MANUALSTATUS->setYuBaTimeInfo(EqpTimeInfo);
+			}
+			break;
+		}
+}
+
+/* 从Addtime返回后更新Timing界面 */
 void UpdateTimeSettingFunc()
 {
 
@@ -458,7 +503,7 @@ void UpdateTimeSettingFunc()
 //	EqpTmer_Data->DeviceID = DevTimeSetting->DeviceID;
 //	memcpy(&EqpTmer_Data->DeviceData, &DevTimeSetting, sizeof(EquipmentTiming));
 	MACHINESTATUS->setEqpTimeData();
-
+	setManualDevTimeInfo(DevTimeSetting->DeviceID, DevTimeSetting);
 
 	for (int k = 0;k < 8;k++){
 		mTextViewPtr[k]->setText("");
@@ -569,6 +614,49 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
     return false;
 }
 
+void setManualDevTimeSwitch(int DevID, int status){
+	if (DevID < 0 || DevID > 6){
+		return;
+	}
+	switch(DevID){
+		case AirPURIFY:
+		{
+			MANUALSTATUS->setAirPFTimeSwitch(status);
+		}
+		break;
+		case AIRCONDITION:
+		{
+			MANUALSTATUS->setAirTimeSwitch(status);
+		}
+		break;
+		case HOTEXCHANGE:
+		{
+			MANUALSTATUS->setHeatChangeTimeSwitch(status);
+		}
+		break;
+		case DEHUMIDIFY:
+		{
+			MANUALSTATUS->setHumdTimeSwitch(status);
+		}
+		break;
+		case WINDEXCHANGE:
+		{
+			MANUALSTATUS->setWindTimeSwitch(status);
+		}
+		break;
+		case STERILIZATION:
+		{
+//			MANUALSTATUS->setAirPFTimeSwitch(status);
+		}
+		break;
+		case YUBA:
+		{
+			MANUALSTATUS->setYuBaTimeSwitch(status);
+		}
+		break;
+	}
+}
+
 static bool onButtonClick_Button6(ZKButton *pButton) {
     LOGD(" ButtonClick Button6 !!!\n");
     if (pButton->isSelected()){
@@ -582,6 +670,7 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
     	pButton->setSelected(true);
     	mWindowTimeWavePtr->setBackgroundColor(0);
     }
+    setManualDevTimeSwitch(DeviceID, pButton->isSelected());
     MACHINESTATUS->getDeviceSwitch(Flag_Switch);
     return false;
 }

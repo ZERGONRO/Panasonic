@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/MachineStatus.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -128,6 +129,18 @@ static bool onSensorValueSettingActivityTouchEvent(const MotionEvent &ev) {
 	}
 	return false;
 }
+
+void UpdataSensorData(){
+	SensorDefaultData tmpsensordata;
+	strcpy(tmpsensordata.CO2_data, mTextView12Ptr->getText().c_str());
+	strcpy(tmpsensordata.Fdehyde_data, mTextView9Ptr->getText().c_str());
+	strcpy(tmpsensordata.Humd_data, mTextView8Ptr->getText().c_str());
+	strcpy(tmpsensordata.PM25_data, mTextView10Ptr->getText().c_str());
+	strcpy(tmpsensordata.Temp_data, mTextView7Ptr->getText().c_str());
+	strcpy(tmpsensordata.Tvoc_data, mTextView11Ptr->getText().c_str());
+	MACHINESTATUS->setSensorData(tmpsensordata);
+}
+
 static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonBack !!!\n");
     EASYUICONTEXT->goBack();
@@ -138,7 +151,7 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
     LOGD(" ButtonClick Button1 !!!\n");
     int val = atoi(mTextView7Ptr->getText().c_str()) - 1;
     mTextView7Ptr->setText(std::to_string(val) + "℃");
-
+    UpdataSensorData();
     return false;
 }
 
@@ -146,6 +159,7 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
     int val = atoi(mTextView7Ptr->getText().c_str()) + 1;
     mTextView7Ptr->setText(std::to_string(val) + "℃");
+    UpdataSensorData();
     return false;
 }
 
@@ -153,6 +167,7 @@ static bool onButtonClick_Button3(ZKButton *pButton) {
     LOGD(" ButtonClick Button3 !!!\n");
     int val = atoi(mTextView8Ptr->getText().c_str()) - 1;
     mTextView8Ptr->setText(std::to_string(val) + "%");
+    UpdataSensorData();
     return false;
 }
 
@@ -160,6 +175,7 @@ static bool onButtonClick_Button4(ZKButton *pButton) {
     LOGD(" ButtonClick Button4 !!!\n");
     int val = atoi(mTextView8Ptr->getText().c_str()) + 1;
     mTextView8Ptr->setText(std::to_string(val) + "%");
+    UpdataSensorData();
     return false;
 }
 
@@ -170,6 +186,7 @@ static bool onButtonClick_Button5(ZKButton *pButton) {
     double val = (double)atoi(mTextView9Ptr->getText().c_str()) - 0.50;
     LOGD("val is %f and buf is %s\n", val, buf);			//float和double输出精度超过2， buf输出0.00
     mTextView9Ptr->setText(std::to_string(val) + "mg/m³");
+    UpdataSensorData();
     return false;
 }
 
@@ -180,6 +197,7 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
 //    float val1 = mTextView9Ptr->getText().c_str();
     float val = (float)atoi(mTextView9Ptr->getText().c_str()) + 0.50;
     mTextView9Ptr->setText(std::to_string(val) + "mg/m³");
+    UpdataSensorData();
     return false;
 }
 
@@ -187,6 +205,7 @@ static bool onButtonClick_Button7(ZKButton *pButton) {
     LOGD(" ButtonClick Button7 !!!\n");
     int val = atoi(mTextView10Ptr->getText().c_str()) - 1;
     mTextView10Ptr->setText(std::to_string(val) + "ug/m³");
+    UpdataSensorData();
     return false;
 }
 
@@ -194,6 +213,7 @@ static bool onButtonClick_Button8(ZKButton *pButton) {
     LOGD(" ButtonClick Button8 !!!\n");
     int val = atoi(mTextView10Ptr->getText().c_str()) + 1;
 	mTextView10Ptr->setText(std::to_string(val) + "ug/m³");
+	 UpdataSensorData();
     return false;
 }
 
@@ -206,6 +226,7 @@ static bool onButtonClick_Button9(ZKButton *pButton) {
 //    }
     float val = (float)atoi(mTextView11Ptr->getText().c_str()) - 0.50;
     mTextView11Ptr->setText(std::to_string(val) + "mg/m³");
+    UpdataSensorData();
     return false;
 }
 
@@ -213,6 +234,7 @@ static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
     float val = (float)atoi(mTextView11Ptr->getText().c_str()) + 0.50;
     mTextView11Ptr->setText(std::to_string(val) + "mg/m³");
+    UpdataSensorData();
     return false;
 }
 
@@ -220,6 +242,7 @@ static bool onButtonClick_Button11(ZKButton *pButton) {
     LOGD(" ButtonClick Button11 !!!\n");
     int val = atoi(mTextView12Ptr->getText().c_str()) - 1;
     mTextView12Ptr->setText(std::to_string(val) + "ppm");
+    UpdataSensorData();
     return false;
 }
 
@@ -227,6 +250,7 @@ static bool onButtonClick_Button12(ZKButton *pButton) {
     LOGD(" ButtonClick Button12 !!!\n");
     int val = atoi(mTextView12Ptr->getText().c_str()) + 1;
     mTextView12Ptr->setText(std::to_string(val) + "ppm");
+    UpdataSensorData();
     return false;
 }
 static bool onButtonClick_Button13(ZKButton *pButton) {

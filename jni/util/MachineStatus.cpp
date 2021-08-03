@@ -40,6 +40,7 @@ MachineStatusListener::MachineStatusListener()
 	EquipmentTimeSetting->Time2StageFlag = false;
 
 	strcpy(MasterSlaverKey, InitialPassword);
+	initSensorData();
 	initVersion();
 //	initEqpTimeData();
 //	MasterSlaverKey[10] = "123456";
@@ -61,7 +62,27 @@ MachineStatusListener::~MachineStatusListener()
 
 }
 
+void MachineStatusListener::initSensorData(){
+	strcpy(Sensor_Data.CO2_data, "10ppm");
+	strcpy(Sensor_Data.Fdehyde_data, "0.50mg/m³");
+	strcpy(Sensor_Data.Humd_data, "60%");
+	strcpy(Sensor_Data.PM25_data, "15ug/m³");
+	strcpy(Sensor_Data.Temp_data, "26℃");
+	strcpy(Sensor_Data.Tvoc_data, "0.50mg/m³");
+}
 
+void MachineStatusListener::setSensorData(SensorDefaultData sensordata){
+	strcpy(Sensor_Data.CO2_data, sensordata.CO2_data);
+	strcpy(Sensor_Data.Fdehyde_data, sensordata.Fdehyde_data);
+	strcpy(Sensor_Data.Humd_data, sensordata.Humd_data);
+	strcpy(Sensor_Data.PM25_data, sensordata.PM25_data);
+	strcpy(Sensor_Data.Temp_data, sensordata.Temp_data);
+	strcpy(Sensor_Data.Tvoc_data, sensordata.Tvoc_data);
+}
+
+SensorDefaultData MachineStatusListener::getSensorData(){
+	return Sensor_Data;
+}
 
 
 void MachineStatusListener::initVersion()
@@ -573,6 +594,7 @@ bool MachineStatusListener::getMasterorSlaver()
 	return EnvDate->MasterorSlaver;
 }
 
+/*AddTimeSetting UI界面设备定时数据设置*/
 void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSetting)
 {
 	if (!EquTimeSetting){
@@ -612,6 +634,7 @@ EquipmentTiming* MachineStatusListener::getEquipmentTimeSetting()
 	return EquipmentTimeSetting;
 }
 
+/*Time UI界面设备定时数据设置*/
 void MachineStatusListener::setEqpTimeData()
 {
 	int Eqp_Count = 0;

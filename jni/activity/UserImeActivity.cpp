@@ -2,6 +2,7 @@
 /gen auto by zuitools
 ***********************************************/
 #include "UserImeActivity.h"
+#include "app/SysAppFactory.h"
 
 /*TAG:GlobalVariable全局变量*/
 static ZKSlideText* mSLIDETEXT_HANZIPtr;
@@ -70,6 +71,7 @@ static UserImeActivity* mActivityPtr;
 
 /*register activity*/
 //REGISTER_ACTIVITY(UserImeActivity);
+//REGISTER_SYSAPP(APP_TYPE_SYS_IME, UserImeActivity);
 
 typedef struct {
 	int id; // 定时器ID ， 不能重复

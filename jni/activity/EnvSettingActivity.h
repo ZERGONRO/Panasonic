@@ -25,8 +25,11 @@
 #include "control/ZKVideoView.h"
 #include "control/ZKRadioGroup.h"
 #include "window/ZKSlideWindow.h"
+#include "sysapp/UserIMESysApp.h"
+
 
 /*TAG:Macro宏ID*/
+#define ID_ENVSETTING_EditText2    51002
 #define ID_ENVSETTING_EditText1    51001
 #define ID_ENVSETTING_TextViewPic1    50003
 #define ID_ENVSETTING_TextViewPicShow    50001
@@ -107,12 +110,13 @@ class EnvSettingActivity : public Activity,
                      public EasyUIContext::ITouchListener,
                      public ZKRadioGroup::ICheckedChangeListener,
                      public ZKEditText::ITextChangeListener,
+//                     public UserIMESysApp,
                      public ZKVideoView::IVideoPlayerMessageListener
 {
 public:
     EnvSettingActivity();
     virtual ~EnvSettingActivity();
-
+    static EnvSettingActivity* getInstance();
     /**
      * 注册定时器
      */
@@ -126,6 +130,7 @@ public:
 	 */
 	void resetUserTimer(int id, int time);
 
+//	void onTextChanged(ZKTextView *pTextView, const string &text);
 protected:
     /*TAG:PROTECTED_FUNCTION*/
     virtual const char* getAppName() const;
@@ -165,5 +170,7 @@ private:
     int mVideoLoopErrorCount;
 
 };
+
+#define ENVINFOSTATUS	EnvSettingActivity::getInstance()
 
 #endif

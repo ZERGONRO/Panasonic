@@ -36,6 +36,15 @@ typedef struct MachineVersion_t{
 	int ver_notice;
 }MachineVersion;
 
+typedef struct SensorDefaultData_t{
+	char Temp_data[16];
+	char Humd_data[16];
+	char PM25_data[16];
+	char Tvoc_data[16];
+	char CO2_data[16];
+	char Fdehyde_data[16];
+}SensorDefaultData;
+
 typedef enum {
 	AirPURIFY,
 	AIRCONDITION,
@@ -145,6 +154,9 @@ public:
 	void setformvdate(float data);
 	float gettvocdate();
 	void settvocdate(float data);
+	void initSensorData();
+	void setSensorData(SensorDefaultData sensordata);
+	SensorDefaultData getSensorData();
 	//
 	int getenvmode();
 	void setenvmode();
@@ -171,6 +183,7 @@ private:
 	int smartprograme_type;
 	int manualprograme_type;
 	MachineTime Machinetime;
+	SensorDefaultData Sensor_Data;
 	char MasterSlaverKey[10];
 	MachineVersion *MachineVer;
 	EquipmentTiming* EquipmentTimeSetting;

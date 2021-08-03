@@ -174,6 +174,7 @@ static bool onButtonClick_Button2(ZKButton *pButton) {
 
 static bool onButtonClick_Button3(ZKButton *pButton) {
     LOGD(" ButtonClick Button3 !!!\n");
+    mWindowHelpPtr->setVisible(false);
     return false;
 }
 
@@ -188,6 +189,8 @@ static bool onButtonClick_Button5(ZKButton *pButton) {
 }
 static bool onButtonClick_ButtonHelp(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHelp !!!\n");
+    mWindowHelpPtr->setVisible(true);
+    mWindowHelpPtr->setAlpha(150);
     return false;
 }
 
