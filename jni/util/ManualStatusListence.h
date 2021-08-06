@@ -18,6 +18,26 @@ public:
 	static ManualStatusListence *getInstance();
 	void initManualStatusData();
 
+	/* Common Data Func */
+	void setTempthreadholdData(int value);
+	void setHumdthreadholdData(int value);
+	void setCo2threadholdData(int value);
+	void setPm25threadholdData(int value);
+	void setTvocthreadholdData(float value);
+	void setformaldehydethreadholdData(float value);
+	int getTempthreadholdData();
+	int getHumdthreadholdData();
+	int getCo2threadholdData();
+	int getPm25threadholdData();
+	float getTvocthreadholdData();
+	float getformaldehydethreadholdData();
+	void setWifiSwitch(int value);
+	void setWifiStatus(int value);
+	void setVoiceSysSwitch(int value);
+	void setMainMachineMode(int value);
+	void setRf254Switch(int value);
+
+	/* Manual Device Data Func */
 	void setAirPFAutoWind(int value);
 	void setAirPFWindDirec(int value);
 	void setAirPFHumdValue(int value);
@@ -88,6 +108,8 @@ public:
 	int getYuBaTimeSwitch();
 	void setYuBaTimeInfo(EquipmentTiming *info);
 
+	//
+	SProtocolSendData* getCurrentManualData();
 protected:
 
 private:

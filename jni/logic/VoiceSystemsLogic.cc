@@ -1,5 +1,6 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include "util/ManualStatusListence.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -140,10 +141,20 @@ static bool onButtonClick_Button1(ZKButton *pButton) {
 }
 static bool onButtonClick_ButtonVoiceSysSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonVoiceSysSwitch !!!\n");
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    	MANUALSTATUS->setRf254Switch(0);
+    }else{
+    	pButton->setSelected(true);
+    	MANUALSTATUS->setRf254Switch(1);
+    }
     return false;
 }
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
     EASYUICONTEXT->goBack();
     return false;
+}
+static void onProgressChanged_SeekBarLight(ZKSeekBar *pSeekBar, int progress) {
+    //LOGD(" ProgressChanged SeekBarLight %d !!!\n", progress);
 }

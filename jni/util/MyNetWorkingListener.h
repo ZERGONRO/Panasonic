@@ -40,6 +40,8 @@ public:
 	void removeNetWorkListener(MyNetWorkListener *listener);
 
 	bool IsConnected();
+	bool IsConnecting();
+	bool IsConnectingOtherAP();
 	std::string& getSSID();
 	std::string& getPSD();
 	std::string& getSSIDConnecting();

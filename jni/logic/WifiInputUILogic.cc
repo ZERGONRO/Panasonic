@@ -43,7 +43,7 @@ static void onEditTextChanged_PassWordTextView(const std::string &text);
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{0,  6000}, //定时器id=0, 时间间隔6秒
-	{1,  500},
+	{1,  200},
 };
 
 /**

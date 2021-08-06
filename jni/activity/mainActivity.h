@@ -27,6 +27,7 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAIN_TextView62    50079
 #define ID_MAIN_TextView61    50078
 #define ID_MAIN_TextView57    50077
 #define ID_MAIN_SeekBarSound    91001

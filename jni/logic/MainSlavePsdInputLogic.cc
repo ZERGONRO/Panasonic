@@ -1,6 +1,7 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "util/MachineStatus.h"
+#include "util/ManualStatusListence.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -141,8 +142,10 @@ static bool onUI_Timer(int id){
 //					Password_Validation = true;
 					if (MasterPressed == 1){
 						MACHINESTATUS->setMasterorSlaver(false);
+						MANUALSTATUS->setMainMachineMode(0);
 					}else if (MasterPressed == 0){
 						MACHINESTATUS->setMasterorSlaver(true);
+						MANUALSTATUS->setMainMachineMode(1);
 					}
 					EASYUICONTEXT->goBack();
 				}

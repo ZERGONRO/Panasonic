@@ -116,6 +116,16 @@ bool MyNetWorkingListener::IsConnected()
 {
 	return bConnected;
 }
+
+bool MyNetWorkingListener::IsConnecting(){
+	return bConnecting;
+}
+
+bool MyNetWorkingListener::IsConnectingOtherAP(){
+	return bConnectOtherAp;
+}
+
+
 std::string& MyNetWorkingListener::getSSID()
 {
 	return ssid;

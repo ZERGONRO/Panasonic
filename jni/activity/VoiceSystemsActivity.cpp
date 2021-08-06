@@ -4,6 +4,7 @@
 #include "VoiceSystemsActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKSeekBar* mSeekBarLightPtr;
 static ZKButton* mButton2Ptr;
 static ZKButton* mButtonVoiceSysSwitchPtr;
 static ZKTextView* mTextView5Ptr;
@@ -64,6 +65,7 @@ typedef struct {
 }S_ZKSeekBarCallback;
 /*TAG:SeekBarCallbackTab*/
 static S_ZKSeekBarCallback SZKSeekBarCallbackTab[] = {
+    ID_VOICESYSTEMS_SeekBarLight, onProgressChanged_SeekBarLight,
 };
 
 
@@ -133,6 +135,7 @@ const char* VoiceSystemsActivity::getAppName() const{
 //TAG:onCreate
 void VoiceSystemsActivity::onCreate() {
 	Activity::onCreate();
+    mSeekBarLightPtr = (ZKSeekBar*)findControlByID(ID_VOICESYSTEMS_SeekBarLight);if(mSeekBarLightPtr!= NULL){mSeekBarLightPtr->setSeekBarChangeListener(this);}
     mButton2Ptr = (ZKButton*)findControlByID(ID_VOICESYSTEMS_Button2);
     mButtonVoiceSysSwitchPtr = (ZKButton*)findControlByID(ID_VOICESYSTEMS_ButtonVoiceSysSwitch);
     mTextView5Ptr = (ZKTextView*)findControlByID(ID_VOICESYSTEMS_TextView5);

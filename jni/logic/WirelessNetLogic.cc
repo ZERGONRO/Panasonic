@@ -1,6 +1,8 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "util/MachineStatus.h"
+#include "util/ManualStatusListence.h"
+#include "util/MyNetWorkingListener.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -30,7 +32,7 @@
 *
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
-
+extern MyNetWorkingListener *nwlistener;
 
 /**
  * 注册定时器
@@ -65,15 +67,10 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
-	if(MACHINESTATUS->getwifistatus())
-	{
-		mButton1Ptr->setSelected(true);
-		mButton6Ptr->setSelected(true);
-	}
-	else
-	{
-		mButton1Ptr->setSelected(false);
-		mButton6Ptr->setSelected(false);
+	if (nwlistener->IsConnected()){
+		mTextView8Ptr->setVisible(true);
+	}else{
+		mTextView8Ptr->setVisible(false);
 	}
 
 }
@@ -169,13 +166,21 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
     {
     	pButton->setSelected(false);
     	mButton1Ptr->setSelected(false);
-    	MACHINESTATUS->setwifistatus(0);
+    	if (mTextView8Ptr->isVisible()){
+    		mTextView8Ptr->setVisible(false);
+    	}
+//    	MACHINESTATUS->setwifistatus(0);
+    	MANUALSTATUS->setWifiSwitch(0);
     }
     else
     {
     	pButton->setSelected(true);
     	mButton1Ptr->setSelected(true);
-    	MACHINESTATUS->setwifistatus(1);
+    	if (nwlistener->IsConnected()){
+    		mTextView8Ptr->setVisible(true);
+    	}
+//    	MACHINESTATUS->setwifistatus(1);
+    	MANUALSTATUS->setWifiSwitch(1);
     }
     return false;
 }
@@ -185,10 +190,12 @@ static bool onButtonClick_Button3(ZKButton *pButton) {
     if(pButton->isSelected())
    {
     	pButton->setSelected(false);
+    	MANUALSTATUS->setRf254Switch(0);
    }
    else
    {
 	    pButton->setSelected(true);
+	    MANUALSTATUS->setRf254Switch(1);
    }
     return false;
 }

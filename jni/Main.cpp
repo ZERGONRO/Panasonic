@@ -1,6 +1,7 @@
 #include "entry/EasyUIContext.h"
 #include "uart/UartContext.h"
 #include "manager/ConfigManager.h"
+#include "util/ManualStatusListence.h"
 #ifdef __cplusplus
 extern "C" {
 #endif  /* __cplusplus */
@@ -8,6 +9,7 @@ extern "C" {
 void onEasyUIInit(EasyUIContext *pContext) {
 	// 初始化时打开串口
 	UARTCONTEXT->openUart(CONFIGMANAGER->getUartName().c_str(), CONFIGMANAGER->getUartBaudRate());
+	MANUALSTATUS->initManualStatusData();
 }
 
 void onEasyUIDeinit(EasyUIContext *pContext) {

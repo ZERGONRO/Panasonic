@@ -287,47 +287,48 @@ static bool onManualMode11ActivityTouchEvent(const MotionEvent &ev) {
 }
 
 /* 发送数据更新 */
+/*
 void UpdateProtocolSendData(){
-	SProtocolSendData sPSenddata;
+	SProtocolSendData *sPSenddata = new SProtocolSendData;
 //	std::vector<EqpTimeData *> tmpEqpTimeData = MACHINESTATUS->getEqpTimeData();
 //	EquipmentTiming *tmpDeviceData;
 	if (mButtonAirPFSwitchPtr->isSelected()){
-		sPSenddata.PurifyData.Switch = 1;
-		strcpy(sPSenddata.PurifyData.ModelSetting, mTextView37Ptr->getText().c_str());
-		sPSenddata.PurifyData.BrightSetting = mButtonAirPFLightPtr->isSelected();
-		sPSenddata.PurifyData.ChildLock = mButtonAirPFChildLockPtr->isSelected();
-		sPSenddata.PurifyData.FilterReset = mButtonAirPFFilterResetPtr->isSelected();
-		sPSenddata.PurifyData.NanoexSetting = mButtonAirPFNANOEXPtr->isSelected();
+		sPSendData->PurifyData.Switch = 1;
+		strcpy(sPSendData->PurifyData.ModelSetting, mTextView37Ptr->getText().c_str());
+		sPSendData->PurifyData.BrightSetting = mButtonAirPFLightPtr->isSelected();
+		sPSendData->PurifyData.ChildLock = mButtonAirPFChildLockPtr->isSelected();
+		sPSendData->PurifyData.FilterReset = mButtonAirPFFilterResetPtr->isSelected();
+		sPSendData->PurifyData.NanoexSetting = mButtonAirPFNANOEXPtr->isSelected();
 		for (int i = 4;i >= 0;i--){
 			if (mTextViewAirVolPtr0[i]->isVisible()){
-				sPSenddata.PurifyData.AutoWindVolSetting = i;
+				sPSendData->PurifyData.AutoWindVolSetting = i;
 				break;
 			}
 		}
-		sPSenddata.PurifyData.WindDirectSetting = atoi(mTextView17Ptr->getText().c_str());
-		sPSenddata.PurifyData.AddHumdSetting = atoi(mTextView18Ptr->getText().c_str());
+		sPSendData->PurifyData.WindDirectSetting = atoi(mTextView17Ptr->getText().c_str());
+		sPSendData->PurifyData.AddHumdSetting = atoi(mTextView18Ptr->getText().c_str());
 
-		/*定时信息*/
+
 		if (!MACHINESTATUS->getEqpTimeData().empty()){
 			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
 			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
 				if ((*it)->DeviceID == AirPURIFY){
 					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
 					if (tmpDeviceData->DeviceSwitch){
-						sPSenddata.PurifyData.TimingSwitch = 1;
+						sPSendData->PurifyData.TimingSwitch = 1;
 						if (tmpDeviceData->Time1StageFlag){
-							sPSenddata.PurifyData.TimeSetting1 = 1;
-							sPSenddata.PurifyData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
-							sPSenddata.PurifyData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
-							sPSenddata.PurifyData.TempValue1 = tmpDeviceData->TempSettingValue1;
+							sPSendData->PurifyData.TimeSetting1 = 1;
+							sPSendData->PurifyData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSendData->PurifyData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSendData->PurifyData.TempValue1 = tmpDeviceData->TempSettingValue1;
 						}
 						if (tmpDeviceData->Time2StageFlag){
-							sPSenddata.PurifyData.TimeSetting2 = 1;
-							sPSenddata.PurifyData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
-							sPSenddata.PurifyData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
-							sPSenddata.PurifyData.TempValue2 = tmpDeviceData->TempSettingValue2;
+							sPSendData->PurifyData.TimeSetting2 = 1;
+							sPSendData->PurifyData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSendData->PurifyData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSendData->PurifyData.TempValue2 = tmpDeviceData->TempSettingValue2;
 						}
-						/* 星期时间 */
+
 					}
 					break;
 				}
@@ -335,52 +336,52 @@ void UpdateProtocolSendData(){
 			}
 		}
 	}else{
-		sPSenddata.PurifyData.Switch = 0;
+		sPSendData->PurifyData.Switch = 0;
 	}
 
 	if (mButtonAirSwitchPtr->isSelected()){
-		sPSenddata.AirConditionData.Swtich = 1;
-		strcpy(sPSenddata.AirConditionData.ModelSetting, mTextView38Ptr->getText().c_str());
-//		sPSenddata.AirConditionData.NanoeX
-		sPSenddata.AirConditionData.WindDirectSetting = mButtonAirSwitchWindDirectUpDownPtr->isSelected()?1 : 0;
-		sPSenddata.AirConditionData.TempSettingValue = atoi(mTextView22Ptr->getText().c_str());
+		sPSendData->AirConditionData.Swtich = 1;
+		strcpy(sPSendData->AirConditionData.ModelSetting, mTextView38Ptr->getText().c_str());
+//		sPSendData->AirConditionData.NanoeX
+		sPSendData->AirConditionData.WindDirectSetting = mButtonAirSwitchWindDirectUpDownPtr->isSelected()?1 : 0;
+		sPSendData->AirConditionData.TempSettingValue = atoi(mTextView22Ptr->getText().c_str());
 		if (mButtonAirSwitchModeAutoPtr->isSelected()){
-			sPSenddata.AirConditionData.ModeSelect = 0;
+			sPSendData->AirConditionData.ModeSelect = 0;
 		}else if (mButtonAirSwitchModeHotPtr->isSelected()){
-			sPSenddata.AirConditionData.ModeSelect = 1;
+			sPSendData->AirConditionData.ModeSelect = 1;
 		}else if (mButtonAirSwitchModeColdPtr->isSelected()){
-			sPSenddata.AirConditionData.ModeSelect = 2;
+			sPSendData->AirConditionData.ModeSelect = 2;
 		}else if (mButtonAirSwitchModeHumdPtr->isSelected()){
-			sPSenddata.AirConditionData.ModeSelect = 3;
+			sPSendData->AirConditionData.ModeSelect = 3;
 		}
 
 		for (int i = 4;i >= 0;i--){
 			if (mTextViewAirVolPtr1[i]->isVisible()){
-				sPSenddata.AirConditionData.AutoAirVolSetting = i;
+				sPSendData->AirConditionData.AutoAirVolSetting = i;
 				break;
 			}
 		}
-		/*定时信息*/
+
 		if (!MACHINESTATUS->getEqpTimeData().empty()){
 			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
 			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
 				if ((*it)->DeviceID == AIRCONDITION){
 					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
 					if (tmpDeviceData->DeviceSwitch){
-						sPSenddata.AirConditionData.TimingSwtich = 1;
+						sPSendData->AirConditionData.TimingSwtich = 1;
 						if (tmpDeviceData->Time1StageFlag){
-							sPSenddata.AirConditionData.TimeSetting1 = 1;
-							sPSenddata.AirConditionData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
-							sPSenddata.AirConditionData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
-							sPSenddata.AirConditionData.TempValue1 = tmpDeviceData->TempSettingValue1;
+							sPSendData->AirConditionData.TimeSetting1 = 1;
+							sPSendData->AirConditionData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSendData->AirConditionData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSendData->AirConditionData.TempValue1 = tmpDeviceData->TempSettingValue1;
 						}
 						if (tmpDeviceData->Time2StageFlag){
-							sPSenddata.AirConditionData.TimeSetting2 = 1;
-							sPSenddata.AirConditionData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
-							sPSenddata.AirConditionData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
-							sPSenddata.AirConditionData.TempValue2 = tmpDeviceData->TempSettingValue2;
+							sPSendData->AirConditionData.TimeSetting2 = 1;
+							sPSendData->AirConditionData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSendData->AirConditionData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSendData->AirConditionData.TempValue2 = tmpDeviceData->TempSettingValue2;
 						}
-						/* 星期时间 */
+
 					}
 					break;
 				}
@@ -389,48 +390,48 @@ void UpdateProtocolSendData(){
 		}
 
 	}else{
-		sPSenddata.AirConditionData.Swtich = 0;
+		sPSendData->AirConditionData.Swtich = 0;
 	}
 
 	if (mButtonHotCSwitchPtr->isSelected()){
-		sPSenddata.HeatChangeData.Swtich = 1;
-		strcpy(sPSenddata.HeatChangeData.ModelSetting, mTextView39Ptr->getText().c_str());
-		sPSenddata.HeatChangeData.NanoeX = mButtonHotChangeSwitchNANOEXPtr->isSelected();
+		sPSendData->HeatChangeData.Swtich = 1;
+		strcpy(sPSendData->HeatChangeData.ModelSetting, mTextView39Ptr->getText().c_str());
+		sPSendData->HeatChangeData.NanoeX = mButtonHotChangeSwitchNANOEXPtr->isSelected();
 		if (mButtonHotChangeSwitchModeAutoPtr->isSelected()){
-			sPSenddata.HeatChangeData.ModeSetting = 0;
+			sPSendData->HeatChangeData.ModeSetting = 0;
 		}else if (mButtonHotChangeSwitchModeHotChangePtr->isSelected()){
-			sPSenddata.HeatChangeData.ModeSetting = 1;
+			sPSendData->HeatChangeData.ModeSetting = 1;
 		}else if (mButtonHotChangeSwitchModeCyclePtr->isSelected()){
-			sPSenddata.HeatChangeData.ModeSetting = 2;
+			sPSendData->HeatChangeData.ModeSetting = 2;
 		}
 
 		for (int i = 4;i >= 0;i--){
 			if (mTextViewAirVolPtr2[i]->isVisible()){
-				sPSenddata.HeatChangeData.AutoAirVolSetting = i;
+				sPSendData->HeatChangeData.AutoAirVolSetting = i;
 				break;
 			}
 		}
-		/*定时信息*/
+
 		if (!MACHINESTATUS->getEqpTimeData().empty()){
 			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
 			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
 				if ((*it)->DeviceID == HOTEXCHANGE){
 					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
 					if (tmpDeviceData->DeviceSwitch){
-						sPSenddata.HeatChangeData.TimingSwtich = 1;
+						sPSendData->HeatChangeData.TimingSwtich = 1;
 						if (tmpDeviceData->Time1StageFlag){
-							sPSenddata.HeatChangeData.TimeSetting1 = 1;
-							sPSenddata.HeatChangeData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
-							sPSenddata.HeatChangeData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
-							sPSenddata.HeatChangeData.TempValue1 = tmpDeviceData->TempSettingValue1;
+							sPSendData->HeatChangeData.TimeSetting1 = 1;
+							sPSendData->HeatChangeData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSendData->HeatChangeData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSendData->HeatChangeData.TempValue1 = tmpDeviceData->TempSettingValue1;
 						}
 						if (tmpDeviceData->Time2StageFlag){
-							sPSenddata.HeatChangeData.TimeSetting2 = 1;
-							sPSenddata.HeatChangeData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
-							sPSenddata.HeatChangeData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
-							sPSenddata.HeatChangeData.TempValue2 = tmpDeviceData->TempSettingValue2;
+							sPSendData->HeatChangeData.TimeSetting2 = 1;
+							sPSendData->HeatChangeData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSendData->HeatChangeData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSendData->HeatChangeData.TempValue2 = tmpDeviceData->TempSettingValue2;
 						}
-						/* 星期时间 */
+
 					}
 					break;
 				}
@@ -439,48 +440,48 @@ void UpdateProtocolSendData(){
 		}
 
 	}else{
-		sPSenddata.HeatChangeData.Swtich = 0;
+		sPSendData->HeatChangeData.Swtich = 0;
 	}
 
 	if (mButtonHumdSwitchPtr->isSelected()){
-		sPSenddata.AdjustHumdData.Swtich = 1;
-		strcpy(sPSenddata.AdjustHumdData.ModelSetting, mTextView90Ptr->getText().c_str());
-		sPSenddata.AdjustHumdData.AirDirectSetting = atoi(mTextView29Ptr->getText().c_str());
-		sPSenddata.AdjustHumdData.AdjustHumdValue = atoi(mTextView30Ptr->getText().c_str());
+		sPSendData->AdjustHumdData.Swtich = 1;
+		strcpy(sPSendData->AdjustHumdData.ModelSetting, mTextView90Ptr->getText().c_str());
+		sPSendData->AdjustHumdData.AirDirectSetting = atoi(mTextView29Ptr->getText().c_str());
+		sPSendData->AdjustHumdData.AdjustHumdValue = atoi(mTextView30Ptr->getText().c_str());
 		for (int i = 4;i >= 0;i--){
 			if (mTextViewAirVolPtr3[i]->isVisible()){
-				sPSenddata.AdjustHumdData.AutoAirVolSetting = i;
+				sPSendData->AdjustHumdData.AutoAirVolSetting = i;
 				break;
 			}
 		}
 		if (mButtonHumdSwitchFuncSelAutoPtr->isSelected()){
-			sPSenddata.AdjustHumdData.FunctionSelectSetting = 0;
+			sPSendData->AdjustHumdData.FunctionSelectSetting = 0;
 		}else if (mButtonHumdSwitchFuncSelContPtr->isSelected()){
-			sPSenddata.AdjustHumdData.FunctionSelectSetting = 1;
+			sPSendData->AdjustHumdData.FunctionSelectSetting = 1;
 		}else if (mButtonHumdSwitchFuncSelSendPtr->isSelected()){
-			sPSenddata.AdjustHumdData.FunctionSelectSetting = 2;
+			sPSendData->AdjustHumdData.FunctionSelectSetting = 2;
 		}
-		/*定时信息*/
+
 		if (!MACHINESTATUS->getEqpTimeData().empty()){
 			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
 			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
 				if ((*it)->DeviceID == DEHUMIDIFY){
 					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
 					if (tmpDeviceData->DeviceSwitch){
-						sPSenddata.AdjustHumdData.TimingSwtich = 1;
+						sPSendData->AdjustHumdData.TimingSwtich = 1;
 						if (tmpDeviceData->Time1StageFlag){
-							sPSenddata.AdjustHumdData.TimeSetting1 = 1;
-							sPSenddata.AdjustHumdData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
-							sPSenddata.AdjustHumdData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
-							sPSenddata.AdjustHumdData.TempValue1 = tmpDeviceData->TempSettingValue1;
+							sPSendData->AdjustHumdData.TimeSetting1 = 1;
+							sPSendData->AdjustHumdData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSendData->AdjustHumdData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSendData->AdjustHumdData.TempValue1 = tmpDeviceData->TempSettingValue1;
 						}
 						if (tmpDeviceData->Time2StageFlag){
-							sPSenddata.AdjustHumdData.TimeSetting2 = 1;
-							sPSenddata.AdjustHumdData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
-							sPSenddata.AdjustHumdData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
-							sPSenddata.AdjustHumdData.TempValue2 = tmpDeviceData->TempSettingValue2;
+							sPSendData->AdjustHumdData.TimeSetting2 = 1;
+							sPSendData->AdjustHumdData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSendData->AdjustHumdData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSendData->AdjustHumdData.TempValue2 = tmpDeviceData->TempSettingValue2;
 						}
-						/* 星期时间 */
+
 					}
 					break;
 				}
@@ -490,40 +491,40 @@ void UpdateProtocolSendData(){
 
 
 	}else{
-		sPSenddata.AdjustHumdData.Swtich = 0;
+		sPSendData->AdjustHumdData.Swtich = 0;
 	}
 
 	if (mButtonWindSwitchPtr->isSelected()){
-		sPSenddata.WindChangAirData.Swtich = 1;
-		strcpy(sPSenddata.WindChangAirData.ModelSetting, mTextView91Ptr->getText().c_str());
-		sPSenddata.WindChangAirData.NanoeX = mButtonWindSwitchNANOEXPtr->isSelected();
+		sPSendData->WindChangAirData.Swtich = 1;
+		strcpy(sPSendData->WindChangAirData.ModelSetting, mTextView91Ptr->getText().c_str());
+		sPSendData->WindChangAirData.NanoeX = mButtonWindSwitchNANOEXPtr->isSelected();
 		for (int i = 4;i >= 0;i--){
 			if (mTextViewAirVolPtr4[i]->isVisible()){
-				sPSenddata.WindChangAirData.AutoAirVolSetting = i;
+				sPSendData->WindChangAirData.AutoAirVolSetting = i;
 				break;
 			}
 		}
-		/*定时信息*/
+
 		if (!MACHINESTATUS->getEqpTimeData().empty()){
 			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
 			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
 				if ((*it)->DeviceID == WINDEXCHANGE){
 					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
 					if (tmpDeviceData->DeviceSwitch){
-						sPSenddata.WindChangAirData.TimingSwtich = 1;
+						sPSendData->WindChangAirData.TimingSwtich = 1;
 						if (tmpDeviceData->Time1StageFlag){
-							sPSenddata.WindChangAirData.TimeSetting1 = 1;
-							sPSenddata.WindChangAirData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
-							sPSenddata.WindChangAirData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
-							sPSenddata.WindChangAirData.TempValue1 = tmpDeviceData->TempSettingValue1;
+							sPSendData->WindChangAirData.TimeSetting1 = 1;
+							sPSendData->WindChangAirData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSendData->WindChangAirData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSendData->WindChangAirData.TempValue1 = tmpDeviceData->TempSettingValue1;
 						}
 						if (tmpDeviceData->Time2StageFlag){
-							sPSenddata.WindChangAirData.TimeSetting2 = 1;
-							sPSenddata.WindChangAirData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
-							sPSenddata.WindChangAirData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
-							sPSenddata.WindChangAirData.TempValue2 = tmpDeviceData->TempSettingValue2;
+							sPSendData->WindChangAirData.TimeSetting2 = 1;
+							sPSendData->WindChangAirData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSendData->WindChangAirData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSendData->WindChangAirData.TempValue2 = tmpDeviceData->TempSettingValue2;
 						}
-						/* 星期时间 */
+
 					}
 					break;
 				}
@@ -532,7 +533,7 @@ void UpdateProtocolSendData(){
 		}
 
 	}else{
-		sPSenddata.WindChangAirData.Swtich = 0;
+		sPSendData->WindChangAirData.Swtich = 0;
 	}
 
 	if (mButtonSterilizationSwitchPtr->isSelected()){
@@ -540,37 +541,37 @@ void UpdateProtocolSendData(){
 	}
 
 	if (mButtonYubaSwitchPtr->isSelected()){
-		sPSenddata.YuBaData.Swtich = 1;
-		strcpy(sPSenddata.YuBaData.ModelSetting, mTextView93Ptr->getText().c_str());
-		sPSenddata.YuBaData.BrightnessSetting = mButtonYuBaLightNightPtr->isSelected()?1 : 0;
-		sPSenddata.YuBaData.ColdDrySetting = mButtonYuBaColdHotStrPtr->isSelected()?1 : 0;
-		sPSenddata.YuBaData.HeatDrySetting = mButtonYuBaHottingStrPtr->isSelected()?1 : 0;
-		sPSenddata.YuBaData.HeatingSetting = mButtonYuBaHeatingStrPtr->isSelected()?1 : 0;
-		sPSenddata.YuBaData.NanoeX = mButtonYuBaNANOEXPtr->isSelected();
-		sPSenddata.YuBaData.WindType = mButtonYuBaWindClassConcenPtr->isSelected()?1 : 0;
-		sPSenddata.YuBaData.AirChangeSetting = mButtonYuBaChangAirStrPtr->isSelected()?1 : 0;
-		sPSenddata.YuBaData.AirDirectSetting = mButtonYuBaWindDirectManualPtr->isSelected()?1 : 0;
-		/*定时信息*/
+		sPSendData->YuBaData.Swtich = 1;
+		strcpy(sPSendData->YuBaData.ModelSetting, mTextView93Ptr->getText().c_str());
+		sPSendData->YuBaData.BrightnessSetting = mButtonYuBaLightNightPtr->isSelected()?1 : 0;
+		sPSendData->YuBaData.ColdDrySetting = mButtonYuBaColdHotStrPtr->isSelected()?1 : 0;
+		sPSendData->YuBaData.HeatDrySetting = mButtonYuBaHottingStrPtr->isSelected()?1 : 0;
+		sPSendData->YuBaData.HeatingSetting = mButtonYuBaHeatingStrPtr->isSelected()?1 : 0;
+		sPSendData->YuBaData.NanoeX = mButtonYuBaNANOEXPtr->isSelected();
+		sPSendData->YuBaData.WindType = mButtonYuBaWindClassConcenPtr->isSelected()?1 : 0;
+		sPSendData->YuBaData.AirChangeSetting = mButtonYuBaChangAirStrPtr->isSelected()?1 : 0;
+		sPSendData->YuBaData.AirDirectSetting = mButtonYuBaWindDirectManualPtr->isSelected()?1 : 0;
+
 		if (!MACHINESTATUS->getEqpTimeData().empty()){
 			std::vector<EqpTimeData *>::iterator it = MACHINESTATUS->getEqpTimeData().begin();
 			for (;it != MACHINESTATUS->getEqpTimeData().end();it++){
 				if ((*it)->DeviceID == YUBA){
 					EquipmentTiming *tmpDeviceData = (*it)->DeviceData;
 					if (tmpDeviceData->DeviceSwitch){
-						sPSenddata.YuBaData.TimingSwtich = 1;
+						sPSendData->YuBaData.TimingSwtich = 1;
 						if (tmpDeviceData->Time1StageFlag){
-							sPSenddata.YuBaData.TimeSetting1 = 1;
-							sPSenddata.YuBaData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
-							sPSenddata.YuBaData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
-							sPSenddata.YuBaData.TempValue1 = tmpDeviceData->TempSettingValue1;
+							sPSendData->YuBaData.TimeSetting1 = 1;
+							sPSendData->YuBaData.TimeValueOpenSetting1 = tmpDeviceData->TimeOpenValue1;
+							sPSendData->YuBaData.TimeValueCloseSetting1 = tmpDeviceData->TimeCloseValue1;
+							sPSendData->YuBaData.TempValue1 = tmpDeviceData->TempSettingValue1;
 						}
 						if (tmpDeviceData->Time2StageFlag){
-							sPSenddata.YuBaData.TimeSetting2 = 1;
-							sPSenddata.YuBaData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
-							sPSenddata.YuBaData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
-							sPSenddata.YuBaData.TempValue2 = tmpDeviceData->TempSettingValue2;
+							sPSendData->YuBaData.TimeSetting2 = 1;
+							sPSendData->YuBaData.TimeValueOpenSetting2 = tmpDeviceData->TimeOpenValue2;
+							sPSendData->YuBaData.TimeValueCloseSetting2 = tmpDeviceData->TimeCloseValue2;
+							sPSendData->YuBaData.TempValue2 = tmpDeviceData->TempSettingValue2;
 						}
-						/* 星期时间 */
+
 					}
 					break;
 				}
@@ -579,9 +580,10 @@ void UpdateProtocolSendData(){
 		}
 
 	}else{
-		sPSenddata.YuBaData.Swtich = 0;
+		sPSendData->YuBaData.Swtich = 0;
 	}
 }
+*/
 
 /* 接收的数据更新 */
 static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
@@ -589,8 +591,8 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 	SProtocolRecvDate data = Data;
 	if(data.PurifyData.Switch)							//净化
 	{
-		mTextView17Ptr->setText(data.PurifyData.WindDirectSetting + "°");
-		mTextView18Ptr->setText(data.PurifyData.AddHumdSetting + '%');
+		mTextView17Ptr->setText(data.PurifyData.WindDirectSetting);
+		mTextView18Ptr->setText(data.PurifyData.AddHumdSetting);
 		mButtonAirPFNANOEXPtr->setSelected(data.PurifyData.NanoexSetting);
 		mButtonAirPFLightPtr->setSelected(data.PurifyData.BrightSetting);
 		mButtonAirPFFilterResetPtr->setSelected(data.PurifyData.FilterReset);
@@ -640,7 +642,7 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 			mButtonAirSwitchModeHumdPtr->setSelected(false);
 		}
 
-		mTextView22Ptr->setText(data.AirConditionData.TempSettingValue + '℃');
+		mTextView22Ptr->setText(data.AirConditionData.TempSettingValue);
 //		mButtonAirSwitchNANOEXPtr->setSelected(data.AirConditionData.NanoeX);
 	}
 
@@ -672,8 +674,8 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 
 	if(data.AdjustHumdData.Swtich)							//调湿
 	{
-		mTextView29Ptr->setText(data.AdjustHumdData.AirDirectSetting + "°");
-		mTextView30Ptr->setText(data.AdjustHumdData.AdjustHumdValue + "%");
+		mTextView29Ptr->setText(data.AdjustHumdData.AirDirectSetting);
+		mTextView30Ptr->setText(data.AdjustHumdData.AdjustHumdValue);
 		if(data.AdjustHumdData.FunctionSelectSetting == 1)
 		{
 			mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
@@ -805,7 +807,9 @@ static void ManualModeRecvDataUpdate(const SProtocolRecvDate &Data)
 
 void ManualMode11SelStatus(int index)
 {
-	SProtocolSendData sPSendData;	//数据有待获取
+	SProtocolSendData *sPSendData;
+	sPSendData = MANUALSTATUS->getCurrentManualData();	//数据有待获取
+//	memcpy(sPSendData, MANUALSTATUS->getCurrentManualData(), sizeof(SProtocolSendData));
 	switch(index)
 	{
 		case Manual_AirPF:
@@ -832,16 +836,20 @@ void ManualMode11SelStatus(int index)
 			mWindowSterilizationPtr->setVisible(false);
 
 			/*AirPF Param show */
-			mButtonAirPFNANOEXPtr->setSelected(sPSendData.PurifyData.NanoexSetting);
-			mButtonAirPFFilterResetPtr->setSelected(sPSendData.PurifyData.FilterReset);
-			mButtonAirPFLightPtr->setSelected(sPSendData.PurifyData.BrightSetting);
-			mButtonAirPFChildLockPtr->setSelected(sPSendData.PurifyData.ChildLock);
-			mTextView17Ptr->setText(sPSendData.PurifyData.WindDirectSetting);
-			mTextView18Ptr->setText(sPSendData.PurifyData.AddHumdSetting);
-			for (int j = 0;j < 4;j++){
+//			PurifySendData apPSendData = sPSendData->PurifyData;
+			mButtonAirPFSwitchPtr->setSelected(sPSendData->PurifyData.Switch);
+			mTextView37Ptr->setText(sPSendData->PurifyData.ModelSetting);
+			mButtonAirPFNANOEXPtr->setSelected(sPSendData->PurifyData.NanoexSetting);
+			mButtonAirPFFilterResetPtr->setSelected(sPSendData->PurifyData.FilterReset);
+			mButtonAirPFLightPtr->setSelected(sPSendData->PurifyData.BrightSetting);
+			mButtonAirPFChildLockPtr->setSelected(sPSendData->PurifyData.ChildLock);
+			mTextView17Ptr->setText(sPSendData->PurifyData.WindDirectSetting);
+			mTextView18Ptr->setText(sPSendData->PurifyData.AddHumdSetting);
+//			LOGD("sPSendData->PurifyData.WindDirectSetting is %d, sPSendData->PurifyData.AddHumdSetting is %d\n", sPSendData->PurifyData.WindDirectSetting, sPSendData->PurifyData.AddHumdSetting);
+			for (int j = 0;j < 5;j++){
 				mTextViewAirVolPtr0[j]->setVisible(false);
 			}
-			for (int i = sPSendData.PurifyData.AutoWindVolSetting;i >= 0;i--){
+			for (int i = sPSendData->PurifyData.AutoWindVolSetting;i >= 0;i--){
 				mTextViewAirVolPtr0[i]->setVisible(true);
 			}
 		}
@@ -870,37 +878,38 @@ void ManualMode11SelStatus(int index)
 			mWindowSterilizationPtr->setVisible(false);
 
 			/* Air Param show */
-			mTextView22Ptr->setText(sPSendData.AirConditionData.TempSettingValue);
-			for (int j = 0;j < 4;j++){
+			mTextView22Ptr->setText(sPSendData->AirConditionData.TempSettingValue);
+			for (int j = 0;j < 5;j++){
 				mTextViewAirVolPtr1[j]->setVisible(false);
 			}
-			for (int i = sPSendData.AirConditionData.AutoAirVolSetting;i >= 0;i--){
+			for (int i = sPSendData->AirConditionData.AutoAirVolSetting;i >= 0;i--){
 				mTextViewAirVolPtr1[i]->setVisible(true);
 			}
-			if (sPSendData.AirConditionData.WindDirectSetting == 1){
+			if (sPSendData->AirConditionData.WindDirectSetting == 1){
 				mButtonAirSwitchWindDirectLeftRightPtr->setSelected(true);
 				mButtonAirSwitchWindDirectUpDownPtr->setSelected(false);
 			}else{
 				mButtonAirSwitchWindDirectLeftRightPtr->setSelected(false);
 				mButtonAirSwitchWindDirectUpDownPtr->setSelected(true);
 			}
-
-			if (sPSendData.AirConditionData.ModeSelect == 0){
+			mButtonAirSwitchPtr->setSelected(sPSendData->AirConditionData.Swtich);
+			mTextView38Ptr->setText(sPSendData->AirConditionData.ModelSetting);
+			if (sPSendData->AirConditionData.ModeSelect == 0){
 				mButtonAirSwitchModeAutoPtr->setSelected(true);
 				mButtonAirSwitchModeHotPtr->setSelected(false);
 				mButtonAirSwitchModeColdPtr->setSelected(false);
 				mButtonAirSwitchModeHumdPtr->setSelected(false);
-			}else if (sPSendData.AirConditionData.ModeSelect == 1){
+			}else if (sPSendData->AirConditionData.ModeSelect == 1){
 				mButtonAirSwitchModeAutoPtr->setSelected(false);
 				mButtonAirSwitchModeHotPtr->setSelected(true);
 				mButtonAirSwitchModeColdPtr->setSelected(false);
 				mButtonAirSwitchModeHumdPtr->setSelected(false);
-			}else if (sPSendData.AirConditionData.ModeSelect == 2){
+			}else if (sPSendData->AirConditionData.ModeSelect == 2){
 				mButtonAirSwitchModeAutoPtr->setSelected(false);
 				mButtonAirSwitchModeHotPtr->setSelected(false);
 				mButtonAirSwitchModeColdPtr->setSelected(true);
 				mButtonAirSwitchModeHumdPtr->setSelected(false);
-			}else if (sPSendData.AirConditionData.ModeSelect == 3){
+			}else if (sPSendData->AirConditionData.ModeSelect == 3){
 				mButtonAirSwitchModeAutoPtr->setSelected(false);
 				mButtonAirSwitchModeHotPtr->setSelected(false);
 				mButtonAirSwitchModeColdPtr->setSelected(false);
@@ -933,22 +942,24 @@ void ManualMode11SelStatus(int index)
 			mWindowSterilizationPtr->setVisible(false);
 
 			/* HotChang Param show */
-			mButtonHotChangeSwitchNANOEXPtr->setSelected(sPSendData.HeatChangeData.NanoeX);
-			for (int j = 0;j < 4;j++){
+			mButtonHotChangeSwitchNANOEXPtr->setSelected(sPSendData->HeatChangeData.NanoeX);
+			for (int j = 0;j < 5;j++){
 				mTextViewAirVolPtr2[j]->setVisible(false);
 			}
-			for (int i = sPSendData.HeatChangeData.AutoAirVolSetting;i >= 0;i--){
+			for (int i = sPSendData->HeatChangeData.AutoAirVolSetting;i >= 0;i--){
 				mTextViewAirVolPtr2[i]->setVisible(true);
 			}
-			if (sPSendData.HeatChangeData.ModeSetting == 0){
+			mButtonHotCSwitchPtr->setSelected(sPSendData->HeatChangeData.Swtich);
+			mTextView39Ptr->setText(sPSendData->HeatChangeData.ModelSetting);
+			if (sPSendData->HeatChangeData.ModeSetting == 0){
 				mButtonHotChangeSwitchModeAutoPtr->setSelected(true);
 				mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
 				mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
-			}else if (sPSendData.HeatChangeData.ModeSetting == 1){
+			}else if (sPSendData->HeatChangeData.ModeSetting == 1){
 				mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
 				mButtonHotChangeSwitchModeHotChangePtr->setSelected(true);
 				mButtonHotChangeSwitchModeCyclePtr->setSelected(false);
-			}else if (sPSendData.HeatChangeData.ModeSetting == 2){
+			}else if (sPSendData->HeatChangeData.ModeSetting == 2){
 				mButtonHotChangeSwitchModeAutoPtr->setSelected(false);
 				mButtonHotChangeSwitchModeHotChangePtr->setSelected(false);
 				mButtonHotChangeSwitchModeCyclePtr->setSelected(true);
@@ -981,23 +992,25 @@ void ManualMode11SelStatus(int index)
 			mWindowSterilizationPtr->setVisible(false);
 
 			/* HotChang Param show */
-			for (int j = 0;j < 4;j++){
+			for (int j = 0;j < 5;j++){
 				mTextViewAirVolPtr3[j]->setVisible(false);
 			}
-			for (int i = sPSendData.AdjustHumdData.AutoAirVolSetting;i >= 0;i--){
+			for (int i = sPSendData->AdjustHumdData.AutoAirVolSetting;i >= 0;i--){
 				mTextViewAirVolPtr3[i]->setVisible(true);
 			}
-			mTextView29Ptr->setText(sPSendData.AdjustHumdData.AirDirectSetting);
-			mTextView30Ptr->setText(sPSendData.AdjustHumdData.AdjustHumdValue);
-			if (sPSendData.AdjustHumdData.FunctionSelectSetting == 0){
+			mButtonHumdSwitchPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			mTextView90Ptr->setText(sPSendData->AdjustHumdData.ModelSetting);
+			mTextView29Ptr->setText(sPSendData->AdjustHumdData.AirDirectSetting);
+			mTextView30Ptr->setText(sPSendData->AdjustHumdData.AdjustHumdValue);
+			if (sPSendData->AdjustHumdData.FunctionSelectSetting == 0){
 				mButtonHumdSwitchFuncSelAutoPtr->setSelected(true);
 				mButtonHumdSwitchFuncSelContPtr->setSelected(false);
 				mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
-			}else if (sPSendData.AdjustHumdData.FunctionSelectSetting == 1){
+			}else if (sPSendData->AdjustHumdData.FunctionSelectSetting == 1){
 				mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
 				mButtonHumdSwitchFuncSelContPtr->setSelected(true);
 				mButtonHumdSwitchFuncSelSendPtr->setSelected(false);
-			}else if (sPSendData.AdjustHumdData.FunctionSelectSetting == 2){
+			}else if (sPSendData->AdjustHumdData.FunctionSelectSetting == 2){
 				mButtonHumdSwitchFuncSelAutoPtr->setSelected(false);
 				mButtonHumdSwitchFuncSelContPtr->setSelected(false);
 				mButtonHumdSwitchFuncSelSendPtr->setSelected(true);
@@ -1029,11 +1042,13 @@ void ManualMode11SelStatus(int index)
 			mWindowSterilizationPtr->setVisible(false);
 
 			/* WindChange Param show */
-			mButtonWindSwitchNANOEXPtr->setSelected(sPSendData.WindChangAirData.NanoeX);
-			for (int j = 0;j < 4;j++){
+			mButtonWindSwitchPtr->setSelected(sPSendData->WindChangAirData.Swtich);
+			mTextView91Ptr->setText(sPSendData->WindChangAirData.ModelSetting);
+			mButtonWindSwitchNANOEXPtr->setSelected(sPSendData->WindChangAirData.NanoeX);
+			for (int j = 0;j < 5;j++){
 				mTextViewAirVolPtr4[j]->setVisible(false);
 			}
-			for (int i = sPSendData.WindChangAirData.AutoAirVolSetting;i >= 0;i--){
+			for (int i = sPSendData->WindChangAirData.AutoAirVolSetting;i >= 0;i--){
 				mTextViewAirVolPtr4[i]->setVisible(true);
 			}
 
@@ -1087,51 +1102,53 @@ void ManualMode11SelStatus(int index)
 			mWindowSterilizationPtr->setVisible(false);
 
 			/* YuBa Param show */
-			mButtonYuBaNANOEXPtr->setSelected(sPSendData.YuBaData.NanoeX);
+			mButtonYuBaNANOEXPtr->setSelected(sPSendData->YuBaData.NanoeX);
+			mButtonYubaSwitchPtr->setSelected(sPSendData->YuBaData.Swtich);
+			mTextView93Ptr->setText(sPSendData->YuBaData.ModelSetting);
 
-			if (sPSendData.YuBaData.BrightnessSetting == 0){
+			if (sPSendData->YuBaData.BrightnessSetting == 0){
 				mButtonYuBaLightNightPtr->setSelected(true);
 				mButtonYuBaLightClosePtr->setSelected(false);
 			}else{
 				mButtonYuBaLightNightPtr->setSelected(false);
 				mButtonYuBaLightClosePtr->setSelected(true);
 			}
-			if (sPSendData.YuBaData.AirChangeSetting == 0){
+			if (sPSendData->YuBaData.AirChangeSetting == 0){
 				mButtonYuBaChangAirStrPtr->setSelected(true);
 				mButtonYuBaChangAirWeakPtr->setSelected(false);
 			}else{
 				mButtonYuBaChangAirStrPtr->setSelected(false);
 				mButtonYuBaChangAirWeakPtr->setSelected(true);
 			}
-			if (sPSendData.YuBaData.AirDirectSetting == 0){
+			if (sPSendData->YuBaData.AirDirectSetting == 0){
 				mButtonYuBaWindDirectManualPtr->setSelected(true);
 				mButtonYuBaWindDirectAutoPtr->setSelected(false);
 			}else{
 				mButtonYuBaWindDirectManualPtr->setSelected(false);
 				mButtonYuBaWindDirectAutoPtr->setSelected(true);
 			}
-			if (sPSendData.YuBaData.ColdDrySetting == 0){
+			if (sPSendData->YuBaData.ColdDrySetting == 0){
 				mButtonYuBaColdHotStrPtr->setSelected(true);
 				mButtonYuBaColdHotWeakPtr->setSelected(false);
 			}else{
 				mButtonYuBaColdHotStrPtr->setSelected(false);
 				mButtonYuBaColdHotWeakPtr->setSelected(true);
 			}
-			if (sPSendData.YuBaData.HeatDrySetting == 0){
+			if (sPSendData->YuBaData.HeatDrySetting == 0){
 				mButtonYuBaHottingStrPtr->setSelected(true);
 				mButtonYuBaHottingWeakPtr->setSelected(false);
 			}else{
 				mButtonYuBaHottingStrPtr->setSelected(false);
 				mButtonYuBaHottingWeakPtr->setSelected(true);
 			}
-			if (sPSendData.YuBaData.HeatingSetting == 0){
+			if (sPSendData->YuBaData.HeatingSetting == 0){
 				mButtonYuBaHeatingStrPtr->setSelected(true);
 				mButtonYuBaHeatingWeakPtr->setSelected(false);
 			}else{
 				mButtonYuBaHeatingStrPtr->setSelected(false);
 				mButtonYuBaHeatingWeakPtr->setSelected(true);
 			}
-			if (sPSendData.YuBaData.WindType == 0){
+			if (sPSendData->YuBaData.WindType == 0){
 				mButtonYuBaWindClassConcenPtr->setSelected(true);
 				mButtonYuBaWindClassdiffusionPtr->setSelected(false);
 			}else{
@@ -1145,6 +1162,8 @@ void ManualMode11SelStatus(int index)
 			break;
 
 	}
+//	delete sPSendData;
+//	sPSendData = NULL;
 }
 
 static bool onButtonClick_ButtonPurify(ZKButton *pButton) {

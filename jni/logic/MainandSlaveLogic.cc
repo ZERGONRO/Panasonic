@@ -1,6 +1,7 @@
 #pragma once
 #include "uart/ProtocolSender.h"
 #include "util/MachineStatus.h"
+#include "util/ManualStatusListence.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码

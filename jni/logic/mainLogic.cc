@@ -82,7 +82,7 @@ static EnvInfo EnvInfoData[] = {
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 //	{0,  6000}, //定时器id=0, 时间间隔6秒
 	{1,  500},
-	{2,  1000},
+	{2,  200},
 };
 
 /*
@@ -304,6 +304,7 @@ void ResetStatusIconPos()
 {
 	LayoutPosition lp;
 	int StartLeft = 302;
+	mTextView62Ptr->setVisible(true);
 	if(mIconViewWifiPtr->isVisible())
 	{
 		lp = mIconViewWifiPtr->getPosition();
@@ -488,6 +489,7 @@ static void onUI_intent(const Intent *intentPtr) {
     {
     	mWindow24Ptr->setVisible(false);
 		mWindow5Ptr->setVisible(true);
+//		mTextView62Ptr->setText("已联网");
     }
     else
     {
@@ -596,6 +598,7 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
 static bool onUI_Timer(int id){
 	static int DispTimeCount = 0;
 	static int EnvTimeCount = 0;
+	static int wifiConnectingCount = 0;
 	switch (id) {
 	case 0:
 		break;
@@ -635,30 +638,51 @@ static bool onUI_Timer(int id){
 		break;
 	case 2:
 	{
-		if(nwlistener->IsConnected())
-		{
-			if(UpdateTimeFlag)
-			{
-				DispTimeCount++;
-				if(DispTimeCount > 10)
-				{
-					DispTimeCount = 0;
-					mIconViewWifiPtr->setVisible(true);
-					mWindow24Ptr->setVisible(false);
-					mWindow5Ptr->setVisible(true);
-					updateTime();
-					ResetStatusIconPos();
-				}
+		if (nwlistener->IsConnectingOtherAP()){
+			mTextView62Ptr->setText("联网中");
+//			LOGD("connecting other AP\n");
+			if (mIconViewWifiPtr->isVisible()){
+				mIconViewWifiPtr->setVisible(false);
+			}else{
+				mIconViewWifiPtr->setVisible(true);
 			}
-		}
-		else
-		{
-			mIconViewWifiPtr->setVisible(false);
 			mWindow24Ptr->setVisible(true);
 			mWindow5Ptr->setVisible(false);
 			UpdateTimeFlag = false;
-			ResetStatusIconPos();
+//			}
+		}else if (nwlistener->IsConnected() && !nwlistener->IsConnectingOtherAP())
+		{
+			mTextView62Ptr->setText("已联网");
+			mIconViewWifiPtr->setVisible(true);
+			if(UpdateTimeFlag)
+			{
+				DispTimeCount++;
+				if(DispTimeCount > 50)
+				{
+					DispTimeCount = 0;
+					mWindow24Ptr->setVisible(false);
+					mWindow5Ptr->setVisible(true);
+					updateTime();
+				}
+			}
+		}else{
+			mTextView62Ptr->setText("未联网");
+			wifiConnectingCount++;
+			if (wifiConnectingCount > 3){
+				wifiConnectingCount = 0;
+				if (mIconViewWifiPtr->isVisible()){
+					mIconViewWifiPtr->setVisible(false);
+				}else{
+					mIconViewWifiPtr->setVisible(true);
+				}
+			}
+//			mIconViewWifiPtr->setVisible(false);
+			mWindow24Ptr->setVisible(true);
+			mWindow5Ptr->setVisible(false);
+			UpdateTimeFlag = false;
+//			ResetStatusIconPos();
 		}
+		ResetStatusIconPos();
 		MACHINESTATUS->setwifistatus(nwlistener->IsConnected());
 //		if(nwlistener->getWifiStatus())
 //		{

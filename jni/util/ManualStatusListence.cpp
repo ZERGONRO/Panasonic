@@ -12,14 +12,14 @@ ManualStatusListence::ManualStatusListence() {
 	// TODO 自动生成的构造函数存根
 
 
-	initManualStatusData();
+//	initManualStatusData();
 }
 
 ManualStatusListence::~ManualStatusListence() {
 	// TODO 自动生成的析构函数存根
 
-	delete sPSData;
-	sPSData = NULL;
+//	delete sPSData;
+//	sPSData = NULL;
 
 }
 
@@ -29,8 +29,48 @@ ManualStatusListence *ManualStatusListence::getInstance(){
 }
 
 void ManualStatusListence::initManualStatusData(){
+	LOGD("init ManualStatus\n");
 	sPSData = new SProtocolSendData;
 	memset(sPSData, 0, sizeof(SProtocolSendData));
+
+	/*  Common Data init */
+	sPSData->CommonDate.TempThresHoldSetting = 20;
+	sPSData->CommonDate.HumdThresHoldSetting = 40;
+	sPSData->CommonDate.Pm25ThresHoldSetting = 20;
+	sPSData->CommonDate.Co2ThresHoldSetting  = 200;
+	sPSData->CommonDate.FormaldehydeThresHoldSetting = 0.05;
+	sPSData->CommonDate.TvocThresHoldSetting = 0.05;
+	sPSData->CommonDate.WifiSwitch = 0;
+	sPSData->CommonDate.WIFIStatus = 0;
+	sPSData->CommonDate.WifiVersionUpdate = 0;
+	sPSData->CommonDate.ERVPreventCondensation = 0;
+	sPSData->CommonDate.ERVPreventFreezing = 0;
+	sPSData->CommonDate.EmergencyCallSwitch = 0;
+	sPSData->CommonDate.AdjustHumdDry = 0;
+	sPSData->CommonDate.AdjustHumdPreCondensation = 0;
+	sPSData->CommonDate.PreventMode = 0;
+	sPSData->CommonDate.AirCondiOutdoorDefrost = 0;
+	sPSData->CommonDate.NanoeXSwitch = 0;
+	sPSData->CommonDate.ImmediateCommunicationSwitch = 0;
+	sPSData->CommonDate.EmergencyCallSwitch = 0;
+	sPSData->CommonDate.WorkOrder = 0;
+	sPSData->CommonDate.VoiceSystemSwitch = 0;
+	sPSData->CommonDate.MainMachineMode = 0;
+	sPSData->CommonDate.GUIVersionUpdate = 0;
+	sPSData->CommonDate.ResetFactorySetting = 0;
+	sPSData->CommonDate.RF254Switch = 0;
+	sPSData->CommonDate.Dealing = 0;
+	sPSData->CommonDate.OTAStatus = 0;
+	sPSData->CommonDate.ChildrenLockStatus = 0;
+	sPSData->CommonDate.HUError = 0;
+	sPSData->CommonDate.MusicSwitch = 0;
+	sPSData->CommonDate.MusicVolSwitch = 0;
+	sPSData->CommonDate.MusicModeSelc = 0;
+	sPSData->CommonDate.AirOnekeyAdjustSettingSwitch = 0;
+	sPSData->CommonDate.APPOrder = 0;
+
+
+	/* Manual Device Data init */
 	sPSData->PurifyData.Switch = 0;
 //	sPSData->PurifyData.ModelSetting = "";
 	sPSData->PurifyData.TimingSwitch = 0;
@@ -43,8 +83,8 @@ void ManualStatusListence::initManualStatusData(){
 	sPSData->PurifyData.TempValue1 = 0;
 	sPSData->PurifyData.TempValue2 = 0;
 	sPSData->PurifyData.AutoWindVolSetting = 0;
-	sPSData->PurifyData.WindDirectSetting = 0;
-	sPSData->PurifyData.AddHumdSetting = 0;
+	sPSData->PurifyData.WindDirectSetting = 30;
+	sPSData->PurifyData.AddHumdSetting = 40;
 	sPSData->PurifyData.NanoexSetting = 0;
 	sPSData->PurifyData.BrightSetting = 0;
 	sPSData->PurifyData.FilterReset = 0;
@@ -63,7 +103,7 @@ void ManualStatusListence::initManualStatusData(){
 	sPSData->AirConditionData.TempValue2 = 0;
 	sPSData->AirConditionData.AutoAirVolSetting = 0;		//自动风量 		0-1-2-3-4
 	sPSData->AirConditionData.WindDirectSetting = 0;		//风向		0上下-1左右
-	sPSData->AirConditionData.TempSettingValue = 0;		//温度设定
+	sPSData->AirConditionData.TempSettingValue = 20;		//温度设定
 	sPSData->AirConditionData.NanoeX = 0;
 	sPSData->AirConditionData.ModeSelect = 0;
 
@@ -94,8 +134,8 @@ void ManualStatusListence::initManualStatusData(){
 	sPSData->AdjustHumdData.TempValue1 = 0;
 	sPSData->AdjustHumdData.TempValue2 = 0;
 	sPSData->AdjustHumdData.AutoAirVolSetting = 0;	//自动风量 		0-1-2-3-4
-	sPSData->AdjustHumdData.AirDirectSetting = 0;		//风向
-	sPSData->AdjustHumdData.AdjustHumdValue = 0;			//温度设定
+	sPSData->AdjustHumdData.AirDirectSetting = 30;		//风向
+	sPSData->AdjustHumdData.AdjustHumdValue = 20;			//温度设定
 	sPSData->AdjustHumdData.FunctionSelectSetting = 0;
 
 	sPSData->WindChangAirData.Swtich = 0;
@@ -511,9 +551,77 @@ void ManualStatusListence::setYuBaTimeInfo(EquipmentTiming *info){
 	}
 }
 
+SProtocolSendData* ManualStatusListence::getCurrentManualData(){
+	return sPSData;
+}
 
+void ManualStatusListence::setTempthreadholdData(int value){
+	sPSData->CommonDate.TempThresHoldSetting = value;
+}
 
+void ManualStatusListence::setHumdthreadholdData(int value){
+	sPSData->CommonDate.HumdThresHoldSetting = value;
+}
 
+void ManualStatusListence::setCo2threadholdData(int value){
+	sPSData->CommonDate.Co2ThresHoldSetting = value;
+}
+
+void ManualStatusListence::setPm25threadholdData(int value){
+	sPSData->CommonDate.Pm25ThresHoldSetting = value;
+}
+
+void ManualStatusListence::setTvocthreadholdData(float value){
+	sPSData->CommonDate.TvocThresHoldSetting = value;
+}
+
+void ManualStatusListence::setformaldehydethreadholdData(float value){
+	sPSData->CommonDate.FormaldehydeThresHoldSetting = value;
+}
+
+int ManualStatusListence::getTempthreadholdData(){
+	return sPSData->CommonDate.TempThresHoldSetting;
+}
+
+int ManualStatusListence::getHumdthreadholdData(){
+	return sPSData->CommonDate.HumdThresHoldSetting;
+}
+
+int ManualStatusListence::getCo2threadholdData(){
+	return sPSData->CommonDate.Co2ThresHoldSetting;
+}
+
+int ManualStatusListence::getPm25threadholdData(){
+	return sPSData->CommonDate.Pm25ThresHoldSetting;
+}
+
+float ManualStatusListence::getTvocthreadholdData(){
+	return sPSData->CommonDate.TvocThresHoldSetting;
+}
+
+float ManualStatusListence::getformaldehydethreadholdData(){
+	return sPSData->CommonDate.FormaldehydeThresHoldSetting;
+}
+
+void ManualStatusListence::setWifiSwitch(int value){
+	sPSData->CommonDate.WifiSwitch = value;
+}
+
+void ManualStatusListence::setWifiStatus(int value){
+	sPSData->CommonDate.WIFIStatus = value;
+}
+
+void ManualStatusListence::setVoiceSysSwitch(int value){
+	sPSData->CommonDate.VoiceSystemSwitch = value;
+}
+
+void ManualStatusListence::setMainMachineMode(int value){
+	sPSData->CommonDate.MainMachineMode = value;
+}
+
+void ManualStatusListence::setRf254Switch(int value){
+	sPSData->CommonDate.RF254Switch = value;
+}
 
 
 

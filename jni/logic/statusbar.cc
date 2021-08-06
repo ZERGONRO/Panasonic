@@ -57,11 +57,11 @@ void initStatusBarMode()
 		bStatusBarInited = true;
 	}
 	nwlistener = NULL;
-	mSeekBarLightPtr->setProgress(mSeekBarLightPtr->getProgress()-1);
+	mSeekBarLightPtr->setProgress(mSeekBarLightPtr->getProgress());
 //	mSeekBarLightPtr->setProgress(50);
 	mSeekBarLightPtr->setMax(99);
 	mTextViewLightBarPtr->setText(std::to_string(mSeekBarLightPtr->getProgress()));
-	mSeekBarSoundPtr->setProgress(mSeekBarSoundPtr->getProgress()-1);
+	mSeekBarSoundPtr->setProgress(mSeekBarSoundPtr->getProgress());
 	mSeekBarSoundPtr->setMax(99);
 	mTextViewSoundBarPtr->setText(std::to_string(mSeekBarSoundPtr->getProgress()));
 //	mstatusbarPtr->mMainWndPtr->setAlpha(255);

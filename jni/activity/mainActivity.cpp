@@ -5,6 +5,7 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextView62Ptr;
 static ZKTextView* mTextView61Ptr;
 static ZKTextView* mTextView57Ptr;
 static ZKSeekBar* mSeekBarSoundPtr;
@@ -347,6 +348,7 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mTextView62Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView62);
     mTextView61Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView61);
     mTextView57Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView57);
     mSeekBarSoundPtr = (ZKSeekBar*)findControlByID(ID_MAIN_SeekBarSound);if(mSeekBarSoundPtr!= NULL){mSeekBarSoundPtr->setSeekBarChangeListener(this);}
@@ -828,14 +830,18 @@ void mainActivity::MyNetworkNotify(int type, void* data) {
 		if(1 == (int)data) {								//连接成功
 			//ltz modify begin
 			mIconViewWifiPtr->setVisible(true);
+//			mTextView62Ptr->setText("已联网");
 		}
 		else {
+
 			if(!nwlistener->getWifiStatus()) {
 				mIconViewWifiPtr->setVisible(false);
+//				mTextView62Ptr->setText("未连网");
 			}
 
 		}
 	}
+
 }
 
 void mainActivity::resetUserTimer(int id, int time) {
