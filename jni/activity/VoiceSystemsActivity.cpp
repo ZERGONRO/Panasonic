@@ -201,6 +201,9 @@ bool VoiceSystemsActivity::onTimer(int id) {
 void VoiceSystemsActivity::onProgressChanged(ZKSeekBar *pSeekBar, int progress){
 
     int seekBarTablen = sizeof(SZKSeekBarCallbackTab) / sizeof(S_ZKSeekBarCallback);
+    if (!mButtonVoiceSysSwitchPtr->isSelected()){
+		return;
+	}
     for (int i = 0; i < seekBarTablen; ++i) {
         if (SZKSeekBarCallbackTab[i].id == pSeekBar->getID()) {
             SZKSeekBarCallbackTab[i].callback(pSeekBar, progress);

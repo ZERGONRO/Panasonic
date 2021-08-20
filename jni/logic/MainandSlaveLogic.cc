@@ -34,6 +34,7 @@
 static bool Flag_MasSlv = false;
 int MasterPressed = -1;
 extern bool Password_Validation;
+extern void disableStatusbus();
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -49,7 +50,7 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	disableStatusbus();
 }
 
 /**

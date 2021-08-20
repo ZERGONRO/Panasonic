@@ -40,7 +40,7 @@ void ManualStatusListence::initManualStatusData(){
 	sPSData->CommonDate.Co2ThresHoldSetting  = 200;
 	sPSData->CommonDate.FormaldehydeThresHoldSetting = 0.05;
 	sPSData->CommonDate.TvocThresHoldSetting = 0.05;
-	sPSData->CommonDate.WifiSwitch = 0;
+	sPSData->CommonDate.WifiSwitch = 1;
 	sPSData->CommonDate.WIFIStatus = 0;
 	sPSData->CommonDate.WifiVersionUpdate = 0;
 	sPSData->CommonDate.ERVPreventCondensation = 0;
@@ -54,11 +54,11 @@ void ManualStatusListence::initManualStatusData(){
 	sPSData->CommonDate.ImmediateCommunicationSwitch = 0;
 	sPSData->CommonDate.EmergencyCallSwitch = 0;
 	sPSData->CommonDate.WorkOrder = 0;
-	sPSData->CommonDate.VoiceSystemSwitch = 0;
+	sPSData->CommonDate.VoiceSystemSwitch = 1;
 	sPSData->CommonDate.MainMachineMode = 0;
 	sPSData->CommonDate.GUIVersionUpdate = 0;
 	sPSData->CommonDate.ResetFactorySetting = 0;
-	sPSData->CommonDate.RF254Switch = 0;
+	sPSData->CommonDate.RF254Switch = 1;
 	sPSData->CommonDate.Dealing = 0;
 	sPSData->CommonDate.OTAStatus = 0;
 	sPSData->CommonDate.ChildrenLockStatus = 0;
@@ -607,6 +607,11 @@ void ManualStatusListence::setWifiSwitch(int value){
 	sPSData->CommonDate.WifiSwitch = value;
 }
 
+int ManualStatusListence::getWifiSwitch(){
+	return sPSData->CommonDate.WifiSwitch;
+}
+
+
 void ManualStatusListence::setWifiStatus(int value){
 	sPSData->CommonDate.WIFIStatus = value;
 }
@@ -615,12 +620,20 @@ void ManualStatusListence::setVoiceSysSwitch(int value){
 	sPSData->CommonDate.VoiceSystemSwitch = value;
 }
 
+int ManualStatusListence::getVoiceSysSwitch(){
+	return sPSData->CommonDate.VoiceSystemSwitch;
+}
+
 void ManualStatusListence::setMainMachineMode(int value){
 	sPSData->CommonDate.MainMachineMode = value;
 }
 
 void ManualStatusListence::setRf254Switch(int value){
 	sPSData->CommonDate.RF254Switch = value;
+}
+
+int ManualStatusListence::getRf254Switch(){
+	return sPSData->CommonDate.RF254Switch;
 }
 
 

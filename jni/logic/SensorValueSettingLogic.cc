@@ -31,7 +31,7 @@
 *
 * 在Eclipse编辑器中  使用 “alt + /”  快捷键可以打开智能提示
 */
-
+extern void disableStatusbus();
 
 /**
  * 注册定时器
@@ -48,7 +48,7 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	disableStatusbus();
 }
 
 /**
@@ -186,24 +186,27 @@ static bool onButtonClick_Button4(ZKButton *pButton) {
 
 static bool onButtonClick_Button5(ZKButton *pButton) {
     LOGD(" ButtonClick Button5 !!!\n");
-    char buf[10];
-    sprintf(buf, "%2.2f", mTextView9Ptr->getText().c_str());
-    double val = (double)atoi(mTextView9Ptr->getText().c_str()) - 0.50;
-    LOGD("val is %f and buf is %s\n", val, buf);			//float和double输出精度超过2， buf输出0.00
-    mTextView9Ptr->setText(std::to_string(val) + "mg/m³");
-    MANUALSTATUS->setformaldehydethreadholdData(atoi(mTextView9Ptr->getText().c_str()));
+    char databuf[16];
+	float val = atof(mTextView9Ptr->getText().c_str()) - 0.50;
+	if (val <= 0.00){
+		mTextView9Ptr->setText("0.00mg/m³");
+	}else{
+		sprintf(databuf, "%.2f", val);
+		mTextView9Ptr->setText(std::string(databuf) + "mg/m³");
+	}
+	MANUALSTATUS->setformaldehydethreadholdData(atof(databuf));
     UpdataSensorData();
     return false;
 }
 
 static bool onButtonClick_Button6(ZKButton *pButton) {
-    LOGD(" ButtonClick Button6 !!!\n");
-//    char buf[10];
-//    sprintf(buf, "%.2f", mTextView9Ptr->getText().c_str());
-//    float val1 = mTextView9Ptr->getText().c_str();
-    float val = (float)atoi(mTextView9Ptr->getText().c_str()) + 0.50;
-    mTextView9Ptr->setText(std::to_string(val) + "mg/m³");
-    MANUALSTATUS->setformaldehydethreadholdData(atoi(mTextView9Ptr->getText().c_str()));
+//    LOGD(" ButtonClick Button6 !!!\n");
+	char databuf[16];
+    float val = atof(mTextView9Ptr->getText().c_str()) + 0.50;
+    sprintf(databuf, "%.2f", val);
+//    LOGD("The (float)mTextView9Ptr->getText().c_str() is %f, val is %f, databuf is %s\n", atof(mTextView9Ptr->getText().c_str()), val, databuf);
+    mTextView9Ptr->setText(std::string(databuf) + "mg/m³");
+    MANUALSTATUS->setformaldehydethreadholdData(atof(databuf));
     UpdataSensorData();
     return false;
 }
@@ -228,23 +231,27 @@ static bool onButtonClick_Button8(ZKButton *pButton) {
 
 static bool onButtonClick_Button9(ZKButton *pButton) {
     LOGD(" ButtonClick Button9 !!!\n");
-    std::string str = mTextView11Ptr->getText().substr(0, 4);
-    LOGD("str is %s\n", str);
-//    if (str == (int)str){
-//
-//    }
-    float val = (float)atoi(mTextView11Ptr->getText().c_str()) - 0.50;
-    mTextView11Ptr->setText(std::to_string(val) + "mg/m³");
-    MANUALSTATUS->setTvocthreadholdData(atoi(mTextView11Ptr->getText().c_str()));
+    char databuf[16];
+  	float val = atof(mTextView11Ptr->getText().c_str()) - 0.50;
+  	if (val <= 0.00){
+  		mTextView11Ptr->setText("0.00mg/m³");
+  	}else{
+  		sprintf(databuf, "%.2f", val);
+  		mTextView11Ptr->setText(std::string(databuf) + "mg/m³");
+  	}
+  	MANUALSTATUS->setTvocthreadholdData(atof(databuf));
     UpdataSensorData();
     return false;
 }
 
 static bool onButtonClick_Button10(ZKButton *pButton) {
     LOGD(" ButtonClick Button10 !!!\n");
-    float val = (float)atoi(mTextView11Ptr->getText().c_str()) + 0.50;
-    mTextView11Ptr->setText(std::to_string(val) + "mg/m³");
-    MANUALSTATUS->setTvocthreadholdData(atoi(mTextView11Ptr->getText().c_str()));
+    char databuf[16];
+	float val = atof(mTextView11Ptr->getText().c_str()) + 0.50;
+	sprintf(databuf, "%.2f", val);
+//    LOGD("The (float)mTextView11Ptr->getText().c_str() is %f, val is %f, databuf is %s\n", atof(mTextView11Ptr->getText().c_str()), val, databuf);
+	mTextView11Ptr->setText(std::string(databuf) + "mg/m³");
+	MANUALSTATUS->setTvocthreadholdData(atof(databuf));
     UpdataSensorData();
     return false;
 }

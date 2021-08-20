@@ -4,6 +4,7 @@
 #include "util/ProtocolDataRecv.h"
 #include "util/ProtocolDataSend.h"
 #include "util/ManualStatusListence.h"
+#include "util/SoftwareTimer.h"
 
 /*
 *此文件由GUI工具生成
@@ -39,6 +40,7 @@ static std::vector<std::string > AirPFListViewVector, AirListViewVector, HumdLis
 static int ManualType = Manual_AirPF;
 
 
+extern void disableStatusbus();
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -84,21 +86,21 @@ void VectorInit()
 	SterlListViewVector.push_back("S-VV2080");
 }
 
-void setManualIndoorDataColor(){
+void UpdateManualIndoorDataColor(){
 	int Datatmp;
 	float Datatmp1;
 	char DataBuf[64];
 	Datatmp = atoi(mTextView50Ptr->getText().c_str());		//PM2.5
-	if (Datatmp > 0 && Datatmp < 35){
+	if (Datatmp >= 0 && Datatmp <= 34){
 		mTextView50Ptr->setTextColor(0xFF00AAF4);
 //		mTextView23Ptr->setTextColor(0xFF00AAF4);
-	}else if (Datatmp > 34 && Datatmp < 75){
-		mTextView50Ptr->setTextColor(0xFFFFFF80);
+	}else if (Datatmp > 34 && Datatmp <= 74){
+		mTextView50Ptr->setTextColor(0xFFFF561C);
 //		mTextView23Ptr->setTextColor(0xFFFFFF80);
-	}else if (Datatmp > 74 && Datatmp < 150){
+	}else if (Datatmp > 74 && Datatmp <= 149){
 		mTextView50Ptr->setTextColor(0xFFFF8040);
 //		mTextView23Ptr->setTextColor(0xFFFF8040);
-	}else if (Datatmp > 149 && Datatmp < 10000){
+	}else if (Datatmp > 149 && Datatmp <= 999){
 		mTextView50Ptr->setTextColor(0xFF8000FF);
 //		mTextView23Ptr->setTextColor(0xFF8000FF);
 	}else{
@@ -120,19 +122,19 @@ void setManualIndoorDataColor(){
 		mTextView48Ptr->setVisible(false);
 	}
 
-	Datatmp1 = atoi(mTextView53Ptr->getText().c_str());		//甲醛
-	if (Datatmp1 > 0 && Datatmp1 < 0.04){
-		sprintf(DataBuf, "%03d", Datatmp1);
+	Datatmp1 = atof(mTextView53Ptr->getText().c_str());		//甲醛
+	if (Datatmp1 >= 0 && Datatmp1 <= 0.03){
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView53Ptr->setText(DataBuf);
 		mTextView53Ptr->setTextColor(0xFF00AAF4);
 //		mTextView31Ptr->setTextColor(0xFF00AAF4);
-	}else if (Datatmp1 > 0.03 && Datatmp1 < 0.07){
-		sprintf(DataBuf, "%03d", Datatmp1);
+	}else if (Datatmp1 > 0.03 && Datatmp1 <= 0.07){
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView53Ptr->setText(DataBuf);
-		mTextView53Ptr->setTextColor(0xFFFFFF80);
+		mTextView53Ptr->setTextColor(0xFFFF561C);
 //		mTextView31Ptr->setTextColor(0xFFFFFF80);
-	}else if (Datatmp1 > 0.07 && Datatmp1 < 2.50){
-		sprintf(DataBuf, "%03d", Datatmp1);
+	}else if (Datatmp1 > 0.07 && Datatmp1 <= 2.50){
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView53Ptr->setText(DataBuf);
 		mTextView53Ptr->setTextColor(0xFF8000FF);
 //		mTextView31Ptr->setTextColor(0xFF8000FF);
@@ -141,19 +143,19 @@ void setManualIndoorDataColor(){
 //		mTextView31Ptr->setVisible(false);
 	}
 
-	Datatmp1 = atoi(mTextView62Ptr->getText().c_str());		//TVOC
-	if (Datatmp1 > 0 && Datatmp1 < 0.04){
-		sprintf(DataBuf, "%03d", Datatmp1);
+	Datatmp1 = atof(mTextView62Ptr->getText().c_str());		//TVOC
+	if (Datatmp1 >= 0 && Datatmp1 <= 0.03){
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView62Ptr->setText(DataBuf);
 		mTextView62Ptr->setTextColor(0xFF00AAF4);
 //		mTextView51Ptr->setTextColor(0xFF00AAF4);
-	}else if (Datatmp1 > 0.03 && Datatmp1 < 0.07){
-		sprintf(DataBuf, "%03d", Datatmp1);
+	}else if (Datatmp1 > 0.03 && Datatmp1 <= 0.07){
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView62Ptr->setText(DataBuf);
-		mTextView62Ptr->setTextColor(0xFFFFFF80);
+		mTextView62Ptr->setTextColor(0xFFFF561C);
 //		mTextView51Ptr->setTextColor(0xFFFFFF80);
-	}else if (Datatmp1 > 0.07 && Datatmp1 < 2.50){
-		sprintf(DataBuf, "%03d", Datatmp1);
+	}else if (Datatmp1 > 0.07 && Datatmp1 <= 2.50){
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView62Ptr->setText(DataBuf);
 		mTextView62Ptr->setTextColor(0xFF8000FF);
 //		mTextView51Ptr->setTextColor(0xFF8000FF);
@@ -163,16 +165,16 @@ void setManualIndoorDataColor(){
 	}
 
 	Datatmp = atoi(mTextView56Ptr->getText().c_str());		//CO2
-	if (Datatmp > 0 && Datatmp < 801){
+	if (Datatmp >= 0 && Datatmp <= 800){
 		mTextView56Ptr->setTextColor(0xFF00AAF4);
 //		mTextView34Ptr->setTextColor(0xFF00AAF4);
-	}else if (Datatmp > 800 && Datatmp < 1501){
+	}else if (Datatmp > 800 && Datatmp <= 1500){
 		mTextView56Ptr->setTextColor(0xFFFFFF80);
 //		mTextView34Ptr->setTextColor(0xFFFFFF80);
-	}else if (Datatmp > 1500 && Datatmp < 3001){
+	}else if (Datatmp > 1500 && Datatmp <= 3000){
 		mTextView56Ptr->setTextColor(0xFFFF8040);
 //		mTextView34Ptr->setTextColor(0xFFFF8040);
-	}else if (Datatmp > 3000 && Datatmp < 5000){
+	}else if (Datatmp > 3000 && Datatmp <= 5000){
 		mTextView56Ptr->setTextColor(0xFF8000FF);
 //		mTextView34Ptr->setTextColor(0xFF8000FF);
 	}else{
@@ -188,6 +190,7 @@ void ManualMode11SelStatus(int index);
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
+
 	VectorInit();
 
 }
@@ -200,6 +203,7 @@ static void onUI_intent(const Intent *intentPtr) {
         //TODO
 
     }
+    disableStatusbus();
 }
 
 /*
@@ -218,6 +222,7 @@ static void onUI_show() {
 	mTextViewManual2Ptr->setSelected(true);
 	mTextViewHistory2Ptr->setSelected(false);
 
+	UpdateManualIndoorDataColor();
 	ManualMode11SelStatus(MACHINESTATUS->getmanualmode());
 
 }
@@ -2320,6 +2325,12 @@ static bool onButtonClick_ButtonAirPFTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirPFTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFTimeSwitch !!!\n");
+    if (!mButtonAirPFSwitchPtr->isSelected()){
+         	return false;
+     }
+	  Intent* intent = new Intent();
+	  intent->putExtra("DeviceName", mButtonPurifyPtr->getText());
+	  EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -2342,6 +2353,7 @@ static bool onButtonClick_ButtonAirSwitch(ZKButton *pButton) {
 		mButtonAirSwitchTempSettingAddPtr->setSelected(true);
 		mWindowAirSwitchPtr->setBackgroundColor(0);
     }
+    MANUALSTATUS->setAirSwitch(pButton->isSelected());
     return false;
 }
 
@@ -2358,6 +2370,12 @@ static bool onButtonClick_ButtonAirTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirTimeSwitch !!!\n");
+    if (!mButtonAirSwitchPtr->isSelected()){
+           	return false;
+   	}
+	Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonAirPtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -2409,6 +2427,12 @@ static bool onButtonClick_ButtonHotCTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHotCTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotCTimeSwitch !!!\n");
+    if (!mButtonHotCSwitchPtr->isSelected()){
+          	return false;
+      }
+	Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonHotChangePtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -2451,6 +2475,12 @@ static bool onButtonClick_ButtonHumdTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHumdTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdTimeSwitch !!!\n");
+    if (!mButtonHumdSwitchPtr->isSelected()){
+           	return false;
+   	}
+	Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonModHumdPtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -2484,6 +2514,12 @@ static bool onButtonClick_ButtonWindTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonWindTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindTimeSwitch !!!\n");
+    if (!mButtonWindSwitchPtr->isSelected()){
+           	return false;
+   	}
+	Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonChangeWindPtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 
@@ -2531,6 +2567,12 @@ static bool onButtonClick_ButtonPicTime(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonTiming(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonTiming !!!\n");
+    if (!mButtonYubaSwitchPtr->isSelected()){
+           	return false;
+   	}
+	Intent* intent = new Intent();
+	intent->putExtra("DeviceName", mButtonYuBaPtr->getText());
+	EASYUICONTEXT->openActivity("TimingActivity", intent);
     return false;
 }
 static int getListItemCount_ListViewAirPF(const ZKListView *pListView) {

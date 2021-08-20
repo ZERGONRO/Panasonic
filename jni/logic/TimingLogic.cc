@@ -2,6 +2,7 @@
 #include "uart/ProtocolSender.h"
 #include "util/MachineStatus.h"
 #include "util/ManualStatusListence.h"
+#include "util/SoftwareTimer.h"
 /*
 *此文件由GUI工具生成
 *文件功能：用于处理用户的逻辑相应代码
@@ -33,14 +34,18 @@
 */
 
 int DeviceID;
+static char Weekname[16];
 static bool Flag_Switch = false;
 static bool Flag_Settiming = false;
+static Mutex sLock;
 //static EquipmentTiming *DevTime_Setting;
 static EquipmentTiming *EqpTSet_t = NULL;
 static EqpTimeData *tmpEqpTmer_Data = NULL;
 //static EqpTimeData *EqpTime_Date = MACHINESTATUS->getEqpTimeData();
 extern bool Flag_EquipmentTimeSetting;
+extern void disableStatusbus();
 
+//static char week[8][4] = {"每天", "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -52,6 +57,27 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 };
 
 void UpdateTimeSettingFunc();
+
+char *Week_String2char(int index){
+	if (index == 8){
+		strcpy(Weekname, "每天");
+	}else if (index == 1){
+		strcpy(Weekname, "周一");
+	}else if (index == 2){
+		strcpy(Weekname, "周二");
+	}else if (index == 3){
+		strcpy(Weekname, "周三");
+	}else if (index == 4){
+		strcpy(Weekname, "周四");
+	}else if (index == 5){
+		strcpy(Weekname, "周五");
+	}else if (index == 6){
+		strcpy(Weekname, "周六");
+	}else if (index == 7){
+		strcpy(Weekname, "周日");
+	}
+	return Weekname;
+}
 
 void ResetTimeTextPos(){
 	int StartLeft = 0;
@@ -155,25 +181,26 @@ void ResetTimeTextPos(){
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	disableStatusbus();
 
 //	LOGD("init1\n");
 }
 
 void DispEqpTimeData(int DevID){
+	Mutex::Autolock _l(sLock);
 	int StartLeft = 0;
 	int num1, num2, num3, num4;
 	char Timebuf[64];
 	LayoutPosition lp, lp1;
 	bool Flag_EqpTimer = false;
 //	LOGD("init2\n");
-
-	EquipmentTiming *EqpTSet = (EquipmentTiming *)malloc(sizeof(EquipmentTiming));//EqpTSet_t;
+	EquipmentTiming *EqpTSet = new EquipmentTiming;
+//	EquipmentTiming *EqpTSet = (EquipmentTiming *)malloc(sizeof(EquipmentTiming));//EqpTSet_t;
 	//EqpTSet = NULL;
 	LOGD("MACHINESTATUS getEqpTimeData size is %d\n", MACHINESTATUS->getEqpTimeData().size());
 //		std::vector<EqpTimeData *>::iterator tmpEqpTimer = MACHINESTATUS->getEqpTimeData().begin();
 //		for (;tmpEqpTimer != MACHINESTATUS->getEqpTimeData().end();tmpEqpTimer++){
-		for(int i = 0;i < MACHINESTATUS->getEqpTimeData().size();i++){
+		for(int i = 0;i < (int)MACHINESTATUS->getEqpTimeData().size();i++){
 			EqpTimeData *tmp = MACHINESTATUS->getEqpTimeData().at(i);
 			if (tmp->DeviceID == DevID){
 				Flag_EqpTimer = true;
@@ -186,7 +213,8 @@ void DispEqpTimeData(int DevID){
 
 		if (!Flag_EqpTimer){
 			LOGD("Flag_EqpTimer is false\n");
-			free(EqpTSet);
+//			free(EqpTSet);
+			delete(EqpTSet);
 			EqpTSet = NULL;
 			return;
 		}
@@ -203,17 +231,14 @@ void DispEqpTimeData(int DevID){
 			mWindowTimeWavePtr->setBackgroundColor(0x22252525);
 		}
 
-		for (int k = 0;k < 8;k++){
-			mTextViewPtr[k]->setText("");
-		}
-		for (int i = 0;i < EqpTSet->weekbuf.size();i++){
-			std::string text = EqpTSet->weekbuf.at(i);
+		for (int i = 0;EqpTSet->weekbuf[i] != 0;i++){
+			int text = EqpTSet->weekbuf[i];
 	//		mTextViewPtr[index]->setVisible(true);
 			lp = mTextViewPtr[i]->getPosition();
 			lp.mLeft = StartLeft;
 			lp.mTop = 10;
 			mTextViewPtr[i]->setPosition(lp);
-			mTextViewPtr[i]->setText(text.c_str());
+			mTextViewPtr[i]->setText(std::string(Week_String2char(text)).c_str());
 			StartLeft += 66;
 		}
 		if (EqpTSet->Time1StageFlag){
@@ -268,7 +293,7 @@ void DispEqpTimeData(int DevID){
 			mWindowAirHum2Ptr->setBackgroundColor(0xFFD6D6D6);
 		}
 //	}
-		free(EqpTSet);
+		delete(EqpTSet);
 		EqpTSet = NULL;
 
 }
@@ -445,6 +470,7 @@ void WeekPosReset()
 }
 
 void setManualDevTimeInfo(int DevID, EquipmentTiming *EqpTimeInfo){
+	Software_Timer *SWTtmp = new Software_Timer;
 		if (DevID < 0 || DevID > 6){
 			return;
 		}
@@ -485,6 +511,37 @@ void setManualDevTimeInfo(int DevID, EquipmentTiming *EqpTimeInfo){
 			}
 			break;
 		}
+		/*
+		SWTtmp->DevID = DevID;
+		if (EqpTimeInfo->Time1StageFlag){
+			if (EqpTimeInfo->TimeCloseValue1 > EqpTimeInfo->TimeOpenValue1){
+				SWTtmp->start_time1 = EqpTimeInfo->TimeOpenValue1;
+				SWTtmp->delay_time1 = EqpTimeInfo->TimeCloseValue1 - EqpTimeInfo->TimeOpenValue1;
+				SWTtmp->SWT_Mode = SoftwareTimer_Start;
+				SWTtmp->timecount = 0;
+			}
+		}else{
+			SWTtmp->start_time1 = 0;
+			SWTtmp->delay_time1 = 0;
+			SWTtmp->SWT_Mode = SoftwareTimer_Stop;
+		}
+		if (SWTtmp->SWT_Mode == SoftwareTimer_Start){
+			if (EqpTimeInfo->Time2StageFlag){
+				if (EqpTimeInfo->TimeCloseValue2 > EqpTimeInfo->TimeOpenValue2){
+					SWTtmp->start_time2 = EqpTimeInfo->TimeOpenValue2;
+					SWTtmp->delay_time2 = EqpTimeInfo->TimeCloseValue2 - EqpTimeInfo->TimeOpenValue2;
+				}
+			}else{
+				SWTtmp->start_time2 = 0;
+				SWTtmp->delay_time2 = 0;
+			}
+		}
+		 */
+
+		SOFTWARETIMER->Add_SoftwareTimer(SWTtmp);
+
+		delete (SWTtmp);
+		SWTtmp = NULL;
 }
 
 /* 从Addtime返回后更新Timing界面 */
@@ -497,27 +554,23 @@ void UpdateTimeSettingFunc()
 	int StartLeft = 0;
 	int ColorFillPos = 427;
 
-
-//	EqpTimeData *EqpTmer_Data = (EqpTimeData *)malloc(sizeof(EqpTimeData)*4);//
 	EquipmentTiming *DevTimeSetting = MACHINESTATUS->getEquipmentTimeSetting();
-//	EqpTmer_Data->DeviceID = DevTimeSetting->DeviceID;
-//	memcpy(&EqpTmer_Data->DeviceData, &DevTimeSetting, sizeof(EquipmentTiming));
 	MACHINESTATUS->setEqpTimeData();
 	setManualDevTimeInfo(DevTimeSetting->DeviceID, DevTimeSetting);
 
-	for (int k = 0;k < 8;k++){
-		mTextViewPtr[k]->setText("");
-	}
-	for (int index = 0;index < DevTimeSetting->weekbuf.size();index++){
-		std::string text = DevTimeSetting->weekbuf.at(index);
+	for (int index = 0;DevTimeSetting->weekbuf[index] != 0;index++){
+		int text = DevTimeSetting->weekbuf[index];
 //		mTextViewPtr[index]->setVisible(true);
 		lp = mTextViewPtr[index]->getPosition();
 		lp.mLeft = StartLeft;
 		lp.mTop = 10;
 		mTextViewPtr[index]->setPosition(lp);
-		mTextViewPtr[index]->setText(text.c_str());
+//		char *tmptext = Week_String2char(text);
+		mTextViewPtr[index]->setText(std::string(Week_String2char(text)).c_str());
+//		mTextViewPtr[index]->setText("测试");
 		StartLeft += 66;
 	}
+
 	if (DevTimeSetting->Time1StageFlag){
 		Timenum1 = DevTimeSetting->TimeOpenValue1 / 60;
 		Timenum2 = DevTimeSetting->TimeOpenValue1 % 60;

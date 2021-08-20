@@ -414,6 +414,20 @@ int WirelessNetActivity::removeCharFromString(string& nString, char c) {
     return (int)nString.size();
 }
 
+void WirelessNetActivity::MyNetworkNotify(int type , void *data){
+	if(type == NW_NOTIFY_TYPE_CONNECT_STATUS) {				//连接状态变化
+		LOGD("connected %d\n" , (int)data);
+		if(1 == (int)data) {								//连接成功
+			mTextView8Ptr->setVisible(true);
+	//			resetStatusIconim();
+		}
+		else {
+			mTextView8Ptr->setVisible(false);
+	//			resetStatusIconim();
+		}
+	}
+}
+
 void WirelessNetActivity::registerUserTimer(int id, int time) {
 	registerTimer(id, time);
 }

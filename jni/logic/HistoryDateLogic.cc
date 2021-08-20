@@ -33,7 +33,7 @@
 */
 
 static int HistoryMode = History_TempMode;
-
+extern void enableStatusbus();
 
 void DisPlaySelectModeStatus(int index);
 
@@ -66,21 +66,21 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 void DispLineCharFunc()
 {
 
-	mPainterXPtr[0]->setLineWidth(2);
-	mPainterXPtr[0]->setSourceColor(0x88cffa);
-	mPainterXPtr[0]->drawLines(pointX0, TABLESIZE(pointX0));
+	//mPainterXPtr[0]->setLineWidth(2);
+	//mPainterXPtr[0]->setSourceColor(0x88cffa);
+	//mPainterXPtr[0]->drawLines(pointX0, TABLESIZE(pointX0));
 
-	mPainterXPtr[1]->setLineWidth(2);
-	mPainterXPtr[1]->setSourceColor(0x88cffa);
-	mPainterXPtr[1]->drawLines(pointX1, TABLESIZE(pointX1));
+	//mPainterXPtr[1]->setLineWidth(2);
+	//mPainterXPtr[1]->setSourceColor(0x88cffa);
+	//mPainterXPtr[1]->drawLines(pointX1, TABLESIZE(pointX1));
 
-	mPainterXPtr[2]->setLineWidth(2);
-	mPainterXPtr[2]->setSourceColor(0x88cffa);
-	mPainterXPtr[2]->drawLines(pointX2, TABLESIZE(pointX2));
+	//mPainterXPtr[2]->setLineWidth(2);
+	//mPainterXPtr[2]->setSourceColor(0x88cffa);
+	//mPainterXPtr[2]->drawLines(pointX2, TABLESIZE(pointX2));
 
-	mPainterXPtr[3]->setLineWidth(2);
-	mPainterXPtr[3]->setSourceColor(0x88cffa);
-	mPainterXPtr[3]->drawLines(pointX3, TABLESIZE(pointX3));
+	//mPainterXPtr[3]->setLineWidth(2);
+	//mPainterXPtr[3]->setSourceColor(0x88cffa);
+	//mPainterXPtr[3]->drawLines(pointX3, TABLESIZE(pointX3));
 }
 
 
@@ -105,6 +105,7 @@ static void onUI_init(){
 ////			{50 , 150}
 //	    };
 //	DispLineCharFunc();
+	enableStatusbus();
 
 }
 
@@ -137,21 +138,6 @@ static void onUI_show() {
 
 	DisPlaySelectModeStatus(HistoryMode);
 
-//	mTextViewPicTemp1Ptr->setVisible(true);
-//	mTextViewPicCO21Ptr->setVisible(false);
-//	mTextViewPicHumd1Ptr->setVisible(false);
-//	mTextViewPicPM251Ptr->setVisible(false);
-//	mTextViewPicJQ1Ptr->setVisible(false);
-
-//	mWindowTempHumdPtr->setVisible(true);
-//	mWindowCO2PM25Ptr->setVisible(false);
-//	mWindowFormalDedhyPtr->setVisible(false);
-
-
-//	mWindowTempHumdWavePtr->setVisible(true);
-//	mWindowCO2PM25JQPtr->setVisible(false);
-//	mWindowTempHumdWaveMonthPtr->setVisible(false);
-//	mWindowCO2PM25JQMonthPtr->setVisible(false);
 }
 
 /*
@@ -214,9 +200,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX0, TABLESIZE(pointX0));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX0, TABLESIZE(pointX0));
 			}
 			else
 			{
@@ -226,9 +212,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(true);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX2, TABLESIZE(pointX2));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX2, TABLESIZE(pointX2));
 			}
 
 
@@ -280,9 +266,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX0, TABLESIZE(pointX0));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX0, TABLESIZE(pointX0));
 			}
 			else
 			{
@@ -292,9 +278,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(true);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX2, TABLESIZE(pointX2));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX2, TABLESIZE(pointX2));
 			}
 
 			mTextView6Ptr->setVisible(true);
@@ -350,9 +336,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
 			}
 			else
 			{
@@ -362,9 +348,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(true);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
 			}
 
 			mTextView26Ptr->setVisible(false);
@@ -416,9 +402,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
 			}
 			else
 			{
@@ -428,9 +414,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(true);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
 			}
 
 			mTextView26Ptr->setVisible(true);
@@ -486,9 +472,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(false);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX1, TABLESIZE(pointX1));
 			}
 			else
 			{
@@ -498,9 +484,9 @@ void DisPlaySelectModeStatus(int index)
 				mWindowTempHumdWaveMonthPtr->setVisible(false);
 				mWindowCO2PM25JQMonthPtr->setVisible(true);
 
-				mPainterXPtr[linechar_index]->setLineWidth(2);
-				mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
-				mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
+				//mPainterXPtr[linechar_index]->setLineWidth(2);
+				//mPainterXPtr[linechar_index]->setSourceColor(0x88cffa);
+				//mPainterXPtr[linechar_index]->drawLines(pointX3, TABLESIZE(pointX3));
 			}
 			mTextViewppmPtr->setVisible(false);
 			mTextViewugm3Ptr->setVisible(false);

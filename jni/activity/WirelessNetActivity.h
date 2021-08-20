@@ -24,6 +24,7 @@
 #include "control/ZKEditText.h"
 #include "control/ZKVideoView.h"
 #include "window/ZKSlideWindow.h"
+#include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
 #define ID_WIRELESSNET_Button4    20004
@@ -49,12 +50,13 @@ class WirelessNetActivity : public Activity,
                      public ZKSlideWindow::ISlideItemClickListener,
                      public EasyUIContext::ITouchListener,
                      public ZKEditText::ITextChangeListener,
+					 public MyNetWorkingListener::MyNetWorkListener,
                      public ZKVideoView::IVideoPlayerMessageListener
 {
 public:
     WirelessNetActivity();
     virtual ~WirelessNetActivity();
-
+    virtual void MyNetworkNotify(int type , void *data);
     /**
      * 注册定时器
      */

@@ -32,6 +32,7 @@
 */
 
 extern MyNetWorkingListener *nwlistener;
+extern void disableStatusbus();
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -47,6 +48,7 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
+	disableStatusbus();
 	mTextViewConnectFailMsgPtr->setTextRowSpace(6);
 	mTextViewConnectFailMsgPtr->setText("连接失败，\n请检查当前网络环境是否正常，\n账号/密码是否输入正确。");
 }
@@ -233,7 +235,7 @@ static void obtainListItemData_ListViewWifiInfo(ZKListView *pListView,ZKListView
 				pWifiInfoItem->setText("");
 			}
 		}
-		pWifiInfoItem->setText("");
+//		pWifiInfoItem->setText("");
 	}
 	else
 	{

@@ -5,6 +5,20 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton12Ptr;
+static ZKTextView* mTextView69Ptr;
+static ZKButton* mButton11Ptr;
+static ZKButton* mButton10Ptr;
+static ZKTextView* mTextView68Ptr;
+static ZKWindow* mWindowEmergencyNoticePtr;
+static ZKButton* mButton9Ptr;
+static ZKTextView* mTextView67Ptr;
+static ZKWindow* mWindowHelpPtr;
+static ZKTextView* mTextView66Ptr;
+static ZKTextView* mTextView65Ptr;
+static ZKTextView* mTextView64Ptr;
+static ZKTextView* mTextView63Ptr;
+static ZKWindow* mWindowListView2Ptr;
 static ZKTextView* mTextView62Ptr;
 static ZKTextView* mTextView61Ptr;
 static ZKTextView* mTextView57Ptr;
@@ -221,6 +235,10 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_MAIN_Button12, onButtonClick_Button12,
+    ID_MAIN_Button11, onButtonClick_Button11,
+    ID_MAIN_Button10, onButtonClick_Button10,
+    ID_MAIN_Button9, onButtonClick_Button9,
     ID_MAIN_ButtonMusicAudio, onButtonClick_ButtonMusicAudio,
     ID_MAIN_ButtonMusicNext, onButtonClick_ButtonMusicNext,
     ID_MAIN_ButtonMusicPlay, onButtonClick_ButtonMusicPlay,
@@ -348,6 +366,20 @@ const char* mainActivity::getAppName() const{
 //TAG:onCreate
 void mainActivity::onCreate() {
 	Activity::onCreate();
+    mButton12Ptr = (ZKButton*)findControlByID(ID_MAIN_Button12);
+    mTextView69Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView69);
+    mButton11Ptr = (ZKButton*)findControlByID(ID_MAIN_Button11);
+    mButton10Ptr = (ZKButton*)findControlByID(ID_MAIN_Button10);
+    mTextView68Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView68);
+    mWindowEmergencyNoticePtr = (ZKWindow*)findControlByID(ID_MAIN_WindowEmergencyNotice);
+    mButton9Ptr = (ZKButton*)findControlByID(ID_MAIN_Button9);
+    mTextView67Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView67);
+    mWindowHelpPtr = (ZKWindow*)findControlByID(ID_MAIN_WindowHelp);
+    mTextView66Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView66);
+    mTextView65Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView65);
+    mTextView64Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView64);
+    mTextView63Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView63);
+    mWindowListView2Ptr = (ZKWindow*)findControlByID(ID_MAIN_WindowListView2);
     mTextView62Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView62);
     mTextView61Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView61);
     mTextView57Ptr = (ZKTextView*)findControlByID(ID_MAIN_TextView57);

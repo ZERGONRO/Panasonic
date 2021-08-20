@@ -27,6 +27,20 @@
 #include "util/MyNetWorkingListener.h"
 
 /*TAG:Macro宏ID*/
+#define ID_MAIN_Button12    20044
+#define ID_MAIN_TextView69    50086
+#define ID_MAIN_Button11    20043
+#define ID_MAIN_Button10    20042
+#define ID_MAIN_TextView68    50085
+#define ID_MAIN_WindowEmergencyNotice    110043
+#define ID_MAIN_Button9    20041
+#define ID_MAIN_TextView67    50084
+#define ID_MAIN_WindowHelp    110042
+#define ID_MAIN_TextView66    50083
+#define ID_MAIN_TextView65    50082
+#define ID_MAIN_TextView64    50081
+#define ID_MAIN_TextView63    50080
+#define ID_MAIN_WindowListView2    110031
 #define ID_MAIN_TextView62    50079
 #define ID_MAIN_TextView61    50078
 #define ID_MAIN_TextView57    50077

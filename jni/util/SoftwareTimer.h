@@ -15,13 +15,25 @@
 
 
 
-typedef void (*timeout_callback_handler)(EqpTimeData EqpData);
+typedef void (*timeout_callback_handler)(void *);
+
+typedef enum {
+	SoftwareTimer_Start,
+	SoftwareTimer_Stop,
+	SoftwareTimer_Timeout,
+	SoftwareTimer_Reload,
+	SoftwareTimer_Resume
+}SoftwareTimer_Mode;
 
 typedef struct Software_Timer_t{
-	unsigned int timeout;
-	EqpTimeData EqpTime_Data;
+	int DevID;
+	int start_time1;
+	int close_time1;
+	int start_time2;
+	int close_time2;
+	SoftwareTimer_Mode SWT_Mode;
+	EquipmentTiming *EqpTime_Data;
 	timeout_callback_handler callback;
-//	struct Software_Timer_t *next;
 }Software_Timer;
 
 
@@ -30,22 +42,17 @@ class SoftwareTimerListener{
 		SoftwareTimerListener();
 		virtual ~SoftwareTimerListener();
 
-//		void registerSoftwareTimerListener(timeout_callback_handler sListener);
-//		void unregisterSoftwareTimerListener(timeout_callback_handler sListener);
-
 		static SoftwareTimerListener* getInstance();
-
-		bool Is_SoftwareTimer_Empty();
-		void Insert_SoftwareTimer(Software_Timer *timer_data);
-		void Remove_SoftwareTimer(int DevID);
-		void Init_SoftwareTimer(unsigned int timeout, unsigned int repeat, timeout_callback_handler callback);
-		void Start_SoftwareTimer();
-		void Stop_SoftwareTimer();
+		void Init_SoftwareTimer();
+		void DeInit_SoftwareTimer();
+		void Add_SoftwareTimer(Software_Timer *timer);
+		void Del_SoftwareTimer(int DevID);
+		void Calc_SoftwareTimer();
 
 	private:
 		bool softwaretimer_flag;
 		int  time_count;
-		std::vector<Software_Timer *> *timer_handler;
+		std::vector<Software_Timer *> timer_handler;
 	protected:
 		virtual bool threadloop();
 };

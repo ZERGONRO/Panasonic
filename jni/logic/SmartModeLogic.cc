@@ -32,7 +32,7 @@
 */
 
 static int SmartModeSelect = StandardMode;
-
+extern void enableStatusbus();
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -50,7 +50,7 @@ void DisPlayFocusMode(int index);
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	enableStatusbus();
 
 }
 

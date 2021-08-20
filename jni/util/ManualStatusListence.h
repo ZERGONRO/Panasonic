@@ -32,10 +32,13 @@ public:
 	float getTvocthreadholdData();
 	float getformaldehydethreadholdData();
 	void setWifiSwitch(int value);
+	int getWifiSwitch();
 	void setWifiStatus(int value);
 	void setVoiceSysSwitch(int value);
+	int getVoiceSysSwitch();
 	void setMainMachineMode(int value);
 	void setRf254Switch(int value);
+	int getRf254Switch();
 
 	/* Manual Device Data Func */
 	void setAirPFAutoWind(int value);

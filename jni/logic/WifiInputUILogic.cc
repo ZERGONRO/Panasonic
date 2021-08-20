@@ -33,7 +33,7 @@
 */
 #define PASSWORK_DESCRIPTION_STRING 	"请输入密码"
 extern MyNetWorkingListener *nwlistener;
-
+extern void disableStatusbus();
 
 static void onEditTextChanged_PassWordTextView(const std::string &text);
 /**
@@ -51,7 +51,7 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	disableStatusbus();
 }
 
 /**

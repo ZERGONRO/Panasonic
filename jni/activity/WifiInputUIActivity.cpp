@@ -533,16 +533,16 @@ int WifiInputUIActivity::getListItemCount(const ZKListView *pListView) const{
 }
 void WifiInputUIActivity::MyNetworkNotify(int type , void *data){
 	if(type == NW_NOTIFY_TYPE_CONNECT_STATUS) {				//连接状态变化
-	LOGD("connected %d\n" , (int)data);
-	if(1 == (int)data) {								//连接成功
-		mIconWifiPtr->setVisible(true);
-//			resetStatusIconim();
+		LOGD("connected %d\n" , (int)data);
+		if(1 == (int)data) {								//连接成功
+			mIconWifiPtr->setVisible(true);
+	//			resetStatusIconim();
+		}
+		else {
+			mIconWifiPtr->setVisible(false);
+	//			resetStatusIconim();
+		}
 	}
-	else {
-		mIconWifiPtr->setVisible(false);
-//			resetStatusIconim();
-	}
-}
 }
 
 void WifiInputUIActivity::obtainListItemData(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index){

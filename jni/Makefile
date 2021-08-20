@@ -41,10 +41,13 @@ CXXFLAGS+= -fexceptions -fpermissive -Wall -O2
 INCLUDE_DIR := -I$(EASYUI_COMMON_INCLUDE) \
 					-I$(ZKSW_PREBUILT_INCLUDE_PATH) \
 					-I. \
+					-I ../jni/sdkdir/include \
+					-I ../jni/pinyin \
+					-I ../jni/sysapp \
 					-I$(ZKSW_PREBUILT_INCLUDE_PATH)/mgeff
 
 LDFLAGS =  -leasyui 
-LDFLAGS += -L$(ZKSW_PREBUILT_LIB_PATH)/system -L. 
+LDFLAGS += -L$(ZKSW_PREBUILT_LIB_PATH)/system -L. -L ../jni/sdkdir/lib
 
 TARGET=../libs/armeabi/libzkgui.so
 

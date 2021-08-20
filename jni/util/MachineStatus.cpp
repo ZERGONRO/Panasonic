@@ -445,10 +445,9 @@ void MachineStatusListener::setwifissid(std::string ssid)
 	{
 		memset(config->ssid, 0, 128);
 	}
-	else
-	{
-		strcpy(config->ssid, ssid.c_str());
-	}
+
+	strcpy(config->ssid, ssid.c_str());
+
 
 }
 
@@ -516,11 +515,21 @@ void MachineStatusListener::setenvironmentindex(int index)
 	EnvDate->envindex = index;
 }
 
+void MachineStatusListener::setMainDevListStatus(DeviceInfo *DevListData){
+
+
+}
+
+DeviceInfo* MachineStatusListener::getMainDevListStatus(){
+	return NULL;
+}
+
 std::vector<DeviceInfo *> MachineStatusListener::getEnvSpaceInfo()
 {
 	return EnvInfo;
 }
 
+/*设置Main界面显示的设备*/
 void MachineStatusListener::setEnvSpaceInfo(std::vector<DeviceInfo *> *EnvDevSettingVector)
 {
 	if(!EnvDevSettingVector)
@@ -543,8 +552,6 @@ void MachineStatusListener::setEnvListInfo(std::vector<SpaceInfo *> *EnvSettingV
 	EnvListInfo.clear();
 	std::vector<SpaceInfo *>::iterator it = EnvSettingVectorList->begin();
 	for (;it != EnvSettingVectorList->end();it++){
-//		SpaceInfo *tmp = (SpaceInfo *)malloc(sizeof(SpaceInfo));
-//		tmp = (*it);
 		SpaceInfo *tmp = (*it);
 		EnvListInfo.push_back(tmp);
 	}
@@ -603,10 +610,10 @@ void MachineStatusListener::setEquipmentTimeSetting(EquipmentTiming *EquTimeSett
 
 	EquipmentTimeSetting->DeviceID = EquTimeSetting->DeviceID;
 	EquipmentTimeSetting->DeviceSwitch = EquTimeSetting->DeviceSwitch;
-	EquipmentTimeSetting->weekbuf.clear();
-	for (int i = 0;i < EquTimeSetting->weekbuf.size();i++){
-		std::string tmpweek = EquTimeSetting->weekbuf.at(i);
-		EquipmentTimeSetting->weekbuf.push_back(tmpweek.c_str());
+//	EquipmentTimeSetting->weekbuf.clear();
+	for (int i = 0;i < 8;i++){
+//		LOGD("EquTimeSetting->weekbuf[i] is %d\n", EquTimeSetting->weekbuf[i]);
+		EquipmentTimeSetting->weekbuf[i] = EquTimeSetting->weekbuf[i];
 	}
 
 	if (EquTimeSetting->Time1StageFlag){
@@ -646,9 +653,9 @@ void MachineStatusListener::setEqpTimeData()
 //		for (int i = 0;i < EqpTime_Data.size();i++){
 		for (;it != EqpTime_Data.end();it++){
 			EqpTimeData *tmp = (*it);
-			EqpTimeData *tmp1 = EqpTime_Data.at(Eqp_Count);
-			if (EquipmentTimeSetting->DeviceID == tmp1->DeviceID){
-				if (memcmp(tmp1->DeviceData, EquipmentTimeSetting, sizeof(EquipmentTiming)) == 0){
+//			EqpTimeData *tmp1 = EqpTime_Data.at(Eqp_Count);
+			if (EquipmentTimeSetting->DeviceID == tmp->DeviceID){
+				if (memcmp(tmp->DeviceData, EquipmentTimeSetting, sizeof(EquipmentTiming)) == 0){
 					LOGD("the same EqpTime_Data\n");
 					return;
 				}else{

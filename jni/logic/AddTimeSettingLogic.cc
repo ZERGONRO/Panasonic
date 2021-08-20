@@ -40,6 +40,7 @@ static char weekbuf[64];
 
 void EquipmentTimeSettingFunc();
 extern int DeviceID;
+extern void disableStatusbus();
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -55,6 +56,7 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
+	disableStatusbus();
 	LayoutPosition lpWindowMain = mWindowMainPtr->getPosition();
 	LayoutPosition lpWindowDisp = mWindowDispPtr->getPosition();
 	LayoutPosition lpWindowContent = mWindowContentPtr->getPosition();
@@ -81,13 +83,13 @@ static void onUI_show() {
 	int OpenTime1 = 0, OpenTime2 = 0;
 	char Timebuf[64];
 	int Flag_AddTimer = false;
-	EquipmentTiming *EqpTime = (EquipmentTiming *)malloc(sizeof(EquipmentTiming));//MACHINESTATUS->getEquipmentTimeSetting();
-	for(int i = 0;i < MACHINESTATUS->getEqpTimeData().size();i++){
+	EquipmentTiming *EqpTime = new EquipmentTiming;
+//	EquipmentTiming *EqpTime = (EquipmentTiming *)malloc(sizeof(EquipmentTiming));
+	for(int i = 0;i < (int)MACHINESTATUS->getEqpTimeData().size();i++){
 		EqpTimeData *tmp = MACHINESTATUS->getEqpTimeData().at(i);
 		if (tmp->DeviceID == DeviceID){
 			Flag_AddTimer = true;
 			LOGD("copy the recorded data to show\n");
-//				EqpTSet = (*tmpEqpTimer)->DeviceData;
 			memcpy(EqpTime, tmp->DeviceData, sizeof(EquipmentTiming));
 			break;
 		}
@@ -98,28 +100,31 @@ static void onUI_show() {
 		TimeSet2 = 0;
 		TimeSet3 = 0;
 		TimeSet4 = 0;
-		free(EqpTime);
+//		free(EqpTime);
+		delete(EqpTime);
 		EqpTime = NULL;
 		return;
 	}
 
-	for (int i = 0;i < EqpTime->weekbuf.size();i++){
-		std::string weektext = EqpTime->weekbuf.at(i);
-		if (!strcmp(weektext.c_str(), "周一")){
+//	for (int i = 0;i < (int)EqpTime->weekbuf.size();i++){
+	for (int i = 0;EqpTime->weekbuf[i] != 0;i++){
+		int weektext = EqpTime->weekbuf[i];
+//		std::string weektext = EqpTime->weekbuf.at(i);
+		if (weektext == 1){
 			mButtonMonPtr->setSelected(true);
-		}else if (!strcmp(weektext.c_str(), "周二")){
+		}else if (weektext == 2){
 			mButtonTuesPtr->setSelected(true);
-		}else if (!strcmp(weektext.c_str(), "周三")){
+		}else if (weektext == 3){
 			mButtonWenPtr->setSelected(true);
-		}else if (!strcmp(weektext.c_str(), "周四")){
+		}else if (weektext == 4){
 			mButtonThuePtr->setSelected(true);
-		}else if (!strcmp(weektext.c_str(), "周五")){
+		}else if (weektext == 5){
 			mButtonFriPtr->setSelected(true);
-		}else if (!strcmp(weektext.c_str(), "周六")){
+		}else if (weektext == 6){
 			mButtonSatPtr->setSelected(true);
-		}else if (!strcmp(weektext.c_str(), "周日")){
+		}else if (weektext == 7){
 			mButtonSunPtr->setSelected(true);
-		}else if (!strcmp(weektext.c_str(), "每天")){
+		}else if (weektext == 8){
 			mButtonEveryDayPtr->setSelected(true);
 			mButtonMonPtr->setSelected(true);
 			mButtonTuesPtr->setSelected(true);
@@ -128,6 +133,7 @@ static void onUI_show() {
 			mButtonFriPtr->setSelected(true);
 			mButtonSatPtr->setSelected(true);
 			mButtonSunPtr->setSelected(true);
+			break;
 		}
 	}
 	if (!EqpTime->Time1StageFlag){
@@ -166,8 +172,9 @@ static void onUI_show() {
 
 		mTextView16Ptr->setText(std::to_string(EqpTime->TempSettingValue2));
 	}
-			free(EqpTime);
-			EqpTime = NULL;
+//	free(EqpTime);
+	delete(EqpTime);
+	EqpTime = NULL;
 }
 
 /*
@@ -297,41 +304,38 @@ static bool onAddTimeSettingActivityTouchEvent(const MotionEvent &ev) {
 
 void EquipmentTimeSettingFunc(){
 
-//	int index = 0;
+	int index = 0;
 	EquipmentTimeSetting.DeviceID = DeviceID;
 	EquipmentTimeSetting.DeviceSwitch = true;
-	EquipmentTimeSetting.weekbuf.clear();
+//	EquipmentTimeSetting.weekbuf.clear();
+	memset(EquipmentTimeSetting.weekbuf, 0, sizeof(EquipmentTimeSetting.weekbuf));
 	if (mButtonEveryDayPtr->isSelected()){
-		EquipmentTimeSetting.weekbuf.push_back(mButtonEveryDayPtr->getText().c_str());
+		EquipmentTimeSetting.weekbuf[index++] = 8;
+//		strcpy(&EquipmentTimeSetting.weekbuf[DeviceID][index++], mButtonEveryDayPtr->getText().c_str());
 	}else{
 		if (mButtonMonPtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.push_back(mButtonMonPtr->getText().c_str());
+			EquipmentTimeSetting.weekbuf[index++] = 1;
 		}
 		if (mButtonTuesPtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.push_back(mButtonTuesPtr->getText().c_str());
+			EquipmentTimeSetting.weekbuf[index++] = 2;
 		}
 		if (mButtonWenPtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.push_back(mButtonWenPtr->getText().c_str());
+			EquipmentTimeSetting.weekbuf[index++] = 3;
 		}
 		if (mButtonThuePtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.push_back(mButtonThuePtr->getText().c_str());
+			EquipmentTimeSetting.weekbuf[index++] = 4;
 		}
 		if (mButtonFriPtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.push_back(mButtonFriPtr->getText().c_str());
+			EquipmentTimeSetting.weekbuf[index++] = 5;
 		}
 		if (mButtonSatPtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.push_back(mButtonSatPtr->getText().c_str());
+			EquipmentTimeSetting.weekbuf[index++] = 6;
 		}
 		if (mButtonSunPtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.push_back(mButtonSunPtr->getText().c_str());
+			EquipmentTimeSetting.weekbuf[index++] = 7;
 		}
-
-		if (EquipmentTimeSetting.weekbuf.size() == 7 || mButtonEveryDayPtr->isSelected()){
-			EquipmentTimeSetting.weekbuf.clear();
-			EquipmentTimeSetting.weekbuf.push_back(mButtonEveryDayPtr->getText().c_str());
-		}
-
 	}
+//	EquipmentTimeSetting.weekbuf[index++] = -1;
 
 	if (mButtonStage1Ptr->isSelected()){
 		EquipmentTimeSetting.Time1StageFlag = true;

@@ -32,6 +32,7 @@
 
 static MachineTime date;
 
+
 static std::vector<std::string > VectorYear;
 static std::vector<std::string > VectorMonth;
 static std::vector<std::string > VectorDays;
@@ -55,6 +56,7 @@ static  std::string ListMin[] =   {"0", "1", "2", "3", "4", "5", "6", "7", "8", 
 
 
 extern MyNetWorkingListener *nwlistener;
+extern void disableStatusbus();
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -62,15 +64,83 @@ extern MyNetWorkingListener *nwlistener;
  */
 static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	//{0,  6000}, //定时器id=0, 时间间隔6秒
-	//{1,  1000},
+	{1,  1000},
 };
+
+void UpdateTimeListViewShow(){
+		char timebuf[64];
+		if (nwlistener->getWifiConnectStatus() != 2){
+			mTextViewDescPtr->setVisible(true);
+			mListViewYearPtr->setVisible(false);
+			mListViewMonthPtr->setVisible(false);
+			mListViewDayPtr->setVisible(false);
+			mListViewHourPtr->setVisible(false);
+			mListViewMinuetePtr->setVisible(false);
+	//		mListView1Ptr->setVisible(false);
+		}else{
+			mTextViewDescPtr->setVisible(false);
+	//		mListView1Ptr->setVisible(true);
+	//		mListView1Ptr->refreshListView();
+			mListViewYearPtr->setVisible(true);
+			mListViewMonthPtr->setVisible(true);
+			mListViewDayPtr->setVisible(true);
+			mListViewHourPtr->setVisible(true);
+			mListViewMinuetePtr->setVisible(true);
+
+			for (int i = 0;i < sizeof(ListYear) / sizeof(std::string);i++){
+				VectorYear.push_back(ListYear[i]);
+			}
+
+			for (int i = 0;i < sizeof(ListMonth) / sizeof(std::string);i++){
+				VectorMonth.push_back(ListMonth[i]);
+			}
+
+			for (int i = 0;i < sizeof(ListDays) / sizeof(std::string);i++){
+				VectorDays.push_back(ListDays[i]);
+			}
+
+			for (int i = 0;i < sizeof(ListHour) / sizeof(std::string);i++){
+				VectorHour.push_back(ListHour[i]);
+			}
+
+			for (int i = 0;i < sizeof(ListMin) / sizeof(std::string);i++){
+				VectorMin.push_back(ListMin[i]);
+			}
+
+			date = MACHINESTATUS->getMachineTime();
+			sprintf(timebuf, "%d年%02d月%02d日    %02d:%02d", date.year+1900, date.month, date.days, date.hour, date.min);
+			mTextViewDate1Ptr->setText(timebuf);
+
+			mListViewYearPtr->setSelection(date.year - 121);
+			mListViewYearPtr->refreshListView();
+
+			mListViewMonthPtr->setSelection(date.month-3);
+			mListViewMonthPtr->refreshListView();
+
+			mListViewDayPtr->setSelection(date.days-3);
+			mListViewDayPtr->refreshListView();
+
+			mListViewHourPtr->setSelection(date.hour-2);
+			mListViewHourPtr->refreshListView();
+
+			mListViewMinuetePtr->setSelection(date.min-2);
+			mListViewMinuetePtr->refreshListView();
+
+			mListViewYearPtr->setDecRatio(0.7);
+			mListViewMonthPtr->setDecRatio(0.7);
+			mListViewDayPtr->setDecRatio(0.7);
+			mListViewHourPtr->setDecRatio(0.7);
+			mListViewMinuetePtr->setDecRatio(0.7);
+
+		}
+}
 
 /**
  * 当界面构造时触发
  */
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
-
+	disableStatusbus();
 }
 
 /**
@@ -87,72 +157,8 @@ static void onUI_intent(const Intent *intentPtr) {
  * 当界面显示时触发
  */
 static void onUI_show() {
-	char timebuf[100];
-	if (nwlistener->getWifiConnectStatus() != 2){
-		mTextViewDescPtr->setVisible(true);
-		mListViewYearPtr->setVisible(false);
-		mListViewMonthPtr->setVisible(false);
-		mListViewDayPtr->setVisible(false);
-		mListViewHourPtr->setVisible(false);
-		mListViewMinuetePtr->setVisible(false);
-//		mListView1Ptr->setVisible(false);
-	}else{
-		mTextViewDescPtr->setVisible(false);
-//		mListView1Ptr->setVisible(true);
-//		mListView1Ptr->refreshListView();
-		mListViewYearPtr->setVisible(true);
-		mListViewMonthPtr->setVisible(true);
-		mListViewDayPtr->setVisible(true);
-		mListViewHourPtr->setVisible(true);
-		mListViewMinuetePtr->setVisible(true);
 
-		for (int i = 0;i < sizeof(ListYear) / sizeof(std::string);i++){
-			VectorYear.push_back(ListYear[i]);
-		}
-
-		for (int i = 0;i < sizeof(ListMonth) / sizeof(std::string);i++){
-			VectorMonth.push_back(ListMonth[i]);
-		}
-
-		for (int i = 0;i < sizeof(ListDays) / sizeof(std::string);i++){
-			VectorDays.push_back(ListDays[i]);
-		}
-
-		for (int i = 0;i < sizeof(ListHour) / sizeof(std::string);i++){
-			VectorHour.push_back(ListHour[i]);
-		}
-
-		for (int i = 0;i < sizeof(ListMin) / sizeof(std::string);i++){
-			VectorMin.push_back(ListMin[i]);
-		}
-
-		date = MACHINESTATUS->getMachineTime();
-		sprintf(timebuf, "%d年%02d月%02d日    %02d:%02d", date.year+1900, date.month, date.days, date.hour, date.min);
-		mTextViewDate1Ptr->setText(timebuf);
-
-		mListViewYearPtr->setSelection(date.year - 121);
-		mListViewYearPtr->refreshListView();
-
-		mListViewMonthPtr->setSelection(date.month-3);
-		mListViewMonthPtr->refreshListView();
-
-		mListViewDayPtr->setSelection(date.days-3);
-		mListViewDayPtr->refreshListView();
-
-		mListViewHourPtr->setSelection(date.hour-2);
-		mListViewHourPtr->refreshListView();
-
-		mListViewMinuetePtr->setSelection(date.min-2);
-		mListViewMinuetePtr->refreshListView();
-
-		mListViewYearPtr->setDecRatio(0.7);
-		mListViewMonthPtr->setDecRatio(0.7);
-		mListViewDayPtr->setDecRatio(0.7);
-		mListViewHourPtr->setDecRatio(0.7);
-		mListViewMinuetePtr->setDecRatio(0.7);
-
-	}
-
+	UpdateTimeListViewShow();
 }
 
 /*
@@ -187,8 +193,23 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  *             停止运行当前定时器
  */
 static bool onUI_Timer(int id){
+//	bool Flag_NWUpdate = false;
+	static int count = 0;
 	switch (id) {
+		case 0:
+			{
 
+			}
+			break;
+		case 1:
+			{
+				count++;
+				if (count > 60){
+					count = 0;
+					UpdateTimeListViewShow();
+				}
+			}
+			break;
 		default:
 			break;
 	}

@@ -1,9 +1,13 @@
 #pragma once
 #include "uart/ProtocolSender.h"
+#include <sys/time.h>
+#include "sdkdir/include/mi_sys.h"
+#include "sdkdir/include/mi_sys_datatype.h"
 #include "entry/EasyUIContext.h"
 #include "utils/TimeHelper.h"
 #include "util/MachineStatus.h"
 #include "util/ProtocolDataRecv.h"
+#include "util/ManualStatusListence.h"
 
 
 /*
@@ -57,6 +61,7 @@ extern bool UpdateTimeFlag;
 extern void initStatusBarMode();
 extern void showstatusbars();
 extern void hidestatusbars();
+extern void enableStatusbus();
 
 //extern MyNetWorkingListener *nwlistener;
 
@@ -85,26 +90,8 @@ static S_ACTIVITY_TIMEER REGISTER_ACTIVITY_TIMER_TAB[] = {
 	{2,  200},
 };
 
-/*
-void SetEnvInfoListliew()
-{
-	EnvInfoVector.push_back("全热交换");
-	EnvInfoVector.push_back("新风换气");
-	EnvInfoVector.push_back("调湿自动\n40%-60%");
-	EnvInfoVector.push_back("空调湿度\n调节26℃");
-	EnvInfoVector.push_back("净化");
-	EnvInfoVector.push_back("除味");
-	EnvInfoVector.push_back("空调");
-}
-*/
 
-void SetEnvName(std::string focusindex)
-{
-	mButton2Ptr->setText(focusindex);
-	mButton8Ptr->setText(focusindex);
-}
-//struct tm *t = TimeHelper::getDateTime();
-
+/*更新室内数据的颜色和数值*/
 void UpdateIndoorDataColorandValue(){
 	int Datatmp;
 	float Datatmp1;
@@ -114,8 +101,8 @@ void UpdateIndoorDataColorandValue(){
 		mTextView22Ptr->setTextColor(0xFF00AAF4);
 		mTextView23Ptr->setTextColor(0xFF00AAF4);
 	}else if (Datatmp >= 35 && Datatmp <= 74){
-		mTextView22Ptr->setTextColor(0xFFFFFF80);
-		mTextView23Ptr->setTextColor(0xFFFFFF80);
+		mTextView22Ptr->setTextColor(0xFFFF561C);
+		mTextView23Ptr->setTextColor(0xFFFF561C);
 	}else if (Datatmp >= 75 && Datatmp <= 149){
 		mTextView22Ptr->setTextColor(0xFFFF8040);
 		mTextView23Ptr->setTextColor(0xFFFF8040);
@@ -141,19 +128,19 @@ void UpdateIndoorDataColorandValue(){
 		mTextView19Ptr->setVisible(false);
 	}
 
-	Datatmp1 = atoi(mTextView30Ptr->getText().c_str());		//甲醛
+	Datatmp1 = atof(mTextView30Ptr->getText().c_str());		//甲醛
 	if (Datatmp1 >= 0 && Datatmp1 <= 0.03){
-		sprintf(DataBuf, "%03d", Datatmp1);
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView30Ptr->setText(DataBuf);
 		mTextView30Ptr->setTextColor(0xFF00AAF4);
 		mTextView31Ptr->setTextColor(0xFF00AAF4);
 	}else if (Datatmp1 >= 0.04 && Datatmp1 <= 0.07){
-		sprintf(DataBuf, "%03d", Datatmp1);
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView30Ptr->setText(DataBuf);
-		mTextView30Ptr->setTextColor(0xFFFFFF80);
-		mTextView31Ptr->setTextColor(0xFFFFFF80);
+		mTextView30Ptr->setTextColor(0xFFFF561C);
+		mTextView31Ptr->setTextColor(0xFFFF561C);
 	}else if (Datatmp1 >= 0.08 && Datatmp1 <= 2.50){
-		sprintf(DataBuf, "%03d", Datatmp1);
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView30Ptr->setText(DataBuf);
 		mTextView30Ptr->setTextColor(0xFF8000FF);
 		mTextView31Ptr->setTextColor(0xFF8000FF);
@@ -162,19 +149,19 @@ void UpdateIndoorDataColorandValue(){
 		mTextView31Ptr->setVisible(false);
 	}
 
-	Datatmp1 = atoi(mTextView46Ptr->getText().c_str());		//TVOC
+	Datatmp1 = atof(mTextView46Ptr->getText().c_str());		//TVOC
 	if (Datatmp1 >= 0 && Datatmp1 <= 0.03){
-		sprintf(DataBuf, "%03d", Datatmp1);
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView46Ptr->setText(DataBuf);
 		mTextView46Ptr->setTextColor(0xFF00AAF4);
 		mTextView51Ptr->setTextColor(0xFF00AAF4);
 	}else if (Datatmp1 >= 0.04 && Datatmp1 <= 0.07){
-		sprintf(DataBuf, "%03d", Datatmp1);
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView46Ptr->setText(DataBuf);
-		mTextView46Ptr->setTextColor(0xFFFFFF80);
-		mTextView51Ptr->setTextColor(0xFFFFFF80);
+		mTextView46Ptr->setTextColor(0xFFFF561C);
+		mTextView51Ptr->setTextColor(0xFFFF561C);
 	}else if (Datatmp1 >= 0.08 && Datatmp1 <= 2.50){
-		sprintf(DataBuf, "%03d", Datatmp1);
+		sprintf(DataBuf, "%.2lf", Datatmp1);
 		mTextView46Ptr->setText(DataBuf);
 		mTextView46Ptr->setTextColor(0xFF8000FF);
 		mTextView51Ptr->setTextColor(0xFF8000FF);
@@ -207,7 +194,6 @@ static void updateTime()
 	char timeStr[20];
 //	static bool bflash = false;
 	struct tm *t = TimeHelper::getDateTime();
-
 //	LOGD("The time is : %02d-%02d-%02d-%02d \n", t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min);
 //	sprintf(timeStr, "%02d:%02d:%02d", t->tm_hour,t->tm_min,t->tm_sec);
 //	mTextView42Ptr->setText(timeStr);
@@ -219,10 +205,8 @@ static void updateTime()
 		t->tm_mday++;
 		t->tm_wday++;
 	}
-
 	sprintf(timeStr, "%02d:%02d", t->tm_hour,t->tm_min);
 	mTextView42Ptr->setText(timeStr);
-
 //	sprintf(timeStr, "%d-%02d-%02d", 1900 + t->tm_year, t->tm_mon + 1, t->tm_mday);
 	MACHINESTATUS->setMachineTime(t);
 //	mTextView5Ptr->setText(timeStr);
@@ -435,6 +419,7 @@ static void onUI_init(){
 	step = 0;
 	mode = 0;
 	initStatusBarMode();
+	enableStatusbus();
 //	initStatusBar();
 	sprintf(cmd , "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle" , MACHINESTATUS->getbacklight());
 	system(cmd);
@@ -476,7 +461,7 @@ static void onUI_intent(const Intent *intentPtr) {
         //TODO
 
     }
-
+    enableStatusbus();
 
     if(nwlistener == NULL)
     {
@@ -501,30 +486,28 @@ static void onUI_intent(const Intent *intentPtr) {
     {
 		EnvInfoVector = new std::vector<DeviceInfo *>[10];
 		EnvInfoVector->clear();
-
     }
     else
     {
-    	EnvInfoVector->clear();
     	std::vector<DeviceInfo *> tmp = MACHINESTATUS->getEnvSpaceInfo();
 //    	LOGD("tmp.size is %d \n", tmp.size());
 		if(tmp.size() > 1)
 		{
+			mWindowListViewPtr->setVisible(true);
+			mWindowListView2Ptr->setVisible(false);
+			EnvInfoVector->clear();
 			for(int i = 0;i < tmp.size() - 1;i++)
 			{
 				DeviceInfo *tmp1 = tmp.at(i);
 				EnvInfoVector->push_back(tmp1);
-
 			}
 		}
 		else
 		{
-
+			mWindowListViewPtr->setVisible(false);
+			mWindowListView2Ptr->setVisible(true);
 		}
-//		LOGD("EnvInfoVector.size is %d\n", EnvInfoVector->size());
     }
-
-
 }
 
 /*
@@ -551,6 +534,7 @@ static void onUI_show() {
 	mIconViewFilterPtr->setVisible(false);
 
 	ResetStatusIconPos();
+	UpdateIndoorDataColorandValue();
 //	MACHINESTATUS->setwifistatus(nwlistener->IsConnected());
 
 	mButtonHomepage2Ptr->setSelected(true);
@@ -597,18 +581,20 @@ static void onProtocolDataUpdate(const SProtocolData &data) {
  */
 static bool onUI_Timer(int id){
 	static int DispTimeCount = 0;
-	static int EnvTimeCount = 0;
+	static int DispTimeCount1 = 0;
+	int time1;
+	MI_U64 curtime;
 	static int wifiConnectingCount = 0;
 	switch (id) {
 	case 0:
 		break;
 	case 1:
 	{
-		if (Flag_EnvListInfo){
+//		time1 = MI_SYS_GetCurPts(&curtime);
+//		LOGD("time1 is %d, curtime is %d\n", time1, curtime);
+		if (Flag_EnvListInfo){				//更新EnvList
 			Flag_EnvListInfo = false;
-//			std::vector<SpaceInfo *>::iterator it = MACHINESTATUS->getEnvListInfo().begin();
-//			for (;it != MACHINESTATUS->getEnvListInfo().end();it++){
-			for (int i = 0;i < MACHINESTATUS->getEnvListInfo().size();i++){
+			for (int i = 0;i < (int)MACHINESTATUS->getEnvListInfo().size();i++){
 				SpaceInfo *tmptext = MACHINESTATUS->getEnvListInfo().at(i);
 				if (strcmp(std::string(tmptext->maintext).c_str(), std::string(EnvListText).c_str()) == 0){
 					mButton2Ptr->setBackgroundPic(tmptext->mainPic);
@@ -618,76 +604,82 @@ static bool onUI_Timer(int id){
 			mButton8Ptr->setText(EnvListText);
 		}
 
-		if (Flag_EnvRefresh){
+		if (Flag_EnvRefresh){			//更新main界面的录入设备
 			Flag_EnvRefresh = false;
 
-			EnvInfoVector->clear();
 			std::vector<DeviceInfo *> tmp = MACHINESTATUS->getEnvSpaceInfo();
-	//    	LOGD("tmp.size is %d \n", tmp.size());
 			if(tmp.size() > 1)
 			{
-				for(int i = 0;i < tmp.size() - 1;i++)
+				mWindowListViewPtr->setVisible(true);
+				mWindowListView2Ptr->setVisible(false);
+				EnvInfoVector->clear();
+				for(int i = 0;i < (int)tmp.size() - 1;i++)
 				{
 					DeviceInfo *tmp1 = tmp.at(i);
 					EnvInfoVector->push_back(tmp1);
 				}
+				mListView1Ptr->refreshListView();
+			}else{
+				mWindowListViewPtr->setVisible(false);
+				mWindowListView2Ptr->setVisible(true);
 			}
-			mListView1Ptr->refreshListView();
+
 		}
 	}
 		break;
 	case 2:
 	{
-		if (nwlistener->IsConnectingOtherAP()){
-			mTextView62Ptr->setText("联网中");
-//			LOGD("connecting other AP\n");
-			if (mIconViewWifiPtr->isVisible()){
-				mIconViewWifiPtr->setVisible(false);
-			}else{
-				mIconViewWifiPtr->setVisible(true);
-			}
-			mWindow24Ptr->setVisible(true);
-			mWindow5Ptr->setVisible(false);
-			UpdateTimeFlag = false;
-//			}
-		}else if (nwlistener->IsConnected() && !nwlistener->IsConnectingOtherAP())
-		{
-			mTextView62Ptr->setText("已联网");
-			mIconViewWifiPtr->setVisible(true);
-			if(UpdateTimeFlag)
-			{
-				DispTimeCount++;
-				if(DispTimeCount > 50)
-				{
-					DispTimeCount = 0;
-					mWindow24Ptr->setVisible(false);
-					mWindow5Ptr->setVisible(true);
-					updateTime();
-				}
-			}
+		if (MANUALSTATUS->getWifiSwitch() == 0){
+			mIconViewWifiPtr->setVisible(false);
+			mTextView62Ptr->setVisible(false);
 		}else{
-			mTextView62Ptr->setText("未联网");
-			wifiConnectingCount++;
-			if (wifiConnectingCount > 3){
-				wifiConnectingCount = 0;
+			if (nwlistener->IsConnectingOtherAP()){
+				mTextView62Ptr->setText("联网中");
+	//			LOGD("connecting other AP\n");
 				if (mIconViewWifiPtr->isVisible()){
 					mIconViewWifiPtr->setVisible(false);
 				}else{
 					mIconViewWifiPtr->setVisible(true);
 				}
+				mWindow24Ptr->setVisible(true);
+				mWindow5Ptr->setVisible(false);
+				UpdateTimeFlag = false;
+	//			}
+			}else if (nwlistener->IsConnected() && !nwlistener->IsConnectingOtherAP())
+			{
+					mTextView62Ptr->setText("已联网");
+					mIconViewWifiPtr->setVisible(true);
+					mWindow5Ptr->setVisible(true);
+					mWindow24Ptr->setVisible(false);
+					DispTimeCount++;
+					if(UpdateTimeFlag && DispTimeCount > 60)
+					{
+						DispTimeCount = 0;
+						updateTime();
+
+					}
+
+			}else{
+				mTextView62Ptr->setText("未联网");
+				wifiConnectingCount++;
+				if (wifiConnectingCount > 3){
+					wifiConnectingCount = 0;
+					if (mIconViewWifiPtr->isVisible()){
+						mIconViewWifiPtr->setVisible(false);
+					}else{
+						mIconViewWifiPtr->setVisible(true);
+					}
+				}
+	//			mIconViewWifiPtr->setVisible(false);
+				mWindow24Ptr->setVisible(true);
+				mWindow5Ptr->setVisible(false);
+				UpdateTimeFlag = false;
+	//			ResetStatusIconPos();
 			}
-//			mIconViewWifiPtr->setVisible(false);
-			mWindow24Ptr->setVisible(true);
-			mWindow5Ptr->setVisible(false);
-			UpdateTimeFlag = false;
-//			ResetStatusIconPos();
+			ResetStatusIconPos();
+			MACHINESTATUS->setwifistatus(nwlistener->IsConnected());
+
 		}
-		ResetStatusIconPos();
-		MACHINESTATUS->setwifistatus(nwlistener->IsConnected());
-//		if(nwlistener->getWifiStatus())
-//		{
-//			nwlistener->resetScanCount();
-//		}
 	}
 		break;
 
@@ -697,27 +689,50 @@ static bool onUI_Timer(int id){
     return true;
 }
 
-static void RecvDataUpdate(const SProtocolRecvDate &Data)
+void UpdateSendData(){
+	SProtocolSendData sData;
+
+	std::vector<DeviceInfo *>::iterator it = EnvInfoVector->begin();
+	for (;it != EnvInfoVector->end();it++){
+			/*开关打开，上报*/
+			if ((*it)->maintext == "空气净化器"){
+				sData.PurifyData.Switch = (*it)->cancelstatus;
+			}else if ((*it)->maintext == "空调"){
+				sData.AirConditionData.Swtich = (*it)->cancelstatus;
+			}else if ((*it)->maintext == "全热交换器"){
+				sData.HeatChangeData.Swtich = (*it)->cancelstatus;
+			}else if ((*it)->maintext == "除湿器"){
+				sData.AdjustHumdData.Swtich = (*it)->cancelstatus;
+			}else if ((*it)->maintext == "净味器"){
+
+			}else if ((*it)->maintext == "浴霸"){
+				sData.YuBaData.Swtich = (*it)->cancelstatus;
+			}else if ((*it)->maintext == "新风机"){
+				sData.WindChangAirData.Swtich = (*it)->cancelstatus;
+			}
+	}
+}
+
+/*更新接收到的数据*/
+void UpdateRecvData(const SProtocolRecvDate &Data)
 {
-	CommonRecvDate data = Data.CommonDate;
+	char datatmp[16];
+	mTextView10Ptr->setText(Data.CommonDate.OutdoorTempData);
+	mTextView11Ptr->setText(Data.CommonDate.OutdoorHumdData);
+	mTextView12Ptr->setText(Data.CommonDate.OutdoorPM25Data);
 
-	mTextView10Ptr = data.OutdoorTempData;
-	mTextView11Ptr = data.OutdoorHumdData;
-	mTextView12Ptr = data.OutdoorPM25Data;
+	mTextView26Ptr->setText(Data.CommonDate.IndoorTempData);
+	mTextView19Ptr->setText(Data.CommonDate.IndoorHumdData);
+	mTextView33Ptr->setText(Data.CommonDate.IndoorCo2Data);
+	mTextView22Ptr->setText(Data.CommonDate.IndoorPm25Data);
+	sprintf(datatmp, "%.2lf", Data.CommonDate.IndoorFormaldehydeData);
+	mTextView30Ptr->setText(datatmp);
+	sprintf(datatmp, "%.2lf", Data.CommonDate.IndoorTvocData);
+	mTextView46Ptr->setText(datatmp);
 
-	mTextView19Ptr = data.IndoorHumdData;
-	mTextView22Ptr = data.IndoorPm25Data;
-	mTextView26Ptr = data.IndoorTempData;
-	mTextView30Ptr = data.IndoorFormaldehydeData;
-	mTextView33Ptr = data.IndoorCo2Data;
 
-	mIconViewWifiPtr->setVisible((data.WIFIStatus)?1 : 0);
-	mIconViewAirColdPtr->setVisible((data.AirCondiOutdoorDefrost)?1 : 0);
-	mIconViewHumdColdPtr->setVisible((data.AdjustHumdPreCondensation)?1 : 0);
-	mIconViewHumdDryPtr->setVisible((data.AdjustHumdDry)?1 : 0);
-	mIconViewSecurityPtr->setVisible((data.PreventMode)?1 : 0);
-	mTextView16Ptr->setVisible(data.NanoeXSwitch);
-
+	ResetStatusIconPos();
+	UpdateIndoorDataColorandValue();
 }
 
 /**
@@ -744,48 +759,11 @@ static bool onmainActivityTouchEvent(const MotionEvent &ev) {
 	return false;
 }
 
-static bool onButtonClick_ButtonON(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonON !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonOFF(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonOFF !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button3(ZKButton *pButton) {
-    LOGD(" ButtonClick Button3 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button4(ZKButton *pButton) {
-    LOGD(" ButtonClick Button4 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button5(ZKButton *pButton) {
-    LOGD(" ButtonClick Button5 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button6(ZKButton *pButton) {
-    LOGD(" ButtonClick Button6 !!!\n");
-    return false;
-}
-
-static bool onButtonClick_Button7(ZKButton *pButton) {
-    LOGD(" ButtonClick Button7 !!!\n");
-    return false;
-}
-static bool onButtonClick_Button1(ZKButton *pButton) {
-    LOGD(" ButtonClick Button1 !!!\n");
-    return false;
-}
 static bool onButtonClick_Button2(ZKButton *pButton) {
     LOGD(" ButtonClick Button2 !!!\n");
 //    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
 //    mWindowEnvBGDispPtr->setVisible(true);
+    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
     return false;
 }
 
@@ -793,7 +771,7 @@ static bool onButtonClick_Button8(ZKButton *pButton) {
     LOGD(" ButtonClick Button8 !!!\n");
     strcpy(EnvListText, mButton8Ptr->getText().c_str());
 //    mWindowEnvBGDispPtr->setVisible(true);
-    EASYUICONTEXT->openActivity("EnvironmentSelectActivity", NULL);
+    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
     return false;
 }
 
@@ -1481,8 +1459,7 @@ static bool onButtonClick_Button16(ZKButton *pButton) {
 }
 
 static int getListItemCount_ListView1(const ZKListView *pListView) {
-    //LOGD("getListItemCount_ListView1 !\n");
-//    return sizeof(EnvInfoData) / sizeof(EnvInfo);
+
 	return EnvInfoVector->size();
 }
 
@@ -1497,31 +1474,41 @@ static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKLis
 
 static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) {
     //LOGD(" onListItemClick_ ListView1  !!!\n");
-//	EnvInfoData[index].buttonstatus = !EnvInfoData[index].buttonstatus;
+	if (!mButtonOneKeyAdjustPtr->isSelected()){
+		return;
+	}
 	DeviceInfo *tmp1 = EnvInfoVector->at(index);
 	tmp1->cancelstatus = !tmp1->cancelstatus;
-//	tmp1[index].cancelstatus = !tmp1[index].cancelstatus;
 	mListView1Ptr->refreshListView();
+//	MACHINESTATUS->setMainDevListStatus(tmp1);
 }
 
 static bool onButtonClick_ButtonImmediaCommunicate(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonImmediaCommunicate !!!\n");
+    /*可以选择与不同的IOT单元进行实时语音通讯*/
     return false;
 }
 
 static bool onButtonClick_ButtonEmergencyCall(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonEmergencyCall !!!\n");
+    mWindowEmergencyNoticePtr->setVisible(true);
+    mButton12Ptr->setAlpha(150);
     return false;
 }
 static bool onButtonClick_ButtonOneKeyAdjust(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonOneKeyAdjust !!!\n");
-    EASYUICONTEXT->openActivity("EnvSettingActivity", NULL);
+    if (pButton->isSelected()){
+    	pButton->setSelected(false);
+    }else{
+    	pButton->setSelected(true);
+    }
     return false;
 }
 
 
 static bool onButtonClick_Button9(ZKButton *pButton) {
     LOGD(" ButtonClick Button9 !!!\n");
+    mWindowHelpPtr->setVisible(false);
     return false;
 }
 
@@ -1530,23 +1517,6 @@ static bool onButtonClick_ButtonBack(ZKButton *pButton) {
     return false;
 }
 
-static int getListItemCount_ListView2(const ZKListView *pListView) {
-    //LOGD("getListItemCount_ListView2 !\n");
-    return 12;
-}
-
-static void obtainListItemData_ListView2(ZKListView *pListView,ZKListView::ZKListItem *pListItem, int index) {
-    //LOGD(" obtainListItemData_ ListView2  !!!\n");
-}
-
-static void onListItemClick_ListView2(ZKListView *pListView, int index, int id) {
-    //LOGD(" onListItemClick_ ListView2  !!!\n");
-}
-
-static bool onButtonClick_Button10(ZKButton *pButton) {
-    LOGD(" ButtonClick Button10 !!!\n");
-    return false;
-}
 static bool onButtonClick_ButtonMusicPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonMusicPic !!!\n");
     return false;
@@ -1568,13 +1538,21 @@ static bool onButtonClick_ButtonMusicMode(ZKButton *pButton) {
     return false;
 }
 
+static bool onButtonClick_Button10(ZKButton *pButton) {
+    LOGD(" ButtonClick Button10 !!!\n");
+    mWindowEmergencyNoticePtr->setVisible(false);
+    return false;
+}
+
 static bool onButtonClick_Button11(ZKButton *pButton) {
     LOGD(" ButtonClick Button11 !!!\n");
+    /*立刻发送紧急呼救至其他IOT单元并响起警报声，同时发送紧急呼救信息至预设手机*/
     return false;
 }
 
 static bool onButtonClick_Button12(ZKButton *pButton) {
     LOGD(" ButtonClick Button12 !!!\n");
+    mWindowEmergencyNoticePtr->setVisible(false);
     return false;
 }
 static bool onButtonClick_ButtonMusicPre(ZKButton *pButton) {
@@ -1649,4 +1627,43 @@ static bool onButtonClick_ButtonHistorty1(ZKButton *pButton) {
 static void onProgressChanged_SeekBarSound(ZKSeekBar *pSeekBar, int progress) {
     //LOGD(" ProgressChanged SeekBarSound %d !!!\n", progress);
 	mTextView61Ptr->setText(std::to_string(progress));
+}
+static bool onButtonClick_ButtonON(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonON !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonOFF(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonOFF !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button3(ZKButton *pButton) {
+    LOGD(" ButtonClick Button3 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button4(ZKButton *pButton) {
+    LOGD(" ButtonClick Button4 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button5(ZKButton *pButton) {
+    LOGD(" ButtonClick Button5 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button6(ZKButton *pButton) {
+    LOGD(" ButtonClick Button6 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button7(ZKButton *pButton) {
+    LOGD(" ButtonClick Button7 !!!\n");
+    return false;
+}
+
+static bool onButtonClick_Button1(ZKButton *pButton) {
+    LOGD(" ButtonClick Button1 !!!\n");
+    return false;
 }

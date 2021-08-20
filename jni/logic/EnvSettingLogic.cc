@@ -51,6 +51,7 @@ static std::vector<IOTDevInfo *> AllDevListVector, LifeSmallDevListVector, BigDe
 static bool pushback_flag = true;
 
 extern bool Flag_IME_Text;
+extern void disableStatusbus();
 
 void onEditTextChanged_EditText1(const std::string &text);
 
@@ -65,24 +66,18 @@ static SpaceInfo SpaceInfoList[] = {
 		{"餐厅", "./ui/首页-图标-餐厅1.png", false},
 		{"儿童房", "./ui/首页-图标-儿童房.png", false},
 		{"阳台", "./ui/首页-图标-阳台1.png", false}
-//		{"阳台1", "./ui/首页-图标-阳台1.png", false},
-//		{"阳台2", "./ui/首页-图标-阳台1.png", false},
-//		{"阳台3", "./ui/首页-图标-阳台1.png", false},
-//		{"阳台4", "./ui/首页-图标-阳台1.png", false},
-//		{"阳台5", "./ui/首页-图标-阳台1.png", false},
-//		{"阳台6", "./ui/首页-图标-阳台1.png", false}
 //		{"自定义", "", false}
 };
 
 static IOTDevInfo IOTDevInfoList[] = {
-		{"空气净化器", "./ui/图标-天气-大雪-56.png"},
-		{"空  调", "./ui/图标-天气-晴-32.png"},
-		{"全热交换器", "./ui/图标-天气-大雪-56.png"},
-		{"除湿器", "./ui/图标-天气-晴-32.png"},
-		{"浴  霸", "./ui/图标-天气-大雪-56.png"},
-		{"油烟机", "./ui/图标-天气-晴-32.png"},
-		{"冰箱", "./ui/图标-天气-大雪-56.png"},
-		{"洗衣机", "./ui/图标-天气-晴-32.png"}
+		{"空气净化器", "./ui/空气净化器.png"},
+		{"空  调", "./ui/空调.png"},
+		{"全热交换器", "./ui/全热交换器.png"},
+		{"除湿器", "./ui/除湿器.png"},
+		{"浴  霸", "./ui/浴霸.png"},
+		{"油烟机", "./ui/浴霸.png"},
+		{"冰箱", "./ui/空气净化器.png"},
+		{"洗衣机", "./ui/全热交换器.png"}
 };
 
 static DeviceInfo DeviceInfoDataList[] = {
@@ -95,106 +90,26 @@ static DeviceInfo DeviceInfoDataList[] = {
 };
 
 static IOTDevInfo LifeSmallDevInfoList[] = {
-		{"全热交换器", "./ui/图标-天气-大雪-56.png"},
-		{"除湿器", "./ui/图标-天气-晴-32.png"}
+		{"全热交换器", "./ui/全热交换器.png"},
+		{"除湿器", "./ui/除湿器.png"}
 };
 
 static IOTDevInfo BigDevInfoList[] = {
-		{"空气净化器", "./ui/图标-天气-大雪-56.png"},
-		{"空   调", "./ui/图标-天气-晴-32.png"}
+		{"空气净化器", "./ui/空气净化器.png"},
+		{"空  调", "./ui/空调.png"}
 };
 
 static IOTDevInfo KitcheenDevInfoList[] = {
-		{"油烟机", "./ui/图标-天气-晴-32.png"},
-		{"冰  箱", "./ui/图标-天气-大雪-56.png"}
+		{"油烟机", "./ui/浴霸.png"},
+		{"冰箱", "./ui/空气净化器.png"}
 };
 
 static IOTDevInfo HomecheenDevInfoList[] = {
-		{"洗衣机", "./ui/图标-天气-晴-32.png"},
-		{"浴   霸", "./ui/图标-天气-大雪-56.png"}
+		{"洗衣机", "./ui/全热交换器.png"},
+		{"浴  霸", "./ui/浴霸.png"}
 };
 
-//typedef struct Link {
-////	char b[];
-//	SpaceInfo text;
-//	struct Link *next;
-//}Link_t;
 
-
-
-/*
-Link_t *initLink()
-
-{
-	Link_t *p = (Link_t*)malloc(sizeof(Link_t));
-	Link_t *temp = p;
-
-	for(int i = 0;i < (sizeof(SpaceInfoList) / sizeof(SpaceInfo));i++)
-	{
-//		 char *value = SpaceInfoList[i].maintext;
-//		 char *value = SpaceInfoList[i];
-		 Link_t *link = (Link_t*)malloc(sizeof(Link_t));
-		 link->text = SpaceInfoList[i];
-		 link->next = NULL;
-		 temp->next = link;
-		 temp = temp->next;
-//		 LOGD("initLink i = %d\n", i);
-	}
-	return p;
-}
-
-Link_t *AddLink(Link_t *p, SpaceInfo text, int pos)
-{
-	Link_t *temp = p;
-	for(int i = 1;i < pos+1;i++)
-	{
-		if(temp == NULL)
-			return p;
-		temp = temp->next;
-	}
-	Link_t *link = (Link_t*)malloc(sizeof(Link_t));
-	link->text = text;
-	link->next = temp->next;
-	temp->next = link;
-	return p;
-}
-
-Link_t *DeleteLink(Link_t *p, int pos)
-{
-	Link_t *temp = p;
-	for(int i = 1;i < pos+1;i++)
-	{
-		temp = temp->next;
-	}
-	Link_t *del = temp->next;
-	temp->next = temp->next->next;
-	del = NULL;
-	free(del);
-	return p;
-}
-
-void LinkToArrayDeal(Link_t *p, bool type)
-{
-//	LOGD("LinkToArrayDeal !!!\n");
-//	int index = 0;
-	Link_t *temp = p;
-	if(!type)
-	{
-		for(int i = 0;i < ((sizeof(SpaceInfoList) / sizeof(SpaceInfo)) - 1);i++)
-		{
-			SpaceInfoList[i] = temp->text;
-			temp = temp->next;
-			if(temp == NULL)
-				break;
-//			LOGD("LinkToArrayDeal i = %d\n", i);
-		}
-	}
-	else
-	{
-
-	}
-}
-*/
 /**
  * 注册定时器
  * 填充数组用于注册定时器
@@ -259,22 +174,22 @@ void InitDevVector()
 	{
 //		AllDevListVector = new std::vector<IOTDevInfo *>[15];
 		AllDevListVector.clear();
-		for(int i = 0;i < LifeSmallDevListVector.size();i++)
+		for(int i = 0;i < (int)LifeSmallDevListVector.size();i++)
 		{
 			IOTDevInfo *tmp = LifeSmallDevListVector.at(i);
 			AllDevListVector.push_back(tmp);
 		}
-		for(int i = 0;i < BigDevListVector.size();i++)
+		for(int i = 0;i < (int)BigDevListVector.size();i++)
 		{
 			IOTDevInfo *tmp1 = BigDevListVector.at(i);
 			AllDevListVector.push_back(tmp1);
 		}
-		for(int i = 0;i < KitcheenDevListVector.size();i++)
+		for(int i = 0;i < (int)KitcheenDevListVector.size();i++)
 		{
 			IOTDevInfo *tmp2 = KitcheenDevListVector.at(i);
 			AllDevListVector.push_back(tmp2);
 		}
-		for(int i = 0;i < HomeDevListVector.size();i++)
+		for(int i = 0;i < (int)HomeDevListVector.size();i++)
 		{
 			IOTDevInfo *tmp3 = HomeDevListVector.at(i);
 			AllDevListVector.push_back(tmp3);
@@ -288,6 +203,7 @@ void InitDevVector()
 static void onUI_init(){
     //Tips :添加 UI初始化的显示代码到这里,如:mText1Ptr->setText("123");
 //	EnvSettingVector.clear();
+	disableStatusbus();
 	if(!EnvSettingVectorList)
 	{
 		LOGD("EnvSettingVectorList is NULL\n");
@@ -306,7 +222,7 @@ static void onUI_init(){
 
 
 
-	for(int j = 0;j < EnvSettingVectorList->size();j++)
+	for(int j = 0;j < (int)EnvSettingVectorList->size();j++)
 	{
 		if(!EnvSettingVector[j])
 		{
@@ -659,7 +575,7 @@ static void obtainListItemData_ListView1(ZKListView *pListView,ZKListView::ZKLis
 	psubText->setText(tmp->maintext);
 	if(mButtonDelete1Ptr->isSelected())
 	{
-		if(DevSettingVectorList->size()-1 != index)
+		if((int)DevSettingVectorList->size()-1 != index)
 		{
 			psubCancelClick->setVisible(true);
 		}
@@ -697,20 +613,16 @@ static void onListItemClick_ListView1(ZKListView *pListView, int index, int id) 
 //				EnvSettingVector[EnvDevSetting_index]->erase(it);
 				free(tmp);
 				tmp = NULL;
-
 			}
 		}
-
 	}
 	else
 	{
 		if(DevSettingVectorList->size() - 1 == index)
 		{
-
 			mListView1Ptr->setVisible(false);
 			mWindow1Ptr->setVisible(true);
 			mWindow4Ptr->setVisible(false);
-
 //			onCheckedChanged_RadioGroup1(mRadioGroup1Ptr, ID_ENVSETTING_RadioButtonAll);
 		}
 	}
@@ -788,7 +700,7 @@ static void onEditTextChanged_EditText2(const std::string &text) {
     	Flag_IME_Text = false;
     	SpaceInfo *tmpEditText = (SpaceInfo *)malloc(sizeof(SpaceInfo));
 		strcpy(tmpEditText->maintext, text.c_str());
-		strcpy(tmpEditText->mainPic, "");
+		strcpy(tmpEditText->mainPic, NULL);
 		tmpEditText->cancelstatus = false;
 		EnvSettingVectorList->push_back(tmpEditText);
     }

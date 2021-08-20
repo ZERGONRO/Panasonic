@@ -36,6 +36,7 @@ static bool bDropDown;
 static bool bMoveThreadRun = false;
 static pthread_t g_MoveThread = 0;
 bool UpdateTimeFlag = false;
+static bool Flag_Statusbus;
 
 
 static bool bStatusBarInited = false;
@@ -57,6 +58,7 @@ void initStatusBarMode()
 		bStatusBarInited = true;
 	}
 	nwlistener = NULL;
+	Flag_Statusbus = true;
 	mSeekBarLightPtr->setProgress(mSeekBarLightPtr->getProgress());
 //	mSeekBarLightPtr->setProgress(50);
 	mSeekBarLightPtr->setMax(99);
@@ -65,6 +67,14 @@ void initStatusBarMode()
 	mSeekBarSoundPtr->setMax(99);
 	mTextViewSoundBarPtr->setText(std::to_string(mSeekBarSoundPtr->getProgress()));
 //	mstatusbarPtr->mMainWndPtr->setAlpha(255);
+}
+
+void disableStatusbus(){
+	Flag_Statusbus = false;
+}
+
+void enableStatusbus(){
+	Flag_Statusbus = true;
 }
 
 void showstatusbars()
@@ -139,26 +149,22 @@ static bool onUI_Timer(int id){
 			break;
 		case 1:
 		{
-			if(nwlistener)
+			if(nwlistener->IsConnected())
 			{
-				if(nwlistener->IsConnected())
+				checkWifiCount++;
+				if(checkWifiCount == 3)
 				{
-					checkWifiCount++;
-					if(checkWifiCount == 5)
-					{
-
-						UpdateTimeFlag = true;
-//							system("/customer/ntpdate -v -t 5  ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
+					UpdateTimeFlag = true;
+//						system("/customer/ntpdate -v -t 5  ntp2.aliyun.com ntp3.aliyun.com pool.ntp.org&");
 //							system("/customer/ntpdate -u cn.pool.ntp.org 0.asia.pool.ntp.org ntp1.aliyun.com ntp2.aliyun.com ntp3.aliyun.com&");
 						system("/customer/ntpdate -u ntp2.aliyun.com&");
-//
-					}
-				}
-				else
-				{
-					checkWifiCount = 0;
 				}
 			}
+			else
+			{
+				checkWifiCount = 0;
+			}
+
 
 		}
 			break;
@@ -258,6 +264,9 @@ static bool onstatusbarActivityTouchEvent(const MotionEvent &ev) {
     switch (ev.mActionStatus) {
 		case MotionEvent::E_ACTION_DOWN://触摸按下
 		{
+			if (!Flag_Statusbus){
+				break;
+			}
 			//LOGD("时刻 = %ld 坐标  x = %d, y = %d", ev.mEventTime, ev.mX, ev.mY);
 			if((ev.mY > 0) && (ev.mY < 100) && (ev.mX > 412) && (ev.mX < 612) && (!bDropDownButtonPress && !bDropDown))
 			{
