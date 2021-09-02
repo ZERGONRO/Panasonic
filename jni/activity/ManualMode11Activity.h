@@ -24,6 +24,7 @@
 #include "control/ZKEditText.h"
 #include "control/ZKVideoView.h"
 #include "window/ZKSlideWindow.h"
+#include "util/MachineStatus.h"
 
 /*TAG:Macro宏ID*/
 #define ID_MANUALMODE11_TextViewAirVol45    50156
@@ -356,12 +357,15 @@ class ManualMode11Activity : public Activity,
                      public ZKSlideWindow::ISlideItemClickListener,
                      public EasyUIContext::ITouchListener,
                      public ZKEditText::ITextChangeListener,
+					 public ZKBase::ILongClickListener,
+					 public MachineStatusListener::IconStatusListener,
                      public ZKVideoView::IVideoPlayerMessageListener
 {
 public:
     ManualMode11Activity();
     virtual ~ManualMode11Activity();
 
+    virtual void onLongClick(ZKBase *pBase);
     /**
      * 注册定时器
      */
@@ -377,6 +381,7 @@ public:
 
 protected:
     /*TAG:PROTECTED_FUNCTION*/
+	virtual void statusChangedNotify(int type, int status);
     virtual const char* getAppName() const;
     virtual void onCreate();
     virtual void onClick(ZKBase *pBase);

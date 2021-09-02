@@ -146,11 +146,13 @@ static void onUI_show() {
 		OpenTime2 = EqpTime->TimeOpenValue1 % 60;
 		sprintf(Timebuf, "%02d:%02d", OpenTime1, OpenTime2);
 		mTextView4Ptr->setText(Timebuf);
+		TimeSet1 = EqpTime->TimeOpenValue1;
 
 		OpenTime1 = EqpTime->TimeCloseValue1 / 60;
 		OpenTime2 = EqpTime->TimeCloseValue1 % 60;
 		sprintf(Timebuf, "%02d:%02d", OpenTime1, OpenTime2);
 		mTextView6Ptr->setText(Timebuf);
+		TimeSet2 = EqpTime->TimeCloseValue1;
 
 		mTextView8Ptr->setText(std::to_string(EqpTime->TempSettingValue1));
 	}
@@ -164,11 +166,13 @@ static void onUI_show() {
 		OpenTime2 = EqpTime->TimeOpenValue2 % 60;
 		sprintf(Timebuf, "%02d:%02d", OpenTime1, OpenTime2);
 		mTextView12Ptr->setText(Timebuf);
+		TimeSet3 = EqpTime->TimeOpenValue2;
 
 		OpenTime1 = EqpTime->TimeCloseValue2 / 60;
 		OpenTime2 = EqpTime->TimeCloseValue2 % 60;
 		sprintf(Timebuf, "%02d:%02d", OpenTime1, OpenTime2);
 		mTextView14Ptr->setText(Timebuf);
+		TimeSet4 = EqpTime->TimeCloseValue2;
 
 		mTextView16Ptr->setText(std::to_string(EqpTime->TempSettingValue2));
 	}
@@ -333,6 +337,10 @@ void EquipmentTimeSettingFunc(){
 		}
 		if (mButtonSunPtr->isSelected()){
 			EquipmentTimeSetting.weekbuf[index++] = 7;
+		}
+		if (mButtonEveryDayPtr->isSelected() || index == 7){
+			memset(EquipmentTimeSetting.weekbuf, 0, sizeof(EquipmentTimeSetting.weekbuf));
+			EquipmentTimeSetting.weekbuf[0] = 8;
 		}
 	}
 //	EquipmentTimeSetting.weekbuf[index++] = -1;
@@ -806,10 +814,7 @@ static bool onButtonClick_ButtonCancel(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonConfire(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonConfire !!!\n");
-    if ((TimeSet1 > TimeSet2)){// && (TimeSet1 != 0 && TimeSet2 != 0)){
-    	LOGD("Set Time Error\n");
-    	return false;
-    }
+
     EquipmentTimeSettingFunc();
     Flag_EquipmentTimeSetting = true;
 

@@ -46,16 +46,34 @@ static const char* getBaudRate(UINT baudRate) {
 	return NULL;
 }
 
+bool UartContext::send1(const BYTE* pData, UINT len)
+{
+    if (!mIsOpen1) {
+        LOGD("uart2 not open\n");
+        return false;
+    }
+    int ret = 0;
+    if ((ret = write(mMcuUartID, pData, len)) != (int)len) { // fail
+        LOGD("send1 Fail %d\n", ret);
+        return false;
+    }
+
+    return true;
+}
+
 UartContext::UartContext() :
 	mIsOpen(false),
 	mUartID(0),
 	mDataBufPtr(NULL),
 	mDataBufLen(0) {
 
+//	 LOGD("Application version: %s, compile time: %s %s", APPLICATION_VERSION, __DATE__, __TIME__);
+//	 LOGD("init UartContext\n");
 }
 
 UartContext::~UartContext() {
 	delete[] mDataBufPtr;
+	LOGD("delete UartContext\n");
 	closeUart();
 }
 

@@ -569,6 +569,50 @@ ManualMode11Activity::~ManualMode11Activity() {
     unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
 }
 
+
+void ManualMode11Activity::onLongClick(ZKBase *pBase){
+	ZKButton *btn = (ZKButton*)pBase;
+	LOGD("button %d long clicked\n" , btn->getID());
+//	if (btn != mButtonAirPFWindDirectLessPtr){
+//		return;
+//	}
+	if (btn->isSelected()){
+		LOGD("long click\n");
+		MACHINESTATUS->setLongClickStatus(StatusChanged_AirPURIFY, 0);
+		if (btn == mButtonAirPFWindDirectLessPtr){
+			mTextView17Ptr->setText(atoi(mTextView17Ptr->getText().c_str()) - 1);
+			MANUALSTATUS->setAirPFWindDirec(atoi(mTextView17Ptr->getText().c_str()));
+		}else if (btn == mButtonAirPFWindDirectAddPtr){
+			mTextView17Ptr->setText(atoi(mTextView17Ptr->getText().c_str()) + 1);
+			MANUALSTATUS->setAirPFWindDirec(atoi(mTextView17Ptr->getText().c_str()));
+		}else if (btn == mButtonAirPFHumdSettingLessPtr){
+			mTextView18Ptr->setText(atoi(mTextView18Ptr->getText().c_str()) - 1);
+			MANUALSTATUS->setAirPFHumdValue(atoi(mTextView18Ptr->getText().c_str()));
+		}else if (btn == mButtonAirPFHumdSettingAddPtr){
+			mTextView18Ptr->setText(atoi(mTextView18Ptr->getText().c_str()) + 1);
+			MANUALSTATUS->setAirPFHumdValue(atoi(mTextView18Ptr->getText().c_str()));
+		}else if (btn == mButtonAirSwitchTempSettingLessPtr){	//
+			mTextView22Ptr->setText(atoi(mTextView22Ptr->getText().c_str()) - 1);
+			MANUALSTATUS->setAirTemp(atoi(mTextView22Ptr->getText().c_str()));
+		}else if (btn == mButtonAirSwitchTempSettingAddPtr){
+			mTextView22Ptr->setText(atoi(mTextView22Ptr->getText().c_str()) + 1);
+			MANUALSTATUS->setAirTemp(atoi(mTextView22Ptr->getText().c_str()));
+		}else if (btn == mButtonHumdSwitchWindDirectLessPtr){
+			mTextView29Ptr->setText(atoi(mTextView29Ptr->getText().c_str()) - 1);
+			MANUALSTATUS->setHumdWindDirect(atoi(mTextView29Ptr->getText().c_str()));
+		}else if (btn == mButtonHumdSwitchWindDirectAddPtr){
+			mTextView29Ptr->setText(atoi(mTextView29Ptr->getText().c_str()) + 1);
+			MANUALSTATUS->setHumdWindDirect(atoi(mTextView29Ptr->getText().c_str()));
+		}else if (btn == mButtonHumdSwitchHumdSettingLessPtr){
+			mTextView30Ptr->setText(atoi(mTextView30Ptr->getText().c_str()) - 1);
+			MANUALSTATUS->setHumdsettingHumd(atoi(mTextView29Ptr->getText().c_str()));
+		}else if (btn == mButtonHumdSwitchHumdSettingAddPtr){
+			mTextView30Ptr->setText(atoi(mTextView30Ptr->getText().c_str()) + 1);
+			MANUALSTATUS->setHumdsettingHumd(atoi(mTextView29Ptr->getText().c_str()));
+		}
+	}
+}
+
 const char* ManualMode11Activity::getAppName() const{
 	return "ManualMode11.ftu";
 }
@@ -922,11 +966,23 @@ void ManualMode11Activity::onCreate() {
     mTextViewAirVolPtr4[4] = mTextViewAirVol45Ptr;
 
 
+    mButtonAirPFWindDirectLessPtr->setLongClickListener(this);
+    mButtonAirPFWindDirectAddPtr->setLongClickListener(this);
+    mButtonAirPFHumdSettingLessPtr->setLongClickListener(this);
+    mButtonAirPFHumdSettingAddPtr->setLongClickListener(this);
+    mButtonAirSwitchTempSettingLessPtr->setLongClickListener(this);
+    mButtonAirSwitchTempSettingAddPtr->setLongClickListener(this);
+    mButtonHumdSwitchWindDirectLessPtr->setLongClickListener(this);
+    mButtonHumdSwitchWindDirectAddPtr->setLongClickListener(this);
+    mButtonHumdSwitchHumdSettingLessPtr->setLongClickListener(this);
+    mButtonHumdSwitchHumdSettingAddPtr->setLongClickListener(this);
+
 	mActivityPtr = this;
 	onUI_init();
     registerProtocolDataUpdateListener(onProtocolDataUpdate); 
     rigesterActivityTimer();
 }
+
 
 void ManualMode11Activity::onClick(ZKBase *pBase) {
 	//TODO: add widget onClik code 
@@ -1179,6 +1235,26 @@ int ManualMode11Activity::removeCharFromString(string& nString, char c) {
         }
     }
     return (int)nString.size();
+}
+
+void ManualMode11Activity::statusChangedNotify(int type, int status){
+	if (type == StatusChanged_AirPURIFY){
+		LOGD("StatusChanged_AirPURIFY\n");
+	}else if (type == StatusChanged_AIRCONDITION){
+		LOGD("StatusChanged_AIRCONDITION\n");
+	}else if (type == StatusChanged_HOTEXCHANGE){
+		LOGD("StatusChanged_HOTEXCHANGE\n");
+	}else if (type == StatusChanged_DEHUMIDIFY){
+		LOGD("StatusChanged_DEHUMIDIFY\n");
+	}else if (type == StatusChanged_WINDEXCHANGE){
+		LOGD("StatusChanged_WINDEXCHANGE\n");
+	}else if (type == StatusChanged_STERILIZATION){
+		LOGD("StatusChanged_STERILIZATION\n");
+	}else if (type == StatusChanged_YUBA){
+		LOGD("StatusChanged_YUBA\n");
+	}else if (type == StatusChanged_Timer){
+		LOGD("StatusChanged_Timer\n");
+	}
 }
 
 void ManualMode11Activity::registerUserTimer(int id, int time) {

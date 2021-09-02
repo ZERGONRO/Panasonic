@@ -26,6 +26,7 @@
 #include "window/ZKSlideWindow.h"
 
 /*TAG:Macro宏ID*/
+#define ID_VOICESYSTEMS_Button1    20003
 #define ID_VOICESYSTEMS_SeekBarLight    91001
 #define ID_VOICESYSTEMS_Button2    20002
 #define ID_VOICESYSTEMS_ButtonVoiceSysSwitch    20001

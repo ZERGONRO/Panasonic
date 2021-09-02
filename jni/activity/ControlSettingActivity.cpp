@@ -123,7 +123,7 @@ ControlSettingActivity::~ControlSettingActivity() {
   // 退出应用时需要反注册
     EASYUICONTEXT->unregisterGlobalTouchListener(this);
     onUI_quit();
-    unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
+//    unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
 }
 
 const char* ControlSettingActivity::getAppName() const{

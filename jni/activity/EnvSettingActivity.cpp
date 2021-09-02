@@ -50,7 +50,7 @@ static EnvSettingActivity* mActivityPtr;
 
 
 
-
+char texttmp[16];
 
 enum {
 	AllMachine,
@@ -360,6 +360,7 @@ void EnvSettingActivity::onTextChanged(ZKTextView *pTextView, const std::string 
     for (int i = 0; i < tablen; ++i) {
         if (SEditTextInputCallbackTab[i].id == pTextView->getID()) {
 //        	mEditText1Ptr->setText("");
+//        	strcpy(texttmp, text.c_str());
             SEditTextInputCallbackTab[i].onEditTextChangedCallback(text);
             break;
         }

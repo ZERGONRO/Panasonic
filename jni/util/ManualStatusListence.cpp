@@ -636,9 +636,34 @@ int ManualStatusListence::getRf254Switch(){
 	return sPSData->CommonDate.RF254Switch;
 }
 
+void ManualStatusListence::ControlDeviceTimer(int DevId, int mode){
+	if (DevId < 0 || DevId > 6)
+		return;
+	if (DevId == AirPURIFY){
+			sPSData->PurifyData.Switch = mode;
+	}else if (DevId == AIRCONDITION){
+			sPSData->AirConditionData.Swtich = mode;
+	}else if (DevId == HOTEXCHANGE){
+			sPSData->HeatChangeData.Swtich = mode;
+	}else if (DevId == DEHUMIDIFY){
+			sPSData->AdjustHumdData.Swtich = mode;
+	}else if (DevId == WINDEXCHANGE){
+			sPSData->WindChangAirData.Swtich = mode;
+	}else if (DevId == STERILIZATION){
 
+	}else if (DevId == YUBA){
+			sPSData->YuBaData.Swtich = mode;
+	}
+	/*数据上报,打开/关闭设备*/
+}
 
+void ManualStatusListence::SetLongClickManualData(ZKButton *pButton, int data){
+	if ((pButton->getID() == 20017) || (pButton->getID() == 20018)){
 
+	}else if ((pButton->getID() == 20020) || (pButton->getID() == 20019)){
+
+	}
+}
 
 
 

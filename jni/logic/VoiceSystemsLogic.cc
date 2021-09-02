@@ -143,10 +143,12 @@ static bool onButtonClick_ButtonVoiceSysSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonVoiceSysSwitch !!!\n");
     if (pButton->isSelected()){
     	pButton->setSelected(false);
-    	MANUALSTATUS->setRf254Switch(0);
+    	mButton1Ptr->setVisible(true);
+    	MANUALSTATUS->setVoiceSysSwitch(0);
     }else{
     	pButton->setSelected(true);
-    	MANUALSTATUS->setRf254Switch(1);
+    	mButton1Ptr->setVisible(false);
+    	MANUALSTATUS->setVoiceSysSwitch(1);
     }
     return false;
 }

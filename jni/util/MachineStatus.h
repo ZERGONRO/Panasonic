@@ -25,6 +25,17 @@
 
 //namespace std{
 
+enum {
+	StatusChanged_AirPURIFY,
+	StatusChanged_AIRCONDITION,
+	StatusChanged_HOTEXCHANGE,
+	StatusChanged_DEHUMIDIFY,
+	StatusChanged_WINDEXCHANGE,
+	StatusChanged_STERILIZATION,
+	StatusChanged_YUBA,
+	StatusChanged_Timer
+};
+
 typedef struct _PanasonicServe_t{
 	int wifistatus;
 	char ssid[128];
@@ -115,6 +126,14 @@ public:
 
 	static MachineStatusListener* getInstance();
 
+	class IconStatusListener {
+		public:
+			virtual ~IconStatusListener() { }
+			virtual void statusChangedNotify(int type , int status) = 0;
+	};
+	void setStatusChangedListener(IconStatusListener *);
+	void removeStatusChangedListener(IconStatusListener* listener);//ltz add
+
 	int getbacklight();
 	void setbacklight(int bl);
 	int getvol();
@@ -140,6 +159,7 @@ public:
 	std::vector<EqpTimeData *> getEqpTimeData();
 	void initEqpTimeData();
 	bool getDeviceSwitch(bool SwitchStatus);
+	void setDeviceSWTSwitch(int DevID, bool mode);
 	void setDeviceID(int DevID);
 	//获取和设置环境数据
 	int gettempdate();
@@ -171,6 +191,7 @@ public:
 	char *getwifissid();
 	char *getwifipasswd();
 
+	void setLongClickStatus(int type, int status);
 
 	std::vector<DeviceInfo *> getEnvSpaceInfo();
 	void setEnvSpaceInfo(std::vector<DeviceInfo *> *EnvDevSettingVector);
@@ -193,7 +214,9 @@ private:
 	std::vector<DeviceInfo *> EnvInfo;
 	std::vector<SpaceInfo *>  EnvListInfo;
 	std::vector<EqpTimeData *> EqpTime_Data;
+	std::vector<IconStatusListener *> statusListence;
 
+	void notifyStatusChangedListener(int type , int status);
 };
 
 //};

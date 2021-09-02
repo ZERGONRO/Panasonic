@@ -42,6 +42,7 @@ static Mutex sLock;
 static EquipmentTiming *EqpTSet_t = NULL;
 static EqpTimeData *tmpEqpTmer_Data = NULL;
 //static EqpTimeData *EqpTime_Date = MACHINESTATUS->getEqpTimeData();
+SoftwareTimerListener *SWTListence = NULL;
 extern bool Flag_EquipmentTimeSetting;
 extern void disableStatusbus();
 
@@ -470,7 +471,7 @@ void WeekPosReset()
 }
 
 void setManualDevTimeInfo(int DevID, EquipmentTiming *EqpTimeInfo){
-	Software_Timer *SWTtmp = new Software_Timer;
+
 		if (DevID < 0 || DevID > 6){
 			return;
 		}
@@ -538,10 +539,8 @@ void setManualDevTimeInfo(int DevID, EquipmentTiming *EqpTimeInfo){
 		}
 		 */
 
-		SOFTWARETIMER->Add_SoftwareTimer(SWTtmp);
+//		SOFTWARETIMER->Add_SoftwareTimer(SWTtmp);
 
-		delete (SWTtmp);
-		SWTtmp = NULL;
 }
 
 /* 从Addtime返回后更新Timing界面 */
@@ -550,14 +549,22 @@ void UpdateTimeSettingFunc()
 
 	int Timenum1, Timenum2, Timenum3, Timenum4;
 	char Timebuf[64];
-	LayoutPosition lp, lp1;
+	LayoutPosition lp, lp1, lpx;
 	int StartLeft = 0;
-	int ColorFillPos = 427;
+	int ColorFillPos;
 
 	EquipmentTiming *DevTimeSetting = MACHINESTATUS->getEquipmentTimeSetting();
 	MACHINESTATUS->setEqpTimeData();
 	setManualDevTimeInfo(DevTimeSetting->DeviceID, DevTimeSetting);
 
+	if (!SOFTWARETIMER->isRunning()){
+		SOFTWARETIMER->run("SWTlistence");
+	}
+	SOFTWARETIMER->Add_SoftwareTimer(DevTimeSetting);
+
+	for (int i = 0;i < 8;i++){
+		mTextViewPtr[i]->setText("");
+	}
 	for (int index = 0;DevTimeSetting->weekbuf[index] != 0;index++){
 		int text = DevTimeSetting->weekbuf[index];
 //		mTextViewPtr[index]->setVisible(true);
@@ -565,15 +572,13 @@ void UpdateTimeSettingFunc()
 		lp.mLeft = StartLeft;
 		lp.mTop = 10;
 		mTextViewPtr[index]->setPosition(lp);
-//		char *tmptext = Week_String2char(text);
 		mTextViewPtr[index]->setText(std::string(Week_String2char(text)).c_str());
-//		mTextViewPtr[index]->setText("测试");
 		StartLeft += 66;
 	}
 
 	if (DevTimeSetting->Time1StageFlag){
-		Timenum1 = DevTimeSetting->TimeOpenValue1 / 60;
-		Timenum2 = DevTimeSetting->TimeOpenValue1 % 60;
+		Timenum1 = DevTimeSetting->TimeOpenValue1 / 60;			//hour
+		Timenum2 = DevTimeSetting->TimeOpenValue1 % 60;			//min
 		sprintf(Timebuf, "%02d:%02d", Timenum1, Timenum2);
 		mTextView13Ptr->setText(Timebuf);
 
@@ -584,14 +589,47 @@ void UpdateTimeSettingFunc()
 		mTextView15Ptr->setText(std::to_string(DevTimeSetting->TempSettingValue1) + "℃");
 		mWindowAirHum1Ptr->setBackgroundColor(0);
 
-		mTextViewStage1ColorFillPtr->setText(mTextView15Ptr->getText().c_str());
+
+//		mTextViewStage1ColorFillPtr->setText(mTextView15Ptr->getText().c_str());
 		int RemainTime = DevTimeSetting->TimeCloseValue1 - DevTimeSetting->TimeOpenValue1;
 		lp1 = mTextViewStage1ColorFillPtr->getPosition();
-		lp1.mLeft = ColorFillPos + (Timenum1 * 33) + (Timenum2 * 16 / 30);
-		lp1.mWidth = (RemainTime / 60) * 33 + ((RemainTime % 60) / 30) * 16;
-		lp1.mTop = 46;
-		mTextViewStage1ColorFillPtr->setPosition(lp1);
-		mTextViewStage1ColorFillPtr->setBackgroundColor(0xFFFF8000);
+		lpx = mTextViewStage11ColorFillPtr->getPosition();
+		if (Timenum1 > 12){
+			ColorFillPos = 27;
+			Timenum1 = Timenum1 - 12;
+		}else{
+			ColorFillPos = 427;
+		}
+		lp1.mLeft = ColorFillPos + (Timenum1 * 33) + (Timenum2 * 16 / 30);			//初始位置
+		if (Timenum3 > 12){
+			mTextViewStage11ColorFillPtr->setVisible(true);
+			if ((DevTimeSetting->TimeOpenValue1 / 60) > 12){
+				lp1.mWidth = ((24 - (DevTimeSetting->TimeOpenValue1 / 60)) * 33) - (Timenum2 * 16 / 30) + 12 * 33 + 4;
+			}else{
+				lp1.mWidth = ((12 - Timenum1) * 33) - (Timenum2 * 16 / 30) + 8;
+			}
+			lp1.mTop = 46;
+			lpx.mLeft = 27;
+			lpx.mTop = 46;
+			lpx.mWidth = (Timenum3 - 12) * 33 + (Timenum4 * 16 / 30);
+
+			mTextViewStage1ColorFillPtr->setPosition(lp1);
+			mTextViewStage1ColorFillPtr->setBackgroundColor(0x55FF8000);
+			mTextViewStage11ColorFillPtr->setPosition(lpx);
+			mTextViewStage11ColorFillPtr->setBackgroundColor(0x55FF8000);
+		}else{
+			mTextViewStage11ColorFillPtr->setVisible(false);
+			if ((DevTimeSetting->TimeOpenValue1 / 60) > 12){
+				lp1.mWidth = ((24 - (DevTimeSetting->TimeOpenValue1 / 60)) * 33) - (Timenum2 * 16 / 30) + (Timenum3 * 33) + (Timenum4 * 16 / 30);
+			}else{
+				lp1.mWidth = ((RemainTime / 60) * 33) + ((RemainTime % 60) * 16 / 30);
+			}
+			lp1.mTop = 46;
+			mTextViewStage1ColorFillPtr->setPosition(lp1);
+			mTextViewStage1ColorFillPtr->setBackgroundColor(0x55FF8000);
+		}
+//		LOGD("Timenum1 is %d, Timenum2 is %d, Timenum3 is %d, Timenum4 is %d\n", Timenum1, Timenum2, Timenum3, Timenum4);
+//		LOGD("lp1.mLeft is %d, lp1.mWidth is %d\n", lp1.mLeft, lp1.mWidth);
 	}else{
 //		mTextView13Ptr->setText("未设置");
 //		mTextView14Ptr->setText("未设置");
@@ -614,14 +652,44 @@ void UpdateTimeSettingFunc()
 		mTextView25Ptr->setText(std::to_string(DevTimeSetting->TempSettingValue2) + "℃");
 		mWindowAirHum2Ptr->setBackgroundColor(0);
 
-		mTextViewStage2ColorFillPtr->setText(mTextView25Ptr->getText().c_str());
+//		mTextViewStage2ColorFillPtr->setText(mTextView25Ptr->getText().c_str());
 		int RemainTime1 = DevTimeSetting->TimeCloseValue2 - DevTimeSetting->TimeOpenValue2;
 		lp1 = mTextViewStage2ColorFillPtr->getPosition();
-		lp1.mLeft = ColorFillPos + (Timenum1 * 33) + (Timenum2 * 16 / 30);
-		lp1.mWidth = (RemainTime1 / 60) * 33 + ((RemainTime1 % 60) / 30) * 16;
-		lp1.mTop = 46;
-		mTextViewStage2ColorFillPtr->setPosition(lp1);
-		mTextViewStage2ColorFillPtr->setBackgroundColor(0xFF0080C0);
+		lpx = mTextViewStage22ColorFillPtr->getPosition();
+		if (Timenum1 > 12){
+			ColorFillPos = 27;
+			Timenum1 = Timenum1 - 12;
+		}else{
+			ColorFillPos = 427;
+		}
+		lp1.mLeft = ColorFillPos + (Timenum1 * 33) + (Timenum2 * 16 / 30);			//初始位置
+		if (Timenum3 > 12){
+			mTextViewStage22ColorFillPtr->setVisible(true);
+			if ((DevTimeSetting->TimeOpenValue2 / 60) > 12){
+				lp1.mWidth = ((24 - (DevTimeSetting->TimeOpenValue2 / 60)) * 33) - (Timenum2 * 16 / 30) + 12 * 33 + 4;
+			}else{
+				lp1.mWidth = ((12 - Timenum1) * 33) - (Timenum2 * 16 / 30) + 8;
+			}
+			lp1.mTop = 46;
+			lpx.mLeft = 27;
+			lpx.mTop = 46;
+			lpx.mWidth = (Timenum3 - 12) * 33 + (Timenum4 * 16 / 30);
+
+			mTextViewStage2ColorFillPtr->setPosition(lp1);
+			mTextViewStage2ColorFillPtr->setBackgroundColor(0x550080FF);
+			mTextViewStage22ColorFillPtr->setPosition(lpx);
+			mTextViewStage22ColorFillPtr->setBackgroundColor(0x550080FF);
+		}else{
+			mTextViewStage22ColorFillPtr->setVisible(false);
+			if ((DevTimeSetting->TimeOpenValue2 / 60) > 12){
+				lp1.mWidth = ((24 - (DevTimeSetting->TimeOpenValue2 / 60)) * 33) - (Timenum2 * 16 / 30) + (Timenum3 * 33) + (Timenum4 * 16 / 30);
+			}else{
+				lp1.mWidth = ((RemainTime1 / 60) * 33) + ((RemainTime1 % 60) * 16 / 30);
+			}
+			lp1.mTop = 46;
+			mTextViewStage2ColorFillPtr->setPosition(lp1);
+			mTextViewStage2ColorFillPtr->setBackgroundColor(0x550080FF);
+		}
 	}else{
 //		mTextView23Ptr->setText("未设置");
 //		mTextView24Ptr->setText("未设置");
@@ -723,7 +791,20 @@ static bool onButtonClick_Button6(ZKButton *pButton) {
     	pButton->setSelected(true);
     	mWindowTimeWavePtr->setBackgroundColor(0);
     }
-    setManualDevTimeSwitch(DeviceID, pButton->isSelected());
+//    setManualDevTimeSwitch(DeviceID, pButton->isSelected());
+    if (!SOFTWARETIMER->GetSWTData().empty()){
+//		std::vector<Software_Timer *>::iterator it = SOFTWARETIMER->GetSWTData().begin();
+//		for (;it != SOFTWARETIMER->GetSWTData().end();it++){
+    	for (int i = 0;i < (int)SOFTWARETIMER->GetSWTData().size();i++){
+			Software_Timer *tmp = SOFTWARETIMER->GetSWTData().at(i);
+			if (tmp->EqpTime_Data->DeviceID == DeviceID){
+				tmp->EqpTime_Data->DeviceSwitch = (pButton->isSelected()?true : false);
+//				LOGD("tmp->EqpTime_Data->DeviceSwitch is %d\n", tmp->EqpTime_Data->DeviceSwitch);
+				break;
+			}
+		}
+    }
+    MACHINESTATUS->setDeviceSWTSwitch(DeviceID, (pButton->isSelected()?true : false));
     MACHINESTATUS->getDeviceSwitch(Flag_Switch);
     return false;
 }

@@ -238,7 +238,7 @@ static void onUI_hide() {
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-
+	LOGD("manualmode exit!!!\n");
 }
 
 /**
@@ -246,6 +246,12 @@ static void onUI_quit() {
  */
 static void onProtocolDataUpdate(const SProtocolData &data) {
 
+	mTextView46Ptr->setText(data.recvData.userData.realTempState);
+	mTextView48Ptr->setText(data.recvData.userData.realHumdState);
+	mTextView50Ptr->setText(data.recvData.userData.realPm25Content);
+	mTextView53Ptr->setText(data.recvData.userData.realformaldehydeContent);
+	mTextView56Ptr->setText(data.recvData.userData.realCo2Content);
+	mTextView62Ptr->setText(data.recvData.userData.realTvocContent);
 }
 
 /**
@@ -815,6 +821,7 @@ void ManualMode11SelStatus(int index)
 	SProtocolSendData *sPSendData;
 	sPSendData = MANUALSTATUS->getCurrentManualData();	//数据有待获取
 //	memcpy(sPSendData, MANUALSTATUS->getCurrentManualData(), sizeof(SProtocolSendData));
+	MACHINESTATUS->setmanualmode(index);
 	switch(index)
 	{
 		case Manual_AirPF:
@@ -843,6 +850,21 @@ void ManualMode11SelStatus(int index)
 			/*AirPF Param show */
 //			PurifySendData apPSendData = sPSendData->PurifyData;
 			mButtonAirPFSwitchPtr->setSelected(sPSendData->PurifyData.Switch);
+			mButtonAirPFAutoWindLessPtr->setSelected(sPSendData->PurifyData.Switch);
+			mButtonAirPFAutoWindAddPtr->setSelected(sPSendData->PurifyData.Switch);
+			mButtonAirPFWindDirectLessPtr->setSelected(sPSendData->PurifyData.Switch);
+			mButtonAirPFWindDirectAddPtr->setSelected(sPSendData->PurifyData.Switch);
+			mButtonAirPFHumdSettingLessPtr->setSelected(sPSendData->PurifyData.Switch);
+			mButtonAirPFHumdSettingAddPtr->setSelected(sPSendData->PurifyData.Switch);
+			if (!sPSendData->PurifyData.Switch){
+				mWindowAirPFPtr->setBackgroundColor(0x22252525);
+				mTextView18Ptr->setBackgroundColor(0xFFC0C0C0);
+				mTextView17Ptr->setBackgroundColor(0xFFC0C0C0);
+			}else{
+				mWindowAirPFPtr->setBackgroundColor(0);
+				mTextView18Ptr->setBackgroundColor(0xFFFFFFFF);
+				mTextView17Ptr->setBackgroundColor(0xFFFFFFFF);
+			}
 			mTextView37Ptr->setText(sPSendData->PurifyData.ModelSetting);
 			mButtonAirPFNANOEXPtr->setSelected(sPSendData->PurifyData.NanoexSetting);
 			mButtonAirPFFilterResetPtr->setSelected(sPSendData->PurifyData.FilterReset);
@@ -898,6 +920,17 @@ void ManualMode11SelStatus(int index)
 				mButtonAirSwitchWindDirectUpDownPtr->setSelected(true);
 			}
 			mButtonAirSwitchPtr->setSelected(sPSendData->AirConditionData.Swtich);
+			mButtonAirSwitchAutoWindLessPtr->setSelected(sPSendData->AirConditionData.Swtich);
+			mButtonAirSwitchAutoWindAddPtr->setSelected(sPSendData->AirConditionData.Swtich);
+			mButtonAirSwitchTempSettingLessPtr->setSelected(sPSendData->AirConditionData.Swtich);
+			mButtonAirSwitchTempSettingAddPtr->setSelected(sPSendData->AirConditionData.Swtich);
+			if (!sPSendData->AirConditionData.Swtich){
+				mWindowAirSwitchPtr->setBackgroundColor(0x22252525);
+				mTextView22Ptr->setBackgroundColor(0xFFC0C0C0);
+			}else{
+				mWindowAirSwitchPtr->setBackgroundColor(0);
+				mTextView22Ptr->setBackgroundColor(0xFFFFFFFF);
+			}
 			mTextView38Ptr->setText(sPSendData->AirConditionData.ModelSetting);
 			if (sPSendData->AirConditionData.ModeSelect == 0){
 				mButtonAirSwitchModeAutoPtr->setSelected(true);
@@ -955,6 +988,13 @@ void ManualMode11SelStatus(int index)
 				mTextViewAirVolPtr2[i]->setVisible(true);
 			}
 			mButtonHotCSwitchPtr->setSelected(sPSendData->HeatChangeData.Swtich);
+			mButtonHotChangeSwitchAutoWindLessPtr->setSelected(sPSendData->HeatChangeData.Swtich);
+			mButtonHotChangeSwitchAutoWindAddPtr->setSelected(sPSendData->HeatChangeData.Swtich);
+			if (!sPSendData->HeatChangeData.Swtich){
+				mWindowHotChangeSwitchPtr->setBackgroundColor(0x22252525);
+			}else{
+				mWindowHotChangeSwitchPtr->setBackgroundColor(0);
+			}
 			mTextView39Ptr->setText(sPSendData->HeatChangeData.ModelSetting);
 			if (sPSendData->HeatChangeData.ModeSetting == 0){
 				mButtonHotChangeSwitchModeAutoPtr->setSelected(true);
@@ -1004,6 +1044,21 @@ void ManualMode11SelStatus(int index)
 				mTextViewAirVolPtr3[i]->setVisible(true);
 			}
 			mButtonHumdSwitchPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			mButtonHumdSwitchAutoWindLessPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			mButtonHumdSwitchAutoWindAddPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			mButtonHumdSwitchHumdSettingLessPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			mButtonHumdSwitchHumdSettingAddPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			mButtonHumdSwitchWindDirectLessPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			mButtonHumdSwitchWindDirectAddPtr->setSelected(sPSendData->AdjustHumdData.Swtich);
+			if (!sPSendData->AdjustHumdData.Swtich){
+				mWindowHumdSwitchPtr->setBackgroundColor(0x22252525);
+				mTextView29Ptr->setBackgroundColor(0xFFC0C0C0);
+				mTextView30Ptr->setBackgroundColor(0xFFC0C0C0);
+			}else{
+				mWindowHumdSwitchPtr->setBackgroundColor(0);
+				mTextView29Ptr->setBackgroundColor(0xFFFFFFFF);
+				mTextView30Ptr->setBackgroundColor(0xFFFFFFFF);
+			}
 			mTextView90Ptr->setText(sPSendData->AdjustHumdData.ModelSetting);
 			mTextView29Ptr->setText(sPSendData->AdjustHumdData.AirDirectSetting);
 			mTextView30Ptr->setText(sPSendData->AdjustHumdData.AdjustHumdValue);
@@ -1048,6 +1103,13 @@ void ManualMode11SelStatus(int index)
 
 			/* WindChange Param show */
 			mButtonWindSwitchPtr->setSelected(sPSendData->WindChangAirData.Swtich);
+			mButtonWindSwitchAutoWindLessPtr->setSelected(sPSendData->WindChangAirData.Swtich);
+			mButtonWindSwitchAutoWindAddPtr->setSelected(sPSendData->WindChangAirData.Swtich);
+			if (!sPSendData->WindChangAirData.Swtich){
+				mWindowWindSwitchPtr->setBackgroundColor(0x22252525);
+			}else{
+				mWindowWindSwitchPtr->setBackgroundColor(0);
+			}
 			mTextView91Ptr->setText(sPSendData->WindChangAirData.ModelSetting);
 			mButtonWindSwitchNANOEXPtr->setSelected(sPSendData->WindChangAirData.NanoeX);
 			for (int j = 0;j < 5;j++){
@@ -1109,6 +1171,11 @@ void ManualMode11SelStatus(int index)
 			/* YuBa Param show */
 			mButtonYuBaNANOEXPtr->setSelected(sPSendData->YuBaData.NanoeX);
 			mButtonYubaSwitchPtr->setSelected(sPSendData->YuBaData.Swtich);
+			if (!sPSendData->YuBaData.Swtich){
+				mWindowYubaSwitchPtr->setBackgroundColor(0x22252525);
+			}else{
+				mWindowYubaSwitchPtr->setBackgroundColor(0);
+			}
 			mTextView93Ptr->setText(sPSendData->YuBaData.ModelSetting);
 
 			if (sPSendData->YuBaData.BrightnessSetting == 0){
@@ -1526,7 +1593,7 @@ static bool onButtonClick_ButtonAirSwitchTempSettingLess(ZKButton *pButton) {
 	}
     mTextView22Ptr->setText(atoi(mTextView22Ptr->getText().c_str()) - 1);
     if (atoi(mTextView22Ptr->getText().c_str()) < 16){
-    	mTextView22Ptr->setText("16℃");
+    	mTextView22Ptr->setText("16");
     }
     MANUALSTATUS->setAirTemp(atoi(mTextView22Ptr->getText().c_str()));
     return false;
@@ -1539,7 +1606,7 @@ static bool onButtonClick_ButtonAirSwitchTempSettingAdd(ZKButton *pButton) {
 	}
     mTextView22Ptr->setText(atoi(mTextView22Ptr->getText().c_str()) + 1);
     if (atoi(mTextView22Ptr->getText().c_str()) > 30){
-    	mTextView22Ptr->setText("30℃");
+    	mTextView22Ptr->setText("30");
 	}
     MANUALSTATUS->setAirTemp(atoi(mTextView22Ptr->getText().c_str()));
     return false;
@@ -2314,9 +2381,9 @@ static bool onButtonClick_ButtonAirPFSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirPFTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFTimeSwitchPic !!!\n");
-    if (!mButtonAirPFSwitchPtr->isSelected()){
-       	return false;
-   }
+//    if (!mButtonAirPFSwitchPtr->isSelected()){
+//       	return false;
+//   }
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonPurifyPtr->getText());
     EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2325,9 +2392,9 @@ static bool onButtonClick_ButtonAirPFTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirPFTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirPFTimeSwitch !!!\n");
-    if (!mButtonAirPFSwitchPtr->isSelected()){
-         	return false;
-     }
+//    if (!mButtonAirPFSwitchPtr->isSelected()){
+//         	return false;
+//     }
 	  Intent* intent = new Intent();
 	  intent->putExtra("DeviceName", mButtonPurifyPtr->getText());
 	  EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2359,9 +2426,9 @@ static bool onButtonClick_ButtonAirSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirTimeSwitchPic !!!\n");
-    if (!mButtonAirSwitchPtr->isSelected()){
-        	return false;
-	}
+//    if (!mButtonAirSwitchPtr->isSelected()){
+//        	return false;
+//	}
     Intent* intent = new Intent();
    	intent->putExtra("DeviceName", mButtonAirPtr->getText());
    	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2370,27 +2437,12 @@ static bool onButtonClick_ButtonAirTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirTimeSwitch !!!\n");
-    if (!mButtonAirSwitchPtr->isSelected()){
-           	return false;
-   	}
+//    if (!mButtonAirSwitchPtr->isSelected()){
+//           	return false;
+//   	}
 	Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonAirPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
-    return false;
-}
-
-static bool onButtonClick_ButtonHotChangeSwitchOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHotChangeSwitchOpen !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonHotChangeSwitchPicTime(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHotChangeSwitchPicTime !!!\n");
-    return false;
-}
-
-static bool onButtonClick_ButtonHotChangeSwitchPicTimeOpen(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonHotChangeSwitchPicTimeOpen !!!\n");
     return false;
 }
 
@@ -2416,9 +2468,9 @@ static bool onButtonClick_ButtonHotCSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHotCTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotCTimeSwitchPic !!!\n");
-    if (!mButtonHotCSwitchPtr->isSelected()){
-       	return false;
-   }
+//    if (!mButtonHotCSwitchPtr->isSelected()){
+//       	return false;
+//   }
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonHotChangePtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2427,9 +2479,9 @@ static bool onButtonClick_ButtonHotCTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHotCTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHotCTimeSwitch !!!\n");
-    if (!mButtonHotCSwitchPtr->isSelected()){
-          	return false;
-      }
+//    if (!mButtonHotCSwitchPtr->isSelected()){
+//          	return false;
+//      }
 	Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonHotChangePtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2464,9 +2516,9 @@ static bool onButtonClick_ButtonHumdSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHumdTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdTimeSwitchPic !!!\n");
-    if (!mButtonHumdSwitchPtr->isSelected()){
-        	return false;
-	}
+//    if (!mButtonHumdSwitchPtr->isSelected()){
+//        	return false;
+//	}
     Intent* intent = new Intent();
   	intent->putExtra("DeviceName", mButtonModHumdPtr->getText());
   	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2475,9 +2527,9 @@ static bool onButtonClick_ButtonHumdTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonHumdTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonHumdTimeSwitch !!!\n");
-    if (!mButtonHumdSwitchPtr->isSelected()){
-           	return false;
-   	}
+//    if (!mButtonHumdSwitchPtr->isSelected()){
+//           	return false;
+//   	}
 	Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonModHumdPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2503,9 +2555,9 @@ static bool onButtonClick_ButtonWindSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonWindTimeSwitchPic(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindTimeSwitchPic !!!\n");
-    if (!mButtonWindSwitchPtr->isSelected()){
-        	return false;
-	}
+//    if (!mButtonWindSwitchPtr->isSelected()){
+//        	return false;
+//	}
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonChangeWindPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2514,9 +2566,9 @@ static bool onButtonClick_ButtonWindTimeSwitchPic(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonWindTimeSwitch(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonWindTimeSwitch !!!\n");
-    if (!mButtonWindSwitchPtr->isSelected()){
-           	return false;
-   	}
+//    if (!mButtonWindSwitchPtr->isSelected()){
+//           	return false;
+//   	}
 	Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonChangeWindPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2556,9 +2608,9 @@ static bool onButtonClick_ButtonYubaSwitch(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonPicTime(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonPicTime !!!\n");
-    if (!mButtonYubaSwitchPtr->isSelected()){
-        	return false;
-	}
+//    if (!mButtonYubaSwitchPtr->isSelected()){
+//        	return false;
+//	}
     Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonYuBaPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2567,9 +2619,9 @@ static bool onButtonClick_ButtonPicTime(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonTiming(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonTiming !!!\n");
-    if (!mButtonYubaSwitchPtr->isSelected()){
-           	return false;
-   	}
+//    if (!mButtonYubaSwitchPtr->isSelected()){
+//           	return false;
+//   	}
 	Intent* intent = new Intent();
 	intent->putExtra("DeviceName", mButtonYuBaPtr->getText());
 	EASYUICONTEXT->openActivity("TimingActivity", intent);
@@ -2740,5 +2792,19 @@ static bool onButtonClick_ButtonAirSwitchWindDirect(ZKButton *pButton) {
 
 static bool onButtonClick_ButtonAirSwitchMode(ZKButton *pButton) {
     LOGD(" ButtonClick ButtonAirSwitchMode !!!\n");
+    return false;
+}
+static bool onButtonClick_ButtonHotChangeSwitchOpen(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotChangeSwitchOpen !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotChangeSwitchPicTime(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotChangeSwitchPicTime !!!\n");
+    return false;
+}
+
+static bool onButtonClick_ButtonHotChangeSwitchPicTimeOpen(ZKButton *pButton) {
+    LOGD(" ButtonClick ButtonHotChangeSwitchPicTimeOpen !!!\n");
     return false;
 }

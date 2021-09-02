@@ -112,6 +112,9 @@ public:
 	void setYuBaTimeInfo(EquipmentTiming *info);
 
 	//
+	void ControlDeviceTimer(int DevId, int mode);
+	void SetLongClickManualData(ZKButton *pButton, int data);
+	//
 	SProtocolSendData* getCurrentManualData();
 protected:
 

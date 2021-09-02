@@ -55,6 +55,7 @@ char EnvListText[10];
 
 static Mutex pLock;
 
+extern bool First_UpdateNWFlag;
 extern bool Flag_EnvRefresh;
 extern bool Flag_EnvListInfo;
 extern bool UpdateTimeFlag;
@@ -496,7 +497,7 @@ static void onUI_intent(const Intent *intentPtr) {
 			mWindowListViewPtr->setVisible(true);
 			mWindowListView2Ptr->setVisible(false);
 			EnvInfoVector->clear();
-			for(int i = 0;i < tmp.size() - 1;i++)
+			for(int i = 0;i < (int)tmp.size() - 1;i++)
 			{
 				DeviceInfo *tmp1 = tmp.at(i);
 				EnvInfoVector->push_back(tmp1);
@@ -559,14 +560,24 @@ static void onUI_hide() {
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-
+	LOGD("Main mode exit!!!\n");
 }
 
 /**
  * 串口数据回调接口
  */
 static void onProtocolDataUpdate(const SProtocolData &data) {
+	char datatmp[16];
+	mTextView33Ptr->setText(data.recvData.userData.realCo2Content);
+	mTextView30Ptr->setText(data.recvData.userData.realformaldehydeContent);
+	mTextView26Ptr->setText(data.recvData.userData.realTempState);
+	mTextView19Ptr->setText(data.recvData.userData.realHumdState);
+	mTextView22Ptr->setText(data.recvData.userData.realPm25Content);
+	mTextView46Ptr->setText(data.recvData.userData.realTvocContent);
+//	LOGD("data.recvData.userData.realCo2Content is %d, data.recvData.userData.realformaldehydeContent is %d", data.recvData.userData.realCo2Content, data.recvData.userData.realformaldehydeContent);
 
+	ResetStatusIconPos();
+	UpdateIndoorDataColorandValue();
 }
 
 /**
@@ -651,12 +662,12 @@ static bool onUI_Timer(int id){
 					mIconViewWifiPtr->setVisible(true);
 					mWindow5Ptr->setVisible(true);
 					mWindow24Ptr->setVisible(false);
+					First_UpdateNWFlag = true;
 					DispTimeCount++;
 					if(UpdateTimeFlag && DispTimeCount > 60)
 					{
 						DispTimeCount = 0;
 						updateTime();
-
 					}
 
 			}else{
@@ -670,11 +681,12 @@ static bool onUI_Timer(int id){
 						mIconViewWifiPtr->setVisible(true);
 					}
 				}
-	//			mIconViewWifiPtr->setVisible(false);
-				mWindow24Ptr->setVisible(true);
-				mWindow5Ptr->setVisible(false);
+				if (First_UpdateNWFlag){
+					updateTime();
+				}
+//				mWindow24Ptr->setVisible(true);
+//				mWindow5Ptr->setVisible(false);
 				UpdateTimeFlag = false;
-	//			ResetStatusIconPos();
 			}
 			ResetStatusIconPos();
 			MACHINESTATUS->setwifistatus(nwlistener->IsConnected());

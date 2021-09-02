@@ -35,6 +35,7 @@
 
 //char *stringText = "";
 static std::string stringText;
+char textpic[128];
 bool Flag_EnvRefresh = false;
 static char *text_name;
 static char *pic_name;
@@ -52,6 +53,7 @@ static bool pushback_flag = true;
 
 extern bool Flag_IME_Text;
 extern void disableStatusbus();
+extern void enableStatusbus();
 
 void onEditTextChanged_EditText1(const std::string &text);
 
@@ -288,7 +290,7 @@ static void onUI_hide() {
  * 当界面完全退出时触发
  */
 static void onUI_quit() {
-
+	enableStatusbus();
 }
 
 /**
@@ -688,19 +690,42 @@ static void onListItemClick_ListView3(ZKListView *pListView, int index, int id) 
 	}
 	mListView3Ptr->refreshListView();
 }
+
+char *EditTextAdaptPic(char *texttmp){
+	if (strcmp(texttmp, "客厅") == 0){
+		strcpy(textpic, "./ui/首页-图标-客厅.png");
+	}else if (strcmp(texttmp, "厨房") == 0){
+		strcpy(textpic, "./ui/首页-图标-厨房.png");
+	}else if (strcmp(texttmp, "卧室") == 0){
+		strcpy(textpic, "./ui/首页-图标-主卧室1.png");
+	}else if (strcmp(texttmp, "次卧") == 0){
+		strcpy(textpic, "./ui/首页-图标-次卧室1.png");
+	}else if (strcmp(texttmp, "餐厅") == 0){
+		strcpy(textpic, "./ui/首页-图标-餐厅1.png");
+	}else if (strcmp(texttmp, "儿童房") == 0){
+		strcpy(textpic, "./ui/首页-图标-儿童房.png");
+	}else if (strcmp(texttmp, "浴室") == 0){
+		strcpy(textpic, "./ui/首页-图标-浴室1.png");
+	}else if (strcmp(texttmp, "阳台") == 0){
+		strcpy(textpic, "./ui/首页-图标-阳台1.png");
+	}else{
+		strcpy(textpic, "");
+	}
+	return textpic;
+}
 static void onEditTextChanged_EditText1(const std::string &text) {
     LOGD(" onEditTextChanged_ EditText1 %s !!!\n", text.c_str());
 //    mEditText1Ptr->setText("自定义");
 //    *stringText = text.c_str();
 }
 static void onEditTextChanged_EditText2(const std::string &text) {
-    LOGD(" onEditTextChanged_ EditText2 %s !!!\n", text.c_str());
+    LOGD(" onEditTextChanged_ EditText2 %s!!!\n", text.c_str());
     if (Flag_IME_Text){
-    	LOGD("Text Entern\n");
+//    	LOGD("Text Entern\n");
     	Flag_IME_Text = false;
     	SpaceInfo *tmpEditText = (SpaceInfo *)malloc(sizeof(SpaceInfo));
 		strcpy(tmpEditText->maintext, text.c_str());
-		strcpy(tmpEditText->mainPic, NULL);
+		strcpy(tmpEditText->mainPic, EditTextAdaptPic((char *)tmpEditText->maintext));
 		tmpEditText->cancelstatus = false;
 		EnvSettingVectorList->push_back(tmpEditText);
     }

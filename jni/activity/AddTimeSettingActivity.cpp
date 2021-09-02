@@ -2,6 +2,7 @@
 /gen auto by zuitools
 ***********************************************/
 #include "AddTimeSettingActivity.h"
+#include "uart/ProtocolParser.h"
 
 /*TAG:GlobalVariable全局变量*/
 static ZKButton* mButtonStage2Ptr;
@@ -293,11 +294,42 @@ AddTimeSettingActivity::~AddTimeSettingActivity() {
   // 退出应用时需要反注册
     EASYUICONTEXT->unregisterGlobalTouchListener(this);
     onUI_quit();
-    unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
+//    unregisterProtocolDataUpdateListener(onProtocolDataUpdate);
 }
 
 const char* AddTimeSettingActivity::getAppName() const{
 	return "AddTimeSetting.ftu";
+}
+
+void AddTimeSettingActivity::onLongClick(ZKBase *pBase){
+	ZKButton *btn = (ZKButton*)pBase;
+	if (btn->isSelected()){
+		if (btn == mButtonDel1Ptr){
+			mTextView6Ptr->getText().c_str();
+		}else if (btn == mButtonAdd1Ptr){
+
+		}else if (btn == mButtonDel2Ptr){
+
+		}else if (btn == mButtonAdd2Ptr){
+
+		}else if (btn == mButtonDel3Ptr){
+
+		}else if (btn == mButtonAdd3Ptr){
+
+		}else if (btn == mButtonDel4Ptr){
+
+		}else if (btn == mButtonAdd4Ptr){
+
+		}else if (btn == mButtonDel5Ptr){
+
+		}else if (btn == mButtonAdd5Ptr){
+
+		}else if (btn == mButtonDel6Ptr){
+
+		}else if (btn == mButtonAdd6Ptr){
+
+		}
+	}
 }
 
 //TAG:onCreate

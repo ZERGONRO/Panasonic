@@ -56,7 +56,9 @@ typedef unsigned short  UINT16;
 #endif
 
 // 同步帧头
-#define CMD_HEAD1	0xFF
-#define CMD_HEAD2	0x55
+#define CMD_HEAD4	0x55
+#define CMD_HEAD3	0x5A
+#define CMD_HEAD2	0xA5
+#define CMD_HEAD1	0xA5
 
 #endif /* _UART_COMMDEF_H_ */

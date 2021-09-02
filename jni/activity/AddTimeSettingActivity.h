@@ -161,11 +161,13 @@ class AddTimeSettingActivity : public Activity,
                      public ZKSlideWindow::ISlideItemClickListener,
                      public EasyUIContext::ITouchListener,
                      public ZKEditText::ITextChangeListener,
+					 public ZKBase::ILongClickListener,
                      public ZKVideoView::IVideoPlayerMessageListener
 {
 public:
     AddTimeSettingActivity();
     virtual ~AddTimeSettingActivity();
+    virtual void onLongClick(ZKBase *pBase);
 
     /**
      * 注册定时器

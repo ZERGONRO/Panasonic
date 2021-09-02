@@ -32,6 +32,7 @@ MachineStatusListener::MachineStatusListener()
 //	EqpTime_Data = new EqpTimeData;
 	config->wifistatus = 1;
 	EnvInfo.clear();
+	statusListence.clear();
 	EnvListInfo.clear();
 	EnvDate->MasterorSlaver = false;
 	EquipmentTimeSetting->DeviceID = AirPURIFY;
@@ -60,6 +61,55 @@ MachineStatusListener::~MachineStatusListener()
 	config = NULL;
 	EquipmentTimeSetting = NULL;
 
+}
+
+void MachineStatusListener::setStatusChangedListener(IconStatusListener *listener){
+	if (!listener)
+		return;
+	if (this->statusListence.size() > 0){
+		int exit = false;
+		std::vector<IconStatusListener *>::iterator it = this->statusListence.begin();
+		for (;it != this->statusListence.end();it++){
+			if ((*it) == listener){
+				exit = true;
+				break;
+			}
+		}
+	}
+	if (!exit){
+		this->statusListence.push_back(listener);
+	}
+}
+
+void MachineStatusListener::removeStatusChangedListener(IconStatusListener* listener){
+	if (!listener || this->statusListence.empty())
+		return;
+	std::vector<IconStatusListener *>::iterator it = this->statusListence.begin();
+	for (;it != this->statusListence.end();it++){
+		if ((*it) == listener){
+			this->statusListence.erase(it);
+			return;
+		}
+	}
+
+}
+
+void MachineStatusListener::notifyStatusChangedListener(int type , int status){
+	if (this->statusListence.size() < 0)
+		return;
+	std::vector<IconStatusListener *>::iterator it = this->statusListence.begin();
+	for (;it != this->statusListence.end();it++){
+		(*it)->statusChangedNotify(type, status);
+	}
+}
+
+void MachineStatusListener::setLongClickStatus(int type, int status){
+	if (this->statusListence.size() <= 0)
+		return;
+	std::vector<IconStatusListener *>::iterator it = this->statusListence.begin();
+	for (;it != this->statusListence.end();it++){
+		(*it)->statusChangedNotify(type, status);
+	}
 }
 
 void MachineStatusListener::initSensorData(){
@@ -686,6 +736,17 @@ std::vector<EqpTimeData *> MachineStatusListener::getEqpTimeData()
 bool MachineStatusListener::getDeviceSwitch(bool SwitchStatus)
 {
 	return EquipmentTimeSetting->DeviceSwitch = SwitchStatus;
+}
+
+void MachineStatusListener::setDeviceSWTSwitch(int DevID, bool mode){
+	if (!EqpTime_Data.empty()){
+		for (int i = 0;i < (int)EqpTime_Data.size();i++){
+			EqpTimeData *tmp = EqpTime_Data.at(i);
+			if (tmp->DeviceData->DeviceID == DevID){
+				tmp->DeviceData->DeviceSwitch = mode;
+			}
+		}
+	}
 }
 
 void MachineStatusListener::setDeviceID(int DevID)

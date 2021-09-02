@@ -4,6 +4,8 @@
 #include "TimingActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKTextView* mTextViewStage22ColorFillPtr;
+static ZKTextView* mTextViewStage11ColorFillPtr;
 static ZKTextView* mTextViewStage2ColorFillPtr;
 static ZKTextView* mTextViewStage1ColorFillPtr;
 static ZKButton* mButton1Ptr;
@@ -249,6 +251,8 @@ const char* TimingActivity::getAppName() const{
 //TAG:onCreate
 void TimingActivity::onCreate() {
 	Activity::onCreate();
+    mTextViewStage22ColorFillPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewStage22ColorFill);
+    mTextViewStage11ColorFillPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewStage11ColorFill);
     mTextViewStage2ColorFillPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewStage2ColorFill);
     mTextViewStage1ColorFillPtr = (ZKTextView*)findControlByID(ID_TIMING_TextViewStage1ColorFill);
     mButton1Ptr = (ZKButton*)findControlByID(ID_TIMING_Button1);

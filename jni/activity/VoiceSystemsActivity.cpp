@@ -4,6 +4,7 @@
 #include "VoiceSystemsActivity.h"
 
 /*TAG:GlobalVariable全局变量*/
+static ZKButton* mButton1Ptr;
 static ZKSeekBar* mSeekBarLightPtr;
 static ZKButton* mButton2Ptr;
 static ZKButton* mButtonVoiceSysSwitchPtr;
@@ -51,6 +52,7 @@ typedef struct {
 
 /*TAG:ButtonCallbackTab按键映射表*/
 static S_ButtonCallback sButtonCallbackTab[] = {
+    ID_VOICESYSTEMS_Button1, onButtonClick_Button1,
     ID_VOICESYSTEMS_Button2, onButtonClick_Button2,
     ID_VOICESYSTEMS_ButtonVoiceSysSwitch, onButtonClick_ButtonVoiceSysSwitch,
     ID_VOICESYSTEMS_ButtonBack, onButtonClick_ButtonBack,
@@ -135,6 +137,7 @@ const char* VoiceSystemsActivity::getAppName() const{
 //TAG:onCreate
 void VoiceSystemsActivity::onCreate() {
 	Activity::onCreate();
+    mButton1Ptr = (ZKButton*)findControlByID(ID_VOICESYSTEMS_Button1);
     mSeekBarLightPtr = (ZKSeekBar*)findControlByID(ID_VOICESYSTEMS_SeekBarLight);if(mSeekBarLightPtr!= NULL){mSeekBarLightPtr->setSeekBarChangeListener(this);}
     mButton2Ptr = (ZKButton*)findControlByID(ID_VOICESYSTEMS_Button2);
     mButtonVoiceSysSwitchPtr = (ZKButton*)findControlByID(ID_VOICESYSTEMS_ButtonVoiceSysSwitch);
@@ -201,9 +204,9 @@ bool VoiceSystemsActivity::onTimer(int id) {
 void VoiceSystemsActivity::onProgressChanged(ZKSeekBar *pSeekBar, int progress){
 
     int seekBarTablen = sizeof(SZKSeekBarCallbackTab) / sizeof(S_ZKSeekBarCallback);
-    if (!mButtonVoiceSysSwitchPtr->isSelected()){
-		return;
-	}
+//    if (!mButtonVoiceSysSwitchPtr->isSelected()){
+//		return;
+//	}
     for (int i = 0; i < seekBarTablen; ++i) {
         if (SZKSeekBarCallbackTab[i].id == pSeekBar->getID()) {
             SZKSeekBarCallbackTab[i].callback(pSeekBar, progress);
@@ -235,6 +238,9 @@ void VoiceSystemsActivity::obtainListItemData(ZKListView *pListView,ZKListView::
 
 void VoiceSystemsActivity::onItemClick(ZKListView *pListView, int index, int id){
     int tablen = sizeof(SListViewFunctionsCallbackTab) / sizeof(S_ListViewFunctionsCallback);
+//    if (!mButtonVoiceSysSwitchPtr->isSelected()){
+//		return;
+//	}
     for (int i = 0; i < tablen; ++i) {
         if (SListViewFunctionsCallbackTab[i].id == pListView->getID()) {
             SListViewFunctionsCallbackTab[i].onItemClickCallback(pListView, index, id);
@@ -245,6 +251,9 @@ void VoiceSystemsActivity::onItemClick(ZKListView *pListView, int index, int id)
 
 void VoiceSystemsActivity::onSlideItemClick(ZKSlideWindow *pSlideWindow, int index) {
     int tablen = sizeof(SSlideWindowItemClickCallbackTab) / sizeof(S_SlideWindowItemClickCallback);
+    if (!mButtonVoiceSysSwitchPtr->isSelected()){
+		return;
+	}
     for (int i = 0; i < tablen; ++i) {
         if (SSlideWindowItemClickCallbackTab[i].id == pSlideWindow->getID()) {
             SSlideWindowItemClickCallbackTab[i].onSlideItemClickCallback(pSlideWindow, index);

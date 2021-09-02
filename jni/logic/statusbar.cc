@@ -37,7 +37,7 @@ static bool bMoveThreadRun = false;
 static pthread_t g_MoveThread = 0;
 bool UpdateTimeFlag = false;
 static bool Flag_Statusbus;
-
+bool First_UpdateNWFlag = false;
 
 static bool bStatusBarInited = false;
 extern MyNetWorkingListener *nwlistener;

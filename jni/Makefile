@@ -44,6 +44,7 @@ INCLUDE_DIR := -I$(EASYUI_COMMON_INCLUDE) \
 					-I ../jni/sdkdir/include \
 					-I ../jni/pinyin \
 					-I ../jni/sysapp \
+					-I ../jni/uart \
 					-I$(ZKSW_PREBUILT_INCLUDE_PATH)/mgeff
 
 LDFLAGS =  -leasyui 

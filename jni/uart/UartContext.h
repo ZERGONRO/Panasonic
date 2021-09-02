@@ -22,7 +22,7 @@ public:
 	bool isOpen() { return mIsOpen; }
 
 	bool send(const BYTE *pData, UINT len);
-
+	bool send1(const BYTE *pData , UINT len);
 	static UartContext* getInstance();
 
 protected:
@@ -34,8 +34,9 @@ private:
 
 private:
 	bool mIsOpen;
+	bool mIsOpen1;
 	int mUartID;
-
+	int mMcuUartID;
 	// 用于拼接缓存数据，可能存在上一包数据解析未完全，残留有数据
 	BYTE *mDataBufPtr;
 	int mDataBufLen;

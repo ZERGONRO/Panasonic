@@ -68,6 +68,13 @@ static void onUI_intent(const Intent *intentPtr) {
  */
 static void onUI_show() {
 
+	if (!MANUALSTATUS->getWifiSwitch()){
+		mButton1Ptr->setSelected(false);
+		mButton6Ptr->setSelected(false);
+	}else{
+		mButton1Ptr->setSelected(true);
+		mButton6Ptr->setSelected(true);
+	}
 	if (nwlistener->IsConnected()){
 		mTextView8Ptr->setVisible(true);
 	}else{

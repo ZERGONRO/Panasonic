@@ -747,7 +747,7 @@ static bool onButtonClick_ButtonSmart2(ZKButton *pButton) {
     return false;
 }
 static bool onButtonClick_ButtonManual2(ZKButton *pButton) {
-    LOGD(" ButtonClick ButtonSmart !!!\n");
+    LOGD(" ButtonClick ButtonManul !!!\n");
     if(pButton->isSelected())
 	{
     	return false;
